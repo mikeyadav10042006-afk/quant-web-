@@ -1,0 +1,337 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&family=Great+Vibes&display=swap');
+
+@import "tailwindcss";
+
+:root {
+  font-family: 'Inter', 'Poppins', sans-serif;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: #fafafa;
+  color: #4B5563;
+  overflow-x: hidden;
+  font-family: 'Inter', 'Poppins', sans-serif;
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #0d9488;
+}
+
+/* Premium heading styles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', 'Poppins', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+
+/* Paragraph styles for better readability */
+p {
+  font-family: 'Inter', 'Poppins', sans-serif;
+  line-height: 1.7;
+  letter-spacing: 0.012em;
+}
+
+/* Navigation links */
+.nav-link {
+  font-weight: 500;
+  color: #4B5563;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 1px;
+  background-color: #009966;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+.nav-link:hover {
+  color: #009966;
+  text-shadow: 0 0 4px rgba(0, 153, 102, 0.4);
+}
+.nav-link:hover::after {
+  left: 0;
+  width: 100%;
+}
+
+/* 3D Card Flip Utilities */
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+.group:hover .group-hover\:rotate-y-180 {
+  transform: rotateY(180deg);
+}
+.flip-card-inner {
+  transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transform-style: preserve-3d;
+}
+.group:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Value Card Hover Glow */
+.hover-values-glow {
+  transition: all 0.3s ease-out;
+}
+.hover-values-glow:hover {
+  box-shadow: 0 15px 30px rgba(0, 153, 102, 0.18), 0 0 15px rgba(0, 153, 102, 0.1);
+}
+
+/* Interactive feature rows on Left Side (Team) */
+.interactive-feature-row {
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease-out, border-color 0.3s ease-out;
+  position: relative;
+  background: transparent;
+  border: 1px solid transparent;
+}
+.interactive-feature-row:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 12px 30px -10px rgba(41, 121, 255, 0.22), 0 0 15px rgba(41, 121, 255, 0.12);
+  border-color: rgba(41, 121, 255, 0.25);
+  background: rgba(255, 255, 255, 0.85);
+}
+
+@keyframes border-glow-flow {
+  0% { border-color: rgba(41, 121, 255, 0.2); }
+  50% { border-color: rgba(139, 92, 246, 0.28); }
+  100% { border-color: rgba(41, 121, 255, 0.2); }
+}
+.interactive-feature-row:hover {
+  animation: border-glow-flow 3s infinite linear;
+}
+
+/* ════════════════════════════════════════════════════════════
+   SPLINE 3D VIEWER — PERFORMANCE OPTIMIZATIONS
+   ════════════════════════════════════════════════════════════ */
+
+.spline-hero-wrapper {
+  contain: layout style paint;
+  will-change: transform;
+}
+
+.spline-hero-wrapper spline-viewer {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  contain: layout style paint;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.spline-hero-wrapper {
+  min-height: 550px;
+  position: relative;
+  isolation: isolate;
+}
+
+spline-viewer::part(loading-spinner) {
+  display: none;
+}
+
+spline-viewer::part(canvas) {
+  background: transparent !important;
+}
+
+/* ── CTA Orbital Card Animations ── */
+.cta-orbital-card {
+  perspective: 1200px;
+}
+
+/* Orbital dash rotation */
+.cta-orbital-dash {
+  animation: ctaOrbitDash 20s linear infinite;
+}
+@keyframes ctaOrbitDash {
+  0% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -100; }
+}
+
+/* Traveling dot 1 — full perimeter orbit */
+.cta-orbital-dot-1 {
+  animation: ctaOrbitPath1 6s linear infinite;
+}
+@keyframes ctaOrbitPath1 {
+  0%   { clip-path: inset(0 98% 98% 0); }
+  12%  { clip-path: inset(0 0 98% 0); }
+  25%  { clip-path: inset(0 0 0 98%); }
+  37%  { clip-path: inset(98% 0 0 0); }
+  50%  { clip-path: inset(98% 0 0 98%); }
+  62%  { clip-path: inset(0 0 98% 98%); }
+  75%  { clip-path: inset(0 98% 0 0); }
+  87%  { clip-path: inset(98% 98% 0 0); }
+  100% { clip-path: inset(0 98% 98% 0); }
+}
+
+/* Traveling dot 2 — opposite direction */
+.cta-orbital-dot-2 {
+  animation: ctaOrbitPath2 8s linear infinite;
+}
+@keyframes ctaOrbitPath2 {
+  0%   { clip-path: inset(98% 0 0 0); }
+  12%  { clip-path: inset(0 0 0 98%); }
+  25%  { clip-path: inset(0 98% 98% 0); }
+  37%  { clip-path: inset(0 0 98% 98%); }
+  50%  { clip-path: inset(98% 98% 0 0); }
+  62%  { clip-path: inset(98% 0 0 98%); }
+  75%  { clip-path: inset(0 0 0 0); }
+  87%  { clip-path: inset(0 98% 0 98%); }
+  100% { clip-path: inset(98% 0 0 0); }
+}
+
+/* Traveling dot 3 — slower */
+.cta-orbital-dot-3 {
+  animation: ctaOrbitPath3 10s linear infinite;
+}
+@keyframes ctaOrbitPath3 {
+  0%   { clip-path: inset(0 0 98% 98%); }
+  14%  { clip-path: inset(98% 0 0 0); }
+  28%  { clip-path: inset(0 98% 0 98%); }
+  42%  { clip-path: inset(98% 98% 0 0); }
+  57%  { clip-path: inset(0 0 98% 0); }
+  71%  { clip-path: inset(0 98% 0 0); }
+  85%  { clip-path: inset(98% 0 0 98%); }
+  100% { clip-path: inset(0 0 98% 98%); }
+}
+
+/* CTA pulse rings */
+.cta-pulse-ring-1 {
+  animation: ctaPulseRing 3s ease-in-out infinite;
+}
+.cta-pulse-ring-2 {
+  animation: ctaPulseRing 3s ease-in-out 1s infinite;
+}
+.cta-pulse-ring-3 {
+  animation: ctaPulseRing 3s ease-in-out 2s infinite;
+}
+@keyframes cardShimmer {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(50%); }
+}
+@keyframes ctaPulseRing {
+  0%   { transform: scale(1); opacity: 0.6; }
+  50%  { transform: scale(1.35); opacity: 0; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+/* CTA icon floating */
+.cta-icon-float {
+  animation: ctaIconFloat 4s ease-in-out infinite;
+}
+@keyframes ctaIconFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* Magnetic button subtle shift */
+.cta-magnetic-btn {
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease;
+}
+.cta-magnetic-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px -4px rgba(16,185,129,0.3);
+}
+
+/* ════════════════════════════════════════════════════════════
+   HERO AMBIENT BLOBS — Premium Atmospheric Depth
+   ════════════════════════════════════════════════════════════ */
+
+.hero-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(200px);
+  opacity: 0.04;
+  will-change: transform;
+  pointer-events: none;
+}
+
+.hero-blob-1 {
+  width: 480px;
+  height: 480px;
+  top: -15%;
+  left: -10%;
+  background: #14B8A6;
+  animation: heroBlobDrift1 40s ease-in-out infinite;
+}
+
+.hero-blob-2 {
+  width: 400px;
+  height: 400px;
+  bottom: -12%;
+  left: 3%;
+  background: #67E8F9;
+  animation: heroBlobDrift2 38s ease-in-out infinite;
+}
+
+.hero-blob-3 {
+  width: 340px;
+  height: 340px;
+  top: 25%;
+  left: 32%;
+  background: #A7F3D0;
+  animation: heroBlobDrift3 42s ease-in-out infinite;
+}
+
+@keyframes heroBlobDrift1 {
+  0%, 100% { transform: translate(0, 0); }
+  33% { transform: translate(22px, -18px); }
+  66% { transform: translate(-14px, 20px); }
+}
+
+@keyframes heroBlobDrift2 {
+  0%, 100% { transform: translate(0, 0); }
+  33% { transform: translate(-20px, 16px); }
+  66% { transform: translate(18px, -22px); }
+}
+
+@keyframes heroBlobDrift3 {
+  0%, 100% { transform: translate(0, 0); }
+  33% { transform: translate(-16px, -18px); }
+  66% { transform: translate(20px, 12px); }
+}
