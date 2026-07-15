@@ -1,0 +1,10 @@
+[
+  {
+    "_id": "user-admin-1",
+    "name": "Admin",
+    "email": "admin@quantionic.com",
+    "password": "$2b$12$jowXYrr2QY5jF.OAA/cboeHvHhgZijwLw1YLMAlutFIoh0Ts25Bfi",
+    "role": "admin",
+    "createdAt": "2026-07-15T10:32:23.885Z"
+  }
+]

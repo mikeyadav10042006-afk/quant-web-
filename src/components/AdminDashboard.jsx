@@ -1,30 +1,39 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Mail, RefreshCw, Calendar, CheckCircle2, AlertCircle } from 'lucide-react';
-import axios from 'axios';
+import { X, Mail, RefreshCw, Calendar, CheckCircle2, AlertCircle, LogOut, UserPlus, Loader2 } from 'lucide-react';
+import api from '../api';
 
-export default function AdminDashboard({ isOpen, onClose }) {
+export default function AdminDashboard({ isOpen, onClose, onLogout, authToken }) {
   const [activeTab, setActiveTab] = useState('bookings');
   const [bookings, setBookings] = useState([]);
   const [subscribers, setSubscribers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchData = async () => {
+  // Create Admin state
+  const [showCreateAdmin, setShowCreateAdmin] = useState(false);
+  const [newAdmin, setNewAdmin] = useState({ name: '', email: '', password: '' });
+  const [createLoading, setCreateLoading] = useState(false);
+  const [createMsg, setCreateMsg] = useState({ type: '', text: '' });
+
+  const fetchData = useCallback(async () => {
     setLoading(true);
     setError(null);
+    const headers = authToken ? { Authorization: `Bearer ${authToken}` } : {};
     try {
-      const response = await axios.get('/api/admin/data');
+      const response = await api.get('/api/admin/data', { headers });
       setBookings(response.data.consultations || []);
       setSubscribers(response.data.subscribers || []);
     } catch (err) {
+      if (err.response?.status === 401) {
+        onLogout();
+        return;
+      }
       setError('Could not connect to Node backend server. Showing offline/localStorage fallback data.');
       
-      // Load from LocalStorage as fallback
       const localBookings = JSON.parse(localStorage.getItem('quant_bookings') || '[]');
       const localSubs = JSON.parse(localStorage.getItem('quant_subscribers') || '[]');
       
-      // Seed default mock if empty
       if (localBookings.length === 0) {
         const mockBookings = [
           {
@@ -63,13 +72,29 @@ export default function AdminDashboard({ isOpen, onClose }) {
     } finally {
       setLoading(false);
     }
+  }, [authToken, onLogout]);
+
+  const handleCreateAdmin = async (e) => {
+    e.preventDefault();
+    setCreateLoading(true);
+    setCreateMsg({ type: '', text: '' });
+    try {
+      await api.post('/api/auth/register', newAdmin, { headers: authToken ? { Authorization: `Bearer ${authToken}` } : {} });
+      setCreateMsg({ type: 'success', text: 'Admin account created successfully!' });
+      setNewAdmin({ name: '', email: '', password: '' });
+      setTimeout(() => { setCreateMsg({ type: '', text: '' }); setShowCreateAdmin(false); }, 2000);
+    } catch (err) {
+      setCreateMsg({ type: 'error', text: err.response?.data?.error || 'Failed to create admin' });
+    } finally {
+      setCreateLoading(false);
+    }
   };
 
   useEffect(() => {
     if (isOpen) {
       fetchData();
     }
-  }, [isOpen]);
+  }, [isOpen, fetchData]);
 
   return (
     <AnimatePresence>
@@ -98,12 +123,26 @@ export default function AdminDashboard({ isOpen, onClose }) {
 
               <div className="flex items-center space-x-3">
                 <button
+                  onClick={() => setShowCreateAdmin(!showCreateAdmin)}
+                  className="p-2 text-slate-400 hover:text-teal-400 rounded-xl hover:bg-slate-900 border border-slate-800 transition-colors"
+                  title="Create Admin"
+                >
+                  <UserPlus className="w-4 h-4" />
+                </button>
+                <button
                   onClick={fetchData}
                   disabled={loading}
                   className="p-2 text-slate-400 hover:text-white rounded-xl hover:bg-slate-900 border border-slate-800 transition-colors disabled:opacity-50"
                   title="Refresh Data"
                 >
                   <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+                </button>
+                <button
+                  onClick={onLogout}
+                  className="p-2 text-slate-400 hover:text-red-400 rounded-xl hover:bg-slate-900 border border-slate-800 transition-colors"
+                  title="Logout"
+                >
+                  <LogOut className="w-4 h-4" />
                 </button>
                 <button
                   onClick={onClose}
@@ -121,6 +160,68 @@ export default function AdminDashboard({ isOpen, onClose }) {
                 <span>{error}</span>
               </div>
             )}
+
+            {/* Create Admin Form */}
+            <AnimatePresence>
+              {showCreateAdmin && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="overflow-hidden border-b border-slate-100"
+                >
+                  <form onSubmit={handleCreateAdmin} className="p-6 bg-slate-50 flex flex-col sm:flex-row items-end gap-4">
+                    <div className="flex-1 space-y-1.5 w-full">
+                      <label className="text-[10px] font-bold text-slate-400 uppercase">Name</label>
+                      <input
+                        type="text"
+                        required
+                        value={newAdmin.name}
+                        onChange={(e) => setNewAdmin({ ...newAdmin, name: e.target.value })}
+                        placeholder="Full name"
+                        className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500"
+                      />
+                    </div>
+                    <div className="flex-1 space-y-1.5 w-full">
+                      <label className="text-[10px] font-bold text-slate-400 uppercase">Email</label>
+                      <input
+                        type="email"
+                        required
+                        value={newAdmin.email}
+                        onChange={(e) => setNewAdmin({ ...newAdmin, email: e.target.value })}
+                        placeholder="admin@example.com"
+                        className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500"
+                      />
+                    </div>
+                    <div className="flex-1 space-y-1.5 w-full">
+                      <label className="text-[10px] font-bold text-slate-400 uppercase">Password</label>
+                      <input
+                        type="password"
+                        required
+                        minLength={8}
+                        value={newAdmin.password}
+                        onChange={(e) => setNewAdmin({ ...newAdmin, password: e.target.value })}
+                        placeholder="Min 8 characters"
+                        className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500"
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={createLoading}
+                      className="bg-teal-600 hover:bg-teal-700 text-white px-5 py-2 rounded-lg text-xs font-bold transition-colors disabled:opacity-50 flex items-center space-x-1 shrink-0"
+                    >
+                      {createLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <UserPlus className="w-3.5 h-3.5" />}
+                      <span>Create</span>
+                    </button>
+                    {createMsg.text && (
+                      <p className={`text-xs font-semibold w-full ${createMsg.type === 'success' ? 'text-emerald-600' : 'text-red-600'}`}>
+                        {createMsg.text}
+                      </p>
+                    )}
+                  </form>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Tabs */}
             <div className="flex bg-slate-50 border-b border-slate-100 px-6 py-3 space-x-4">

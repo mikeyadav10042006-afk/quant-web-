@@ -3,6 +3,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -53,6 +55,19 @@ const subscriberSchema = new mongoose.Schema({
 
 const Consultation = mongoose.model('Consultation', consultationSchema);
 const Subscriber = mongoose.model('Subscriber', subscriberSchema);
+
+// --- User Schema (Admin Accounts) ---
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  role: { type: String, default: 'admin' },
+  createdAt: { type: Date, default: Date.now }
+});
+
+const User = mongoose.model('User', userSchema);
+
+const USERS_FILE = 'users.json';
 
 const getLocalFileStore = (filename) => {
   const filepath = path.join(DATA_DIR, filename);
@@ -109,7 +124,139 @@ Tone Guidelines:
 - Never make up fake data or prices; explain that custom projects depend on technical requirements.
 `;
 
+// --- Auth Middleware ---
+const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret_change_me';
+
+const authMiddleware = (req, res, next) => {
+  const header = req.headers.authorization;
+  if (!header || !header.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'No token provided' });
+  }
+  try {
+    const decoded = jwt.verify(header.split(' ')[1], JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (err) {
+    return res.status(401).json({ error: 'Invalid or expired token' });
+  }
+};
+
+// --- Seed Default Admin Account ---
+const seedDefaultAdmin = async () => {
+  const defaultEmail = 'admin@quantionic.com';
+  const defaultPassword = 'Quantionic@2026';
+
+  if (isMongoConnected) {
+    try {
+      const exists = await User.findOne({ email: defaultEmail });
+      if (!exists) {
+        const hashed = await bcrypt.hash(defaultPassword, 12);
+        await User.create({ name: 'Admin', email: defaultEmail, password: hashed, role: 'admin' });
+        console.log('Default admin seeded: admin@quantionic.com / Quantum@2026');
+      }
+    } catch (e) {
+      console.error('Failed to seed admin to MongoDB:', e);
+    }
+  } else {
+    const users = getLocalFileStore(USERS_FILE);
+    if (!users.find(u => u.email === defaultEmail)) {
+      const hashed = await bcrypt.hash(defaultPassword, 12);
+      users.push({
+        _id: 'user-admin-1',
+        name: 'Admin',
+        email: defaultEmail,
+        password: hashed,
+        role: 'admin',
+        createdAt: new Date().toISOString()
+      });
+      saveLocalFileStore(USERS_FILE, users);
+      console.log('Default admin seeded to local JSON: admin@quantionic.com / Quantionic@2026');
+    }
+  }
+};
+
 // --- API ROUTES ---
+
+// Auth: Login
+app.post('/api/auth/login', async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Email and password are required' });
+  }
+
+  let user = null;
+
+  if (isMongoConnected) {
+    try {
+      user = await User.findOne({ email: email.toLowerCase() });
+    } catch (e) {
+      console.error('MongoDB query error:', e);
+    }
+  }
+
+  if (!user) {
+    const users = getLocalFileStore(USERS_FILE);
+    user = users.find(u => u.email === email.toLowerCase());
+  }
+
+  if (!user) {
+    return res.status(401).json({ error: 'Invalid email or password' });
+  }
+
+  const valid = await bcrypt.compare(password, user.password);
+  if (!valid) {
+    return res.status(401).json({ error: 'Invalid email or password' });
+  }
+
+  const token = jwt.sign(
+    { id: user._id || user.id, email: user.email, name: user.name, role: user.role },
+    JWT_SECRET,
+    { expiresIn: '24h' }
+  );
+
+  return res.json({ token, user: { name: user.name, email: user.email, role: user.role } });
+});
+
+// Auth: Register new admin (protected — requires existing admin token)
+app.post('/api/auth/register', authMiddleware, async (req, res) => {
+  const { name, email, password } = req.body;
+  if (!name || !email || !password) {
+    return res.status(400).json({ error: 'Name, email, and password are required' });
+  }
+  if (password.length < 8) {
+    return res.status(400).json({ error: 'Password must be at least 8 characters' });
+  }
+
+  if (isMongoConnected) {
+    try {
+      const exists = await User.findOne({ email: email.toLowerCase() });
+      if (exists) {
+        return res.status(409).json({ error: 'Email already registered' });
+      }
+      const hashed = await bcrypt.hash(password, 12);
+      const newUser = await User.create({ name, email: email.toLowerCase(), password: hashed, role: 'admin' });
+      return res.status(201).json({ success: true, user: { name: newUser.name, email: newUser.email, role: newUser.role } });
+    } catch (e) {
+      console.error('MongoDB write error:', e);
+    }
+  }
+
+  // Fallback
+  const users = getLocalFileStore(USERS_FILE);
+  if (users.find(u => u.email === email.toLowerCase())) {
+    return res.status(409).json({ error: 'Email already registered' });
+  }
+  const hashed = await bcrypt.hash(password, 12);
+  const newUser = { _id: 'user-' + Date.now(), name, email: email.toLowerCase(), password: hashed, role: 'admin', createdAt: new Date().toISOString() };
+  users.push(newUser);
+  saveLocalFileStore(USERS_FILE, users);
+  return res.status(201).json({ success: true, user: { name: newUser.name, email: newUser.email, role: newUser.role } });
+});
+
+// Auth: Verify token
+app.get('/api/auth/me', authMiddleware, (req, res) => {
+  return res.json({ user: { name: req.user.name, email: req.user.email, role: req.user.role } });
+});
 
 // 1. Submit consultation booking
 app.post('/api/consultations', async (req, res) => {
@@ -179,8 +326,8 @@ app.post('/api/newsletter', async (req, res) => {
   }
 });
 
-// 3. Admin view submissions
-app.get('/api/admin/data', async (req, res) => {
+// 3. Admin view submissions (PROTECTED)
+app.get('/api/admin/data', authMiddleware, async (req, res) => {
   if (isMongoConnected) {
     try {
       const consultations = await Consultation.find().sort({ createdAt: -1 });
@@ -233,6 +380,7 @@ app.post('/api/chat', async (req, res) => {
   return res.json({ reply });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Quantionic backend server running on port ${PORT}`);
+  await seedDefaultAdmin();
 });

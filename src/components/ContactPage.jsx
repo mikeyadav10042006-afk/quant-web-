@@ -33,15 +33,20 @@ export default function ContactPage() {
   const [newsEmail, setNewsEmail] = useState('');
   const [newsSubmitted, setNewsSubmitted] = useState(false);
   const newsResetTimer = useRef(null);
+  const formResetTimer = useRef(null);
 
-  useEffect(() => () => { if (newsResetTimer.current) clearTimeout(newsResetTimer.current); }, []);
+  useEffect(() => () => {
+    if (newsResetTimer.current) clearTimeout(newsResetTimer.current);
+    if (formResetTimer.current) clearTimeout(formResetTimer.current);
+  }, []);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) return;
     if (!captchaForm) return;
     setFormSubmitted(true);
-    setTimeout(() => { setFormSubmitted(false); setFormData({ name: '', email: '', company: '', subject: '', message: '' }); setCaptchaForm(false); }, 4000);
+    if (formResetTimer.current) clearTimeout(formResetTimer.current);
+    formResetTimer.current = setTimeout(() => { setFormSubmitted(false); setFormData({ name: '', email: '', company: '', subject: '', message: '' }); setCaptchaForm(false); }, 4000);
   };
 
   const handleNewsSubmit = (e) => {

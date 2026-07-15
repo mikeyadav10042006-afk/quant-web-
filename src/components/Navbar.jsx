@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Bot, ArrowRight } from 'lucide-react';
 
-export default function Navbar({ onOpenChat, onOpenAdmin }) {
+export default function Navbar({ onOpenChat }) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -13,7 +13,10 @@ export default function Navbar({ onOpenChat, onOpenAdmin }) {
       if (!ticking) {
         ticking = true;
         requestAnimationFrame(() => {
-          setScrolled(window.scrollY > 20);
+          setScrolled((prev) => {
+            const next = window.scrollY > 20;
+            return prev === next ? prev : next;
+          });
           ticking = false;
         });
       }
@@ -75,12 +78,6 @@ export default function Navbar({ onOpenChat, onOpenAdmin }) {
                 </button>
               )
             )}
-            <button 
-              onClick={onOpenAdmin}
-              className="text-slate-400 hover:text-teal-600 font-medium transition-colors duration-200 text-xs"
-            >
-              Admin
-            </button>
           </div>
 
           {/* Actions */}
@@ -151,15 +148,6 @@ export default function Navbar({ onOpenChat, onOpenAdmin }) {
                   </button>
                 )
               )}
-              <button
-                onClick={() => {
-                  setIsOpen(false);
-                  onOpenAdmin();
-                }}
-                className="text-left text-slate-500 hover:text-teal-600 text-sm font-medium transition-colors"
-              >
-                Admin Panel
-              </button>
             </div>
             
             <hr className="border-slate-100" />

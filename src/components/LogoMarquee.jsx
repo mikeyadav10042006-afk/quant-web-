@@ -188,13 +188,6 @@ function TrackSpotlight({ side }) {
           filter: 'blur(10px)',
         }} />
       </div>
-
-      <style>{`
-        @keyframes pulseGlow {
-          0%, 100% { opacity: 0.85; transform: scale(1); }
-          50% { opacity: 1; transform: scale(1.04); }
-        }
-      `}</style>
     </div>
   );
 }
@@ -205,19 +198,19 @@ export default function LogoMarquee() {
   return (
     <section className="relative overflow-hidden py-10 md:py-14 bg-white">
 
-      {/* ══════════ LIGHT SUBTLE PURPLE BACKGROUND ══════════ */}
+      {/* ══════════ BACKGROUND IMAGE — edges visible, center for island ══════════ */}
+      <div className="absolute inset-0 pointer-events-none overflow-visible" style={{ zIndex: 0 }}>
+        <div className="absolute left-1/2 -translate-x-1/2 w-[140%] h-[140%] -top-[20%]" style={{
+          backgroundImage: `url(https://png.pngtree.com/background/20220730/original/pngtree-abstract-triangular-background-vector-line-picture-image_1887776.jpg)`,
+          backgroundSize: '100% auto',
+          backgroundPosition: 'center center',
+          backgroundRepeat: 'no-repeat',
+        }} />
+      </div>
+      {/* White fade over center so image edges peek but center is clean */}
       <div className="absolute inset-0 pointer-events-none" style={{
-        background: `
-          linear-gradient(180deg, 
-            #ffffff 0%, 
-            #faf9fc 20%, 
-            #f5f3fa 45%, 
-            #f0edf5 65%, 
-            #ebe8f0 80%, 
-            #e8e5ed 95%, 
-            #faf9fc 100%
-          )
-        `.replace(/\s+/g, ' '),
+        background: 'radial-gradient(ellipse 55% 65% at 50% 50%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 45%, rgba(255,255,255,0) 100%)',
+        zIndex: 1,
       }} />
       {/* Top center subtle purple glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] md:w-[700px] h-[150px] bg-gradient-to-b from-purple-200/[0.08] via-purple-100/[0.03] to-transparent rounded-full blur-3xl pointer-events-none" />
@@ -232,8 +225,8 @@ export default function LogoMarquee() {
       <TrackSpotlight side="right" />
 
       {/* ── HALO GLOW behind title ── */}
-      <div className="absolute top-2 left-1/2 -translate-x-1/2 w-[320px] md:w-[440px] h-[100px] bg-purple-300/[0.12] rounded-full blur-3xl pointer-events-none z-[1]" />
-      <div className="absolute top-6 left-1/2 -translate-x-1/2 w-[200px] md:w-[280px] h-[70px] bg-purple-400/[0.1] rounded-full blur-2xl pointer-events-none z-[1]" />
+      <div className="absolute top-2 left-1/2 -translate-x-1/2 w-[320px] md:w-[440px] h-[100px] bg-emerald-300/[0.15] rounded-full blur-3xl pointer-events-none z-[1]" />
+      <div className="absolute top-6 left-1/2 -translate-x-1/2 w-[200px] md:w-[280px] h-[70px] bg-emerald-400/[0.12] rounded-full blur-2xl pointer-events-none z-[1]" />
 
       {/* ── CONTENT ── */}
       <div className="relative z-10 max-w-5xl mx-auto px-6">
@@ -250,37 +243,37 @@ export default function LogoMarquee() {
         </div>
 
         {/* ── DYNAMIC ISLAND STYLE PILL ── */}
-        <div className="relative" style={{ filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.06)) drop-shadow(0 8px 16px rgba(168,85,247,0.04))' }}>
+        <div className="relative" style={{ filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.12)) drop-shadow(0 8px 16px rgba(0,153,102,0.15))', zIndex: 10 }}>
           
-          {/* Main Pill Container */}
+          {/* Main Pill Container — Emerald Green Dynamic Island */}
           <div className="relative rounded-[9999px] overflow-hidden"
             style={{
-              background: 'linear-gradient(145deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 40%, rgba(255,255,255,0.8) 60%, rgba(255,255,255,0.88) 100%)',
+              background: 'linear-gradient(145deg, rgba(0,153,102,0.92) 0%, rgba(0,130,85,0.95) 40%, rgba(0,100,65,0.92) 60%, rgba(0,153,102,0.9) 100%)',
               backdropFilter: 'blur(12px) saturate(150%)',
               WebkitBackdropFilter: 'blur(12px) saturate(150%)',
-              border: '1px solid rgba(255,255,255,0.6)',
+              border: '1px solid rgba(52,211,153,0.4)',
               boxShadow: `
-                0 8px 32px rgba(0,0,0,0.05),
-                0 2px 8px rgba(0,0,0,0.03),
-                inset 0 1px 0 rgba(255,255,255,0.9),
-                inset 0 -1px 0 rgba(255,255,255,0.4),
-                0 0 0 1px rgba(255,255,255,0.3),
-                0 0 60px rgba(168,85,247,0.03)
+                0 8px 32px rgba(0,153,102,0.25),
+                0 2px 8px rgba(0,153,102,0.15),
+                inset 0 1px 0 rgba(52,211,153,0.4),
+                inset 0 -1px 0 rgba(0,80,50,0.3),
+                0 0 0 1px rgba(52,211,153,0.2),
+                0 0 60px rgba(0,153,102,0.1)
               `.replace(/\s+/g, ' '),
               minHeight: '72px',
             }}
           >
             {/* Inner ambient edge glow */}
-            <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/[0.02] via-transparent to-purple-500/[0.02] pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/[0.15] via-transparent to-teal-400/[0.15] pointer-events-none" />
             {/* Top highlight */}
-            <div className="absolute top-0 left-4 right-4 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent pointer-events-none" />
+            <div className="absolute top-0 left-4 right-4 h-[1px] bg-gradient-to-r from-transparent via-emerald-300/50 to-transparent pointer-events-none" />
             
             {/* ── Marquee ── */}
             <div className="relative group/marquee px-4 md:px-6 py-2">
               {/* Left fade */}
-              <div className="pointer-events-none absolute inset-y-0 left-0 w-14 md:w-20 bg-gradient-to-r from-white via-white/60 to-transparent z-10" />
+              <div className="pointer-events-none absolute inset-y-0 left-0 w-14 md:w-20 bg-gradient-to-r from-[#009966] via-[#009966]/60 to-transparent z-10" />
               {/* Right fade */}
-              <div className="pointer-events-none absolute inset-y-0 right-0 w-14 md:w-20 bg-gradient-to-l from-white via-white/60 to-transparent z-10" />
+              <div className="pointer-events-none absolute inset-y-0 right-0 w-14 md:w-20 bg-gradient-to-l from-[#009966] via-[#009966]/60 to-transparent z-10" />
 
               <div className="flex w-max animate-marquee group-hover/marquee:[animation-play-state:paused]">
                 {duplicated.map((brand, i) => (
@@ -292,9 +285,9 @@ export default function LogoMarquee() {
 
           {/* Subtle floor reflection */}
           <div
-            className="absolute bottom-[-18px] left-1/2 -translate-x-1/2 w-3/4 max-w-4xl h-8 rounded-[9999px] pointer-events-none opacity-5"
+            className="absolute bottom-[-18px] left-1/2 -translate-x-1/2 w-3/4 max-w-4xl h-8 rounded-[9999px] pointer-events-none opacity-15"
             style={{
-              background: 'linear-gradient(to bottom, rgba(255,255,255,0.3), transparent)',
+              background: 'linear-gradient(to bottom, rgba(0,153,102,0.4), transparent)',
               filter: 'blur(12px)',
               transform: 'scaleY(-1) translateY(8px)',
               transformOrigin: 'top center',
@@ -318,23 +311,6 @@ export default function LogoMarquee() {
         <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-transparent to-slate-100/40 pointer-events-none" />
         <div className="absolute top-0 left-[8%] right-[8%] h-[1px] bg-gradient-to-r from-transparent via-purple-200/30 to-transparent" />
       </div>
-
-      <style>{`
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        @keyframes marquee-slow {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .animate-marquee {
-          animation: marquee 35s linear infinite;
-        }
-        .animate-marquee-slow {
-          animation: marquee-slow 42s linear infinite;
-        }
-      `}</style>
     </section>
   );
 }

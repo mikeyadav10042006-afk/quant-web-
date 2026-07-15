@@ -192,7 +192,7 @@ function FeatureRow({ feature, index }) {
               className="absolute top-0 left-0 right-0 h-[1px]"
               style={{
                 background: `linear-gradient(90deg, transparent, ${feature.accent}50, transparent)`,
-                animation: 'scanLine 3s linear infinite',
+                animation: 'smartScanLine 3s linear infinite',
               }}
             />
           </div>
@@ -232,7 +232,7 @@ function FeatureRow({ feature, index }) {
                     className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100"
                     style={{
                       border: `2px solid ${feature.accent}30`,
-                      animation: isHovered ? 'pulseRing 2s ease-out infinite' : 'none',
+                      animation: isHovered ? 'smartPulseRing 2s ease-out infinite' : 'none',
                     }}
                   />
                 </div>
@@ -278,32 +278,36 @@ function FeatureRow({ feature, index }) {
 /* ── CTA Mouse Glow ── */
 function CTAMouseGlow() {
   const ref = useRef(null);
-  const [pos, setPos] = useState({ x: 50, y: 50 });
-  const [visible, setVisible] = useState(false);
+  const glowRef = useRef(null);
 
   const handleMove = useCallback((e) => {
-    if (!ref.current) return;
+    if (!ref.current || !glowRef.current) return;
     const rect = ref.current.getBoundingClientRect();
-    setPos({
-      x: ((e.clientX - rect.left) / rect.width) * 100,
-      y: ((e.clientY - rect.top) / rect.height) * 100,
-    });
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    glowRef.current.style.background = `radial-gradient(600px circle at ${x}% ${y}%, rgba(16,185,129,0.12) 0%, rgba(16,185,129,0.04) 30%, transparent 65%)`;
+  }, []);
+
+  const handleEnter = useCallback(() => {
+    if (glowRef.current) glowRef.current.style.opacity = '1';
+  }, []);
+
+  const handleLeave = useCallback(() => {
+    if (glowRef.current) glowRef.current.style.opacity = '0';
   }, []);
 
   return (
     <div
       ref={ref}
       onMouseMove={handleMove}
-      onMouseEnter={() => setVisible(true)}
-      onMouseLeave={() => setVisible(false)}
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
       className="absolute inset-0 z-0 pointer-events-auto"
     >
       <div
+        ref={glowRef}
         className="absolute inset-0 transition-opacity duration-500"
-        style={{
-          opacity: visible ? 1 : 0,
-          background: `radial-gradient(600px circle at ${pos.x}% ${pos.y}%, rgba(16,185,129,0.12) 0%, rgba(16,185,129,0.04) 30%, transparent 65%)`,
-        }}
+        style={{ opacity: 0 }}
       />
     </div>
   );
@@ -322,75 +326,47 @@ export default function SmartCity() {
 
   return (
     <div className="min-h-screen flex flex-col relative overflow-hidden" style={{ background: 'linear-gradient(160deg, #ecfdf5 0%, #f8fafb 15%, #f0fdf4 30%, #f5f3ff 50%, #f0fdf4 70%, #f8fafb 85%, #ecfdf5 100%)' }}>
-      <style>{`
-        @keyframes pulseRing {
-          0% { transform: scale(1); opacity: 0.6; }
-          100% { transform: scale(1.25); opacity: 0; }
-        }
-        @keyframes scanLine {
-          0% { top: -2px; }
-          100% { top: calc(100% + 2px); }
-        }
-      `}</style>
-
-      {/* ── Ambient Background ── */}
       <div className="fixed inset-0 pointer-events-none z-0">
         {/* Base gradient mesh */}
         <div className="absolute inset-0" style={{
           background: 'radial-gradient(ellipse 80% 60% at 15% 20%, rgba(5,150,105,0.08) 0%, transparent 60%), radial-gradient(ellipse 70% 50% at 85% 35%, rgba(139,92,246,0.06) 0%, transparent 55%), radial-gradient(ellipse 60% 40% at 50% 80%, rgba(59,130,246,0.05) 0%, transparent 50%), radial-gradient(ellipse 50% 50% at 30% 60%, rgba(245,158,11,0.04) 0%, transparent 45%)',
         }} />
 
-        {/* Animated gradient orbs — large, visible */}
-        <motion.div
-          className="absolute w-[500px] h-[500px] rounded-full"
+        {/* Animated gradient orbs — compositor-thread CSS */}
+        <div
+          className="absolute w-[500px] h-[500px] rounded-full animate-orb-1"
           style={{ top: '8%', left: '-5%', background: 'radial-gradient(circle, rgba(5,150,105,0.10) 0%, rgba(5,150,105,0.03) 50%, transparent 70%)', filter: 'blur(40px)' }}
-          animate={{ y: [0, -50, 0, 40, 0], x: [0, 30, -20, 15, 0], scale: [1, 1.08, 0.95, 1.05, 1] }}
-          transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
         />
-        <motion.div
-          className="absolute w-[450px] h-[450px] rounded-full"
+        <div
+          className="absolute w-[450px] h-[450px] rounded-full animate-orb-2"
           style={{ top: '25%', right: '-8%', background: 'radial-gradient(circle, rgba(139,92,246,0.08) 0%, rgba(139,92,246,0.02) 50%, transparent 70%)', filter: 'blur(40px)' }}
-          animate={{ y: [0, 40, -30, 20, 0], x: [0, -25, 20, -10, 0], scale: [1, 0.95, 1.1, 0.98, 1] }}
-          transition={{ duration: 24, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
         />
-        <motion.div
-          className="absolute w-[400px] h-[400px] rounded-full"
+        <div
+          className="absolute w-[400px] h-[400px] rounded-full animate-orb-3"
           style={{ bottom: '15%', left: '30%', background: 'radial-gradient(circle, rgba(59,130,246,0.07) 0%, rgba(59,130,246,0.02) 50%, transparent 70%)', filter: 'blur(35px)' }}
-          animate={{ y: [0, -35, 20, -15, 0], x: [0, 20, -15, 10, 0] }}
-          transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut', delay: 6 }}
         />
-        <motion.div
-          className="absolute w-[350px] h-[350px] rounded-full"
+        <div
+          className="absolute w-[350px] h-[350px] rounded-full animate-orb-4"
           style={{ top: '55%', left: '5%', background: 'radial-gradient(circle, rgba(245,158,11,0.06) 0%, rgba(245,158,11,0.015) 50%, transparent 70%)', filter: 'blur(35px)' }}
-          animate={{ y: [0, 25, -20, 15, 0], x: [0, -10, 25, -5, 0] }}
-          transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut', delay: 9 }}
         />
-        <motion.div
-          className="absolute w-[300px] h-[300px] rounded-full"
+        <div
+          className="absolute w-[300px] h-[300px] rounded-full animate-orb-5"
           style={{ top: '70%', right: '10%', background: 'radial-gradient(circle, rgba(16,185,129,0.06) 0%, transparent 60%)', filter: 'blur(30px)' }}
-          animate={{ y: [0, -20, 30, -10, 0] }}
-          transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut', delay: 12 }}
         />
 
-        {/* Animated gradient waves — slow sweep */}
+        {/* Animated gradient waves — compositor-thread CSS */}
         <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            className="absolute w-[200%] h-[1px] left-[-50%]"
+          <div
+            className="absolute w-[200%] h-[1px] left-[-50%] animate-wave-1"
             style={{ top: '20%', background: 'linear-gradient(90deg, transparent, rgba(5,150,105,0.08), transparent)', rotate: '-3deg' }}
-            animate={{ x: ['-30%', '30%'] }}
-            transition={{ duration: 15, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
           />
-          <motion.div
-            className="absolute w-[200%] h-[1px] left-[-50%]"
+          <div
+            className="absolute w-[200%] h-[1px] left-[-50%] animate-wave-2"
             style={{ top: '50%', background: 'linear-gradient(90deg, transparent, rgba(139,92,246,0.06), transparent)', rotate: '2deg' }}
-            animate={{ x: ['20%', '-20%'] }}
-            transition={{ duration: 18, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut', delay: 4 }}
           />
-          <motion.div
-            className="absolute w-[200%] h-[1px] left-[-50%]"
+          <div
+            className="absolute w-[200%] h-[1px] left-[-50%] animate-wave-3"
             style={{ top: '75%', background: 'linear-gradient(90deg, transparent, rgba(59,130,246,0.05), transparent)', rotate: '-1deg' }}
-            animate={{ x: ['-15%', '25%'] }}
-            transition={{ duration: 20, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut', delay: 8 }}
           />
         </div>
 

@@ -1,14 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-import expert1 from '../assets/expert1.jpg';
-import expert2 from '../assets/expert2.jpg';
-import expert3 from '../assets/expert3.jpg';
-import expert4 from '../assets/expert4.jpg';
-import expert1_ai from '../assets/expert1_ai.jpg';
-import expert2_ai from '../assets/expert2_ai.jpg';
-import expert3_ai from '../assets/expert3_ai.jpg';
-import expert4_ai from '../assets/expert4_ai.jpg';
 
 const cardVariants = {
   hidden: { opacity: 0, y: 40 },
@@ -336,6 +327,7 @@ function getEnvironmentContent(theme) {
 
 function TeamCard({ member, index }) {
   const [hovered, setHovered] = useState(false);
+  const environmentContent = useMemo(() => getEnvironmentContent(member.aiTheme), [member.aiTheme]);
 
   return (
     <motion.div variants={cardVariants} className="group w-full flex justify-center">
@@ -370,7 +362,7 @@ function TeamCard({ member, index }) {
                 initial="rest"
                 animate="enter"
               >
-                {getEnvironmentContent(member.aiTheme)}
+                {environmentContent}
               </motion.div>
             )}
           </AnimatePresence>
@@ -428,8 +420,8 @@ export default function Team() {
     {
       name: 'Arun Kumar',
       title: 'Senior AI Architect',
-      img: expert1,
-      aiImg: expert1_ai,
+      img: '/assets/team/expert1.jpg',
+      aiImg: '/assets/team/expert1_ai.jpg',
       badge: '🧠 AI Strategy',
       experience: '12+ Years Experience',
       primaryExpertise: 'Enterprise AI Systems',
@@ -440,8 +432,8 @@ export default function Team() {
     {
       name: 'Priya Singh',
       title: 'AI Research Engineer',
-      img: expert2,
-      aiImg: expert2_ai,
+      img: '/assets/team/expert2.jpg',
+      aiImg: '/assets/team/expert2_ai.jpg',
       badge: '🤖 Machine Learning',
       experience: '8+ Years Experience',
       primaryExpertise: 'Machine Learning Pipelines',
@@ -452,8 +444,8 @@ export default function Team() {
     {
       name: 'Rahul Mehta',
       title: 'Product Strategy Lead',
-      img: expert3,
-      aiImg: expert3_ai,
+      img: '/assets/team/expert3.jpg',
+      aiImg: '/assets/team/expert3_ai.jpg',
       badge: '☁️ Cloud Architecture',
       experience: '10+ Years Experience',
       primaryExpertise: 'Cloud AI Orchestration',
@@ -464,8 +456,8 @@ export default function Team() {
     {
       name: 'Anjali Patel',
       title: 'Cloud Integration Specialist',
-      img: expert4,
-      aiImg: expert4_ai,
+      img: '/assets/team/expert4.jpg',
+      aiImg: '/assets/team/expert4_ai.jpg',
       badge: '🔒 AI Security',
       experience: '9+ Years Experience',
       primaryExpertise: 'Secure Cloud Operations',

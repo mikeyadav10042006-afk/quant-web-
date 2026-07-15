@@ -11,6 +11,19 @@ export default defineConfig({
       input: {
         main: './index.html',
       },
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/') || id.includes('node_modules/react-router')) {
+            return 'react-vendor';
+          }
+          if (id.includes('node_modules/framer-motion')) {
+            return 'framer';
+          }
+          if (id.includes('node_modules/gsap')) {
+            return 'gsap';
+          }
+        },
+      },
     },
   },
   server: {

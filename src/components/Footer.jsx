@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Send, CheckCircle2, Loader2, Bot, Calendar, ArrowRight } from 'lucide-react';
-import axios from 'axios';
+import api from '../api';
 
-export default function Footer({ onOpenChat }) {
+export default function Footer({ onOpenChat, onOpenAdmin }) {
   // Booking Form State
   const [bookingData, setBookingData] = useState({ name: '', email: '', enterprise: '', requirements: '' });
   const [bookingLoading, setBookingLoading] = useState(false);
@@ -14,13 +14,23 @@ export default function Footer({ onOpenChat }) {
   const [newsLoading, setNewsLoading] = useState(false);
   const [newsSuccess, setNewsSuccess] = useState(false);
 
+  const bookingTimerRef = useRef(null);
+  const newsTimerRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (bookingTimerRef.current) clearTimeout(bookingTimerRef.current);
+      if (newsTimerRef.current) clearTimeout(newsTimerRef.current);
+    };
+  }, []);
+
   const handleBookingSubmit = async (e) => {
     e.preventDefault();
     if (!bookingData.name || !bookingData.email || !bookingData.requirements) return;
 
     setBookingLoading(true);
     try {
-      await axios.post('/api/consultations', bookingData);
+      await api.post('/api/consultations', bookingData);
       setBookingSuccess(true);
       setBookingData({ name: '', email: '', enterprise: '', requirements: '' });
     } catch (err) {
@@ -36,7 +46,7 @@ export default function Footer({ onOpenChat }) {
       setBookingData({ name: '', email: '', enterprise: '', requirements: '' });
     } finally {
       setBookingLoading(false);
-      setTimeout(() => setBookingSuccess(false), 5000);
+      bookingTimerRef.current = setTimeout(() => setBookingSuccess(false), 5000);
     }
   };
 
@@ -46,7 +56,7 @@ export default function Footer({ onOpenChat }) {
 
     setNewsLoading(true);
     try {
-      await axios.post('/api/newsletter', { email: newsletterEmail });
+      await api.post('/api/newsletter', { email: newsletterEmail });
       setNewsSuccess(true);
       setNewsletterEmail('');
     } catch (err) {
@@ -62,7 +72,7 @@ export default function Footer({ onOpenChat }) {
       setNewsletterEmail('');
     } finally {
       setNewsLoading(false);
-      setTimeout(() => setNewsSuccess(false), 5000);
+      newsTimerRef.current = setTimeout(() => setNewsSuccess(false), 5000);
     }
   };
 
@@ -256,6 +266,11 @@ export default function Footer({ onOpenChat }) {
 
           <p className="text-xs text-slate-500 font-medium">
             © {new Date().getFullYear()} Quantionic Inc. All rights reserved.
+            {onOpenAdmin && (
+              <button onClick={onOpenAdmin} className="ml-2 text-slate-700/30 hover:text-slate-400 transition-colors align-middle" title="Admin">
+                <svg className="w-3.5 h-3.5 inline" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0" /></svg>
+              </button>
+            )}
           </p>
 
           <div className="flex items-center space-x-4 text-slate-400">

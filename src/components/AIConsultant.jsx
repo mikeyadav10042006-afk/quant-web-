@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, Bot, User, HelpCircle, Loader2 } from 'lucide-react';
-import axios from 'axios';
+import api from '../api';
 
 export default function AIConsultant({ isOpen, onClose }) {
   const [messages, setMessages] = useState([
@@ -13,6 +13,13 @@ export default function AIConsultant({ isOpen, onClose }) {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const chatEndRef = useRef(null);
+  const fallbackTimerRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (fallbackTimerRef.current) clearTimeout(fallbackTimerRef.current);
+    };
+  }, []);
 
   const suggestedQuestions = [
     'What services does Quantionic provide?',
@@ -38,14 +45,14 @@ export default function AIConsultant({ isOpen, onClose }) {
 
     try {
       // Connect to backend api
-      const response = await axios.post('/api/chat', { message: text });
+      const response = await api.post('/api/chat', { message: text });
       
       setMessages((prev) => [
         ...prev,
         { sender: 'ai', text: response.data.reply }
       ]);
     } catch (error) {
-      setTimeout(() => {
+      fallbackTimerRef.current = setTimeout(() => {
         let fallbackReply = "I'm having trouble connecting to the live Express server. However, as the Quantionic AI, I can tell you that we offer premium custom software development with full-stack Node/React/Tailwind, AI automation pipelines with Gemini/OpenAI, and data integrations (Salesforce, ServiceNow, MongoDB).";
         
         if (text.toLowerCase().includes('service')) {
