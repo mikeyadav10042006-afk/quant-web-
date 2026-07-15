@@ -363,7 +363,7 @@ app.post('/api/consultations', async (req, res) => {
     try {
       const doc = new Consultation(payload);
       await doc.save();
-      sendConsultationEmail(payload).catch(() => {});
+      sendConsultationEmail(payload).catch((e) => console.error('Email error:', e.message));
       return res.status(201).json({ success: true, message: 'Consultation saved to MongoDB', data: doc });
     } catch (err) {
       console.error('MongoDB write error:', err);
@@ -376,7 +376,7 @@ app.post('/api/consultations', async (req, res) => {
     payload._id = 'local-' + Date.now();
     list.unshift(payload);
     saveLocalFileStore('consultations.json', list);
-    sendConsultationEmail(payload).catch(() => {});
+    sendConsultationEmail(payload).catch((e) => console.error('Email error:', e.message));
     return res.status(201).json({ success: true, message: 'Consultation saved to local JSON store', data: payload });
   } catch (err) {
     return res.status(500).json({ error: 'Could not write consultation to fallback database' });
@@ -396,7 +396,7 @@ app.post('/api/newsletter', async (req, res) => {
     try {
       const doc = new Subscriber(payload);
       await doc.save();
-      sendNewsletterWelcomeEmail({ email }).catch(() => {});
+      sendNewsletterWelcomeEmail({ email }).catch((e) => console.error('Email error:', e.message));
       return res.status(201).json({ success: true, message: 'Newsletter subscribed in MongoDB', data: doc });
     } catch (err) {
       if (err.code === 11000) {
@@ -415,7 +415,7 @@ app.post('/api/newsletter', async (req, res) => {
     payload._id = 'local-sub-' + Date.now();
     list.unshift(payload);
     saveLocalFileStore('subscribers.json', list);
-    sendNewsletterWelcomeEmail({ email }).catch(() => {});
+    sendNewsletterWelcomeEmail({ email }).catch((e) => console.error('Email error:', e.message));
     return res.status(201).json({ success: true, message: 'Newsletter subscribed in local JSON store', data: payload });
   } catch (err) {
     return res.status(500).json({ error: 'Could not subscribe to fallback database' });
@@ -478,5 +478,6 @@ app.post('/api/chat', async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Quantionic backend server running on port ${PORT}`);
+  console.log(`Email configured: ${isEmailConfigured}, From: ${SEND_EMAIL}, Admin: ${process.env.ADMIN_EMAIL || 'mikeyadav10042006@gmail.com'}`);
   seedDefaultAdmin().catch((err) => console.error('Admin seed failed:', err));
 });
