@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Phone, Mail, MapPin, ArrowLeft, Send, MessageSquare, User, Building2, HelpCircle, Sparkles, Clock, Headphones, Check, CheckCircle } from 'lucide-react';
+import api from '../api';
 
 function MeshBackground() {
   return (
@@ -29,9 +30,13 @@ export default function ContactPage() {
 
   const [formData, setFormData] = useState({ name: '', email: '', company: '', subject: '', message: '' });
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formLoading, setFormLoading] = useState(false);
+  const [formError, setFormError] = useState('');
 
   const [newsEmail, setNewsEmail] = useState('');
   const [newsSubmitted, setNewsSubmitted] = useState(false);
+  const [newsLoading, setNewsLoading] = useState(false);
+  const [newsError, setNewsError] = useState('');
   const newsResetTimer = useRef(null);
   const formResetTimer = useRef(null);
 
@@ -40,22 +45,51 @@ export default function ContactPage() {
     if (formResetTimer.current) clearTimeout(formResetTimer.current);
   }, []);
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) return;
     if (!captchaForm) return;
-    setFormSubmitted(true);
-    if (formResetTimer.current) clearTimeout(formResetTimer.current);
-    formResetTimer.current = setTimeout(() => { setFormSubmitted(false); setFormData({ name: '', email: '', company: '', subject: '', message: '' }); setCaptchaForm(false); }, 4000);
+    setFormLoading(true);
+    setFormError('');
+    try {
+      await api.post('/api/consultations', {
+        name: formData.name,
+        email: formData.email,
+        enterprise: formData.company || formData.subject,
+        requirements: formData.message,
+      });
+      setFormSubmitted(true);
+      if (formResetTimer.current) clearTimeout(formResetTimer.current);
+      formResetTimer.current = setTimeout(() => { setFormSubmitted(false); setFormData({ name: '', email: '', company: '', subject: '', message: '' }); setCaptchaForm(false); }, 4000);
+    } catch (err) {
+      setFormError('Something went wrong. Please try again.');
+      setTimeout(() => setFormError(''), 3000);
+    } finally {
+      setFormLoading(false);
+    }
   };
 
-  const handleNewsSubmit = (e) => {
+  const handleNewsSubmit = async (e) => {
     e.preventDefault();
     if (!newsEmail) return;
     if (!captchaNews) return;
-    setNewsSubmitted(true);
-    if (newsResetTimer.current) clearTimeout(newsResetTimer.current);
-    newsResetTimer.current = setTimeout(() => { setNewsSubmitted(false); setNewsEmail(''); setCaptchaNews(false); }, 4000);
+    setNewsLoading(true);
+    setNewsError('');
+    try {
+      await api.post('/api/newsletter', { email: newsEmail });
+      setNewsSubmitted(true);
+      if (newsResetTimer.current) clearTimeout(newsResetTimer.current);
+      newsResetTimer.current = setTimeout(() => { setNewsSubmitted(false); setNewsEmail(''); setCaptchaNews(false); }, 4000);
+    } catch (err) {
+      if (err.response?.status === 409) {
+        setNewsError('Email already subscribed.');
+      } else {
+        setNewsError('Something went wrong. Please try again.');
+      }
+      setTimeout(() => setNewsError(''), 3000);
+    } finally {
+      setNewsLoading(false);
+    }
   };
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#f0fdf8] via-white to-[#f8fdf9]">
@@ -398,19 +432,22 @@ export default function ContactPage() {
                         <motion.button
                           key="submit"
                           type="submit"
-                          disabled={!captchaForm}
+                          disabled={!captchaForm || formLoading}
                           className={`group w-full relative overflow-hidden text-white text-sm font-bold px-6 py-4 rounded-xl transition-all duration-300 active:scale-[0.98] flex items-center justify-center gap-2.5 ${
-                            captchaForm
+                            captchaForm && !formLoading
                               ? 'bg-gradient-to-r from-[#059669] to-[#047857] hover:shadow-[0_8px_30px_rgba(5,150,105,0.35)] hover:scale-[1.01]'
                               : 'bg-slate-300 cursor-not-allowed'
                           }`}
                         >
                           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-                          <span className="relative">Send Message</span>
+                          <span className="relative">{formLoading ? 'Sending...' : 'Send Message'}</span>
                           <Send className="w-4 h-4 relative group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                         </motion.button>
                       )}
                     </AnimatePresence>
+                    {formError && (
+                      <p className="text-sm font-semibold text-red-500 text-center mt-2">{formError}</p>
+                    )}
                   </form>
                 </div>
               </div>
@@ -489,14 +526,14 @@ export default function ContactPage() {
                 </div>
                 <button
                   type="submit"
-                  disabled={!captchaNews}
+                  disabled={!captchaNews || newsLoading}
                   className={`text-sm font-bold px-8 py-3.5 rounded-xl transition-all duration-300 active:scale-[0.98] shrink-0 ${
-                    captchaNews
+                    captchaNews && !newsLoading
                       ? 'bg-gradient-to-r from-[#059669] to-[#047857] hover:from-[#047857] hover:to-[#065f46] text-white hover:shadow-[0_8px_25px_rgba(5,150,105,0.3)]'
                       : 'bg-slate-300 text-white cursor-not-allowed'
                   }`}
                 >
-                  {newsSubmitted ? 'Subscribed!' : 'Subscribe'}
+                  {newsLoading ? 'Subscribing...' : newsSubmitted ? 'Subscribed!' : 'Subscribe'}
                 </button>
               </div>
             </div>
@@ -534,6 +571,16 @@ export default function ContactPage() {
                   <CheckCircle className="w-5 h-5 text-emerald-500" />
                   <span className="text-sm font-bold text-emerald-700">You're subscribed!</span>
                 </motion.div>
+              )}
+              {newsError && (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="text-sm font-semibold text-red-500 text-center max-w-sm mx-auto"
+                >
+                  {newsError}
+                </motion.p>
               )}
             </AnimatePresence>
           </motion.form>

@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import { Resend } from 'resend';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -14,6 +15,17 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DATA_DIR = path.join(__dirname, 'data');
+
+// --- Resend Email Setup ---
+let resend = null;
+let isEmailConfigured = false;
+if (process.env.RESEND_API_KEY) {
+  resend = new Resend(process.env.RESEND_API_KEY);
+  isEmailConfigured = true;
+  console.log('Resend email service configured.');
+} else {
+  console.warn('No RESEND_API_KEY set. Email notifications disabled.');
+}
 
 // Make sure fallback data directory exists
 if (!fs.existsSync(DATA_DIR)) {
@@ -182,6 +194,76 @@ const seedDefaultAdmin = async () => {
 
 // --- API ROUTES ---
 
+// --- Email Helpers ---
+const SEND_EMAIL = process.env.SEND_EMAIL || 'onboarding@resend.dev';
+
+const sendConsultationEmail = async ({ name, email, enterprise, requirements }) => {
+  if (!isEmailConfigured) return;
+  const adminEmail = process.env.ADMIN_EMAIL || 'mikeyadav10042006@gmail.com';
+  try {
+    await resend.emails.send({
+      from: `Quantionic <${SEND_EMAIL}>`,
+      to: adminEmail,
+      subject: `New Consultation Booking from ${name}`,
+      html: `
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+          <div style="background:#059669;color:white;padding:20px;border-radius:12px 12px 0 0;text-align:center;">
+            <h1 style="margin:0;font-size:22px;">New Consultation Booking</h1>
+          </div>
+          <div style="background:#f9fafb;padding:20px;border:1px solid #e5e7eb;border-radius:0 0 12px 12px;">
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Company:</strong> ${enterprise || 'N/A'}</p>
+            <p><strong>Requirements:</strong></p>
+            <div style="background:white;padding:12px;border-radius:8px;border:1px solid #e5e7eb;margin-top:8px;">
+              ${requirements}
+            </div>
+            <hr style="margin:20px 0;border:none;border-top:1px solid #e5e7eb;" />
+            <p style="color:#6b7280;font-size:12px;">This booking was submitted from the Quantionic website contact form.</p>
+          </div>
+        </div>
+      `,
+    });
+    console.log(`Consultation email sent for: ${email}`);
+  } catch (err) {
+    console.error('Failed to send consultation email:', err);
+  }
+};
+
+const sendNewsletterWelcomeEmail = async ({ email }) => {
+  if (!isEmailConfigured) return;
+  try {
+    await resend.emails.send({
+      from: `Quantionic <${SEND_EMAIL}>`,
+      to: email,
+      subject: 'Welcome to Quantionic Newsletter!',
+      html: `
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+          <div style="background:#059669;color:white;padding:20px;border-radius:12px 12px 0 0;text-align:center;">
+            <h1 style="margin:0;font-size:22px;">Welcome to Quantionic!</h1>
+          </div>
+          <div style="background:#f9fafb;padding:20px;border:1px solid #e5e7eb;border-radius:0 0 12px 12px;">
+            <p>Hi there,</p>
+            <p>Thank you for subscribing to the <strong>Quantionic Newsletter</strong>. You'll now receive regular updates on:</p>
+            <ul style="line-height:1.8;">
+              <li>AI & Machine Learning innovations</li>
+              <li>Enterprise integration solutions</li>
+              <li>Cloud & IoT system architectures</li>
+              <li>Industry insights and case studies</li>
+            </ul>
+            <p>If you have any questions, feel free to reach out at <a href="mailto:info@quantionic.com" style="color:#059669;">info@quantionic.com</a>.</p>
+            <hr style="margin:20px 0;border:none;border-top:1px solid #e5e7eb;" />
+            <p style="color:#6b7280;font-size:12px;">Quantionic — Premium Software & Intelligence Engineering.</p>
+          </div>
+        </div>
+      `,
+    });
+    console.log(`Welcome email sent to: ${email}`);
+  } catch (err) {
+    console.error('Failed to send newsletter welcome email:', err);
+  }
+};
+
 // Health check
 app.get('/', (req, res) => {
   res.json({ status: 'ok', service: 'quantionic-backend', timestamp: new Date().toISOString() });
@@ -281,6 +363,7 @@ app.post('/api/consultations', async (req, res) => {
     try {
       const doc = new Consultation(payload);
       await doc.save();
+      sendConsultationEmail(payload).catch(() => {});
       return res.status(201).json({ success: true, message: 'Consultation saved to MongoDB', data: doc });
     } catch (err) {
       console.error('MongoDB write error:', err);
@@ -293,6 +376,7 @@ app.post('/api/consultations', async (req, res) => {
     payload._id = 'local-' + Date.now();
     list.unshift(payload);
     saveLocalFileStore('consultations.json', list);
+    sendConsultationEmail(payload).catch(() => {});
     return res.status(201).json({ success: true, message: 'Consultation saved to local JSON store', data: payload });
   } catch (err) {
     return res.status(500).json({ error: 'Could not write consultation to fallback database' });
@@ -312,6 +396,7 @@ app.post('/api/newsletter', async (req, res) => {
     try {
       const doc = new Subscriber(payload);
       await doc.save();
+      sendNewsletterWelcomeEmail({ email }).catch(() => {});
       return res.status(201).json({ success: true, message: 'Newsletter subscribed in MongoDB', data: doc });
     } catch (err) {
       if (err.code === 11000) {
@@ -330,6 +415,7 @@ app.post('/api/newsletter', async (req, res) => {
     payload._id = 'local-sub-' + Date.now();
     list.unshift(payload);
     saveLocalFileStore('subscribers.json', list);
+    sendNewsletterWelcomeEmail({ email }).catch(() => {});
     return res.status(201).json({ success: true, message: 'Newsletter subscribed in local JSON store', data: payload });
   } catch (err) {
     return res.status(500).json({ error: 'Could not subscribe to fallback database' });
