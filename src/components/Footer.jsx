@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Send, CheckCircle2, Loader2, Bot, Calendar, ArrowRight } from 'lucide-react';
-import api from '../api';
+import api, { getRecaptchaToken } from '../api';
 
 export default function Footer({ onOpenChat, onOpenAdmin }) {
   // Booking Form State
@@ -30,7 +30,7 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
 
     setBookingLoading(true);
     try {
-      const token = await window.grecaptcha?.ready?.().then(() => window.grecaptcha?.execute('6LfcclUtAAAAAM9ISGQsZpRIqYxHxph3_6jEHAcu', { action: 'consultation' }));
+      const token = await getRecaptchaToken('consultation');
       await api.post('/api/consultations', { ...bookingData, recaptchaToken: token });
       setBookingSuccess(true);
       setBookingData({ name: '', email: '', enterprise: '', requirements: '' });
@@ -57,7 +57,7 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
 
     setNewsLoading(true);
     try {
-      const token = await window.grecaptcha?.ready?.().then(() => window.grecaptcha?.execute('6LfcclUtAAAAAM9ISGQsZpRIqYxHxph3_6jEHAcu', { action: 'newsletter' }));
+      const token = await getRecaptchaToken('newsletter');
       await api.post('/api/newsletter', { email: newsletterEmail, recaptchaToken: token });
       setNewsSuccess(true);
       setNewsletterEmail('');

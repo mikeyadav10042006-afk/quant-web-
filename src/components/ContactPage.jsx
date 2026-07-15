@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Phone, Mail, MapPin, ArrowLeft, Send, MessageSquare, User, Building2, HelpCircle, Sparkles, Clock, Headphones, Check, CheckCircle } from 'lucide-react';
-import api from '../api';
+import api, { getRecaptchaToken } from '../api';
 
 function MeshBackground() {
   return (
@@ -48,7 +48,7 @@ export default function ContactPage() {
     setFormLoading(true);
     setFormError('');
     try {
-      const recaptchaToken = await window.grecaptcha?.ready?.().then(() => window.grecaptcha?.execute('6LfcclUtAAAAAM9ISGQsZpRIqYxHxph3_6jEHAcu', { action: 'contact_form' }));
+      const recaptchaToken = await getRecaptchaToken('contact_form');
       await api.post('/api/consultations', {
         name: formData.name,
         email: formData.email,
@@ -73,7 +73,7 @@ export default function ContactPage() {
     setNewsLoading(true);
     setNewsError('');
     try {
-      const recaptchaToken = await window.grecaptcha?.ready?.().then(() => window.grecaptcha?.execute('6LfcclUtAAAAAM9ISGQsZpRIqYxHxph3_6jEHAcu', { action: 'newsletter' }));
+      const recaptchaToken = await getRecaptchaToken('newsletter');
       await api.post('/api/newsletter', { email: newsEmail, recaptchaToken });
       setNewsSubmitted(true);
       if (newsResetTimer.current) clearTimeout(newsResetTimer.current);
