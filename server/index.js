@@ -196,6 +196,26 @@ const seedDefaultAdmin = async () => {
 
 // --- Email Helpers ---
 const SEND_EMAIL = process.env.SEND_EMAIL || 'onboarding@resend.dev';
+const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET_KEY || '';
+const isRecaptchaConfigured = !!RECAPTCHA_SECRET;
+
+const verifyRecaptcha = async (token) => {
+  if (!isRecaptchaConfigured) return true;
+  if (!token) return false;
+  try {
+    const resp = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `secret=${encodeURIComponent(RECAPTCHA_SECRET)}&response=${encodeURIComponent(token)}`,
+    });
+    const data = await resp.json();
+    console.log(`reCAPTCHA verify: score=${data.score}, success=${data.success}`);
+    return data.success && data.score >= 0.5;
+  } catch (err) {
+    console.error('reCAPTCHA verification failed:', err);
+    return true;
+  }
+};
 
 const sendConsultationEmail = async ({ name, email, enterprise, requirements }) => {
   if (!isEmailConfigured) return;
@@ -352,9 +372,14 @@ app.get('/api/auth/me', authMiddleware, (req, res) => {
 
 // 1. Submit consultation booking
 app.post('/api/consultations', async (req, res) => {
-  const { name, email, enterprise, requirements } = req.body;
+  const { name, email, enterprise, requirements, recaptchaToken } = req.body;
   if (!name || !email || !requirements) {
     return res.status(400).json({ error: 'Name, email, and requirements are required' });
+  }
+
+  const human = await verifyRecaptcha(recaptchaToken);
+  if (!human) {
+    return res.status(403).json({ error: 'reCAPTCHA verification failed. Please try again.' });
   }
 
   const payload = { name, email, enterprise, requirements, createdAt: new Date() };
@@ -385,9 +410,14 @@ app.post('/api/consultations', async (req, res) => {
 
 // 2. Submit newsletter subscription
 app.post('/api/newsletter', async (req, res) => {
-  const { email } = req.body;
+  const { email, recaptchaToken } = req.body;
   if (!email) {
     return res.status(400).json({ error: 'Email is required' });
+  }
+
+  const human = await verifyRecaptcha(recaptchaToken);
+  if (!human) {
+    return res.status(403).json({ error: 'reCAPTCHA verification failed. Please try again.' });
   }
 
   const payload = { email, createdAt: new Date() };

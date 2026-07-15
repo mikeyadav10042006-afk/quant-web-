@@ -25,9 +25,6 @@ function MeshBackground() {
 }
 
 export default function ContactPage() {
-  const [captchaForm, setCaptchaForm] = useState(false);
-  const [captchaNews, setCaptchaNews] = useState(false);
-
   const [formData, setFormData] = useState({ name: '', email: '', company: '', subject: '', message: '' });
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
@@ -48,19 +45,20 @@ export default function ContactPage() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) return;
-    if (!captchaForm) return;
     setFormLoading(true);
     setFormError('');
     try {
+      const recaptchaToken = await window.grecaptcha?.enterprise?.execute('6LfcclUtAAAAAM9ISGQsZpRIqYxHxph3_6jEHAcu', { action: 'contact_form' });
       await api.post('/api/consultations', {
         name: formData.name,
         email: formData.email,
         enterprise: formData.company || formData.subject,
         requirements: formData.message,
+        recaptchaToken,
       });
       setFormSubmitted(true);
       if (formResetTimer.current) clearTimeout(formResetTimer.current);
-      formResetTimer.current = setTimeout(() => { setFormSubmitted(false); setFormData({ name: '', email: '', company: '', subject: '', message: '' }); setCaptchaForm(false); }, 4000);
+      formResetTimer.current = setTimeout(() => { setFormSubmitted(false); setFormData({ name: '', email: '', company: '', subject: '', message: '' }); }, 4000);
     } catch (err) {
       setFormError('Something went wrong. Please try again.');
       setTimeout(() => setFormError(''), 3000);
@@ -72,14 +70,14 @@ export default function ContactPage() {
   const handleNewsSubmit = async (e) => {
     e.preventDefault();
     if (!newsEmail) return;
-    if (!captchaNews) return;
     setNewsLoading(true);
     setNewsError('');
     try {
-      await api.post('/api/newsletter', { email: newsEmail });
+      const recaptchaToken = await window.grecaptcha?.enterprise?.execute('6LfcclUtAAAAAM9ISGQsZpRIqYxHxph3_6jEHAcu', { action: 'newsletter' });
+      await api.post('/api/newsletter', { email: newsEmail, recaptchaToken });
       setNewsSubmitted(true);
       if (newsResetTimer.current) clearTimeout(newsResetTimer.current);
-      newsResetTimer.current = setTimeout(() => { setNewsSubmitted(false); setNewsEmail(''); setCaptchaNews(false); }, 4000);
+      newsResetTimer.current = setTimeout(() => { setNewsSubmitted(false); setNewsEmail(''); }, 4000);
     } catch (err) {
       if (err.response?.status === 409) {
         setNewsError('Email already subscribed.');
@@ -391,27 +389,7 @@ export default function ContactPage() {
                       />
                     </div>
 
-                    {/* reCAPTCHA */}
-                    <div className="bg-[#f8fafb] border border-slate-200/80 rounded-xl p-4 flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <button
-                          type="button"
-                          onClick={() => setCaptchaForm(!captchaForm)}
-                          className={`w-6 h-6 rounded border-2 flex items-center justify-center cursor-pointer transition-all duration-200 ${
-                            captchaForm
-                              ? 'bg-[#059669] border-[#059669] shadow-sm shadow-[#059669]/30'
-                              : 'bg-white border-slate-300 hover:border-[#059669]'
-                          }`}
-                        >
-                          {captchaForm && <Check className="w-4 h-4 text-white" strokeWidth={3} />}
-                        </button>
-                        <span className="text-sm text-slate-500">I'm not a robot</span>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">reCAPTCHA</div>
-                        <div className="text-[9px] text-slate-400">Privacy · Terms</div>
-                      </div>
-                    </div>
+                    {/* reCAPTCHA badge (invisible v3 - no UI needed) */}
 
                     {/* Submit */}
                     <AnimatePresence mode="wait">
@@ -432,9 +410,9 @@ export default function ContactPage() {
                         <motion.button
                           key="submit"
                           type="submit"
-                          disabled={!captchaForm || formLoading}
+                          disabled={formLoading}
                           className={`group w-full relative overflow-hidden text-white text-sm font-bold px-6 py-4 rounded-xl transition-all duration-300 active:scale-[0.98] flex items-center justify-center gap-2.5 ${
-                            captchaForm && !formLoading
+                            !formLoading
                               ? 'bg-gradient-to-r from-[#059669] to-[#047857] hover:shadow-[0_8px_30px_rgba(5,150,105,0.35)] hover:scale-[1.01]'
                               : 'bg-slate-300 cursor-not-allowed'
                           }`}
@@ -526,9 +504,9 @@ export default function ContactPage() {
                 </div>
                 <button
                   type="submit"
-                  disabled={!captchaNews || newsLoading}
+                  disabled={newsLoading}
                   className={`text-sm font-bold px-8 py-3.5 rounded-xl transition-all duration-300 active:scale-[0.98] shrink-0 ${
-                    captchaNews && !newsLoading
+                    !newsLoading
                       ? 'bg-gradient-to-r from-[#059669] to-[#047857] hover:from-[#047857] hover:to-[#065f46] text-white hover:shadow-[0_8px_25px_rgba(5,150,105,0.3)]'
                       : 'bg-slate-300 text-white cursor-not-allowed'
                   }`}
@@ -538,27 +516,7 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* reCAPTCHA */}
-            <div className="bg-white border border-slate-200/80 rounded-xl p-4 flex items-center justify-between max-w-sm mx-auto shadow-sm">
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => setCaptchaNews(!captchaNews)}
-                  className={`w-6 h-6 rounded border-2 flex items-center justify-center cursor-pointer transition-all duration-200 ${
-                    captchaNews
-                      ? 'bg-[#059669] border-[#059669] shadow-sm shadow-[#059669]/30'
-                      : 'bg-white border-slate-300 hover:border-[#059669]'
-                  }`}
-                >
-                  {captchaNews && <Check className="w-4 h-4 text-white" strokeWidth={3} />}
-                </button>
-                <span className="text-sm text-slate-500">I'm not a robot</span>
-              </div>
-              <div className="text-right">
-                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">reCAPTCHA</div>
-                <div className="text-[9px] text-slate-400">Privacy · Terms</div>
-              </div>
-            </div>
+            {/* reCAPTCHA v3 - invisible */}
 
             <AnimatePresence>
               {newsSubmitted && (

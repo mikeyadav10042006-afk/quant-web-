@@ -30,7 +30,8 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
 
     setBookingLoading(true);
     try {
-      await api.post('/api/consultations', bookingData);
+      const token = await window.grecaptcha?.enterprise?.execute('6LfcclUtAAAAAM9ISGQsZpRIqYxHxph3_6jEHAcu', { action: 'consultation' });
+      await api.post('/api/consultations', { ...bookingData, recaptchaToken: token });
       setBookingSuccess(true);
       setBookingData({ name: '', email: '', enterprise: '', requirements: '' });
     } catch (err) {
@@ -56,7 +57,8 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
 
     setNewsLoading(true);
     try {
-      await api.post('/api/newsletter', { email: newsletterEmail });
+      const token = await window.grecaptcha?.enterprise?.execute('6LfcclUtAAAAAM9ISGQsZpRIqYxHxph3_6jEHAcu', { action: 'newsletter' });
+      await api.post('/api/newsletter', { email: newsletterEmail, recaptchaToken: token });
       setNewsSuccess(true);
       setNewsletterEmail('');
     } catch (err) {
