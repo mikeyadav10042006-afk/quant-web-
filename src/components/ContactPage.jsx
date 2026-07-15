@@ -48,7 +48,7 @@ export default function ContactPage() {
     setFormLoading(true);
     setFormError('');
     try {
-      const recaptchaToken = await window.grecaptcha?.enterprise?.execute('6LfcclUtAAAAAM9ISGQsZpRIqYxHxph3_6jEHAcu', { action: 'contact_form' });
+      const recaptchaToken = await window.grecaptcha?.ready?.().then(() => window.grecaptcha?.execute('6LfcclUtAAAAAM9ISGQsZpRIqYxHxph3_6jEHAcu', { action: 'contact_form' }));
       await api.post('/api/consultations', {
         name: formData.name,
         email: formData.email,
@@ -73,7 +73,7 @@ export default function ContactPage() {
     setNewsLoading(true);
     setNewsError('');
     try {
-      const recaptchaToken = await window.grecaptcha?.enterprise?.execute('6LfcclUtAAAAAM9ISGQsZpRIqYxHxph3_6jEHAcu', { action: 'newsletter' });
+      const recaptchaToken = await window.grecaptcha?.ready?.().then(() => window.grecaptcha?.execute('6LfcclUtAAAAAM9ISGQsZpRIqYxHxph3_6jEHAcu', { action: 'newsletter' }));
       await api.post('/api/newsletter', { email: newsEmail, recaptchaToken });
       setNewsSubmitted(true);
       if (newsResetTimer.current) clearTimeout(newsResetTimer.current);

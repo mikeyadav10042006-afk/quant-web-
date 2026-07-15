@@ -30,7 +30,7 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
 
     setBookingLoading(true);
     try {
-      const token = await window.grecaptcha?.enterprise?.execute('6LfcclUtAAAAAM9ISGQsZpRIqYxHxph3_6jEHAcu', { action: 'consultation' });
+      const token = await window.grecaptcha?.ready?.().then(() => window.grecaptcha?.execute('6LfcclUtAAAAAM9ISGQsZpRIqYxHxph3_6jEHAcu', { action: 'consultation' }));
       await api.post('/api/consultations', { ...bookingData, recaptchaToken: token });
       setBookingSuccess(true);
       setBookingData({ name: '', email: '', enterprise: '', requirements: '' });
@@ -57,7 +57,7 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
 
     setNewsLoading(true);
     try {
-      const token = await window.grecaptcha?.enterprise?.execute('6LfcclUtAAAAAM9ISGQsZpRIqYxHxph3_6jEHAcu', { action: 'newsletter' });
+      const token = await window.grecaptcha?.ready?.().then(() => window.grecaptcha?.execute('6LfcclUtAAAAAM9ISGQsZpRIqYxHxph3_6jEHAcu', { action: 'newsletter' }));
       await api.post('/api/newsletter', { email: newsletterEmail, recaptchaToken: token });
       setNewsSuccess(true);
       setNewsletterEmail('');
