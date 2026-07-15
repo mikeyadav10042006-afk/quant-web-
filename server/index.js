@@ -29,15 +29,20 @@ app.use(express.json());
 // --- Database Connectivity / Fallback Store ---
 let isMongoConnected = false;
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/quantionic')
-  .then(() => {
-    console.log('MongoDB successfully connected.');
-    isMongoConnected = true;
-  })
-  .catch((err) => {
-    console.warn('MongoDB connection failed. Backend is falling back to Local JSON Files storage.');
-    isMongoConnected = false;
-  });
+if (process.env.MONGODB_URI) {
+  mongoose.connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 5000 })
+    .then(() => {
+      console.log('MongoDB successfully connected.');
+      isMongoConnected = true;
+    })
+    .catch((err) => {
+      console.warn('MongoDB connection failed. Backend is falling back to Local JSON Files storage.');
+      isMongoConnected = false;
+    });
+} else {
+  console.warn('No MONGODB_URI set. Running with local JSON file storage only.');
+  isMongoConnected = false;
+}
 
 // --- Mongoose Schemas & Fallback Helpers ---
 const consultationSchema = new mongoose.Schema({
@@ -176,6 +181,11 @@ const seedDefaultAdmin = async () => {
 };
 
 // --- API ROUTES ---
+
+// Health check
+app.get('/', (req, res) => {
+  res.json({ status: 'ok', service: 'quantionic-backend', timestamp: new Date().toISOString() });
+});
 
 // Auth: Login
 app.post('/api/auth/login', async (req, res) => {
@@ -380,7 +390,7 @@ app.post('/api/chat', async (req, res) => {
   return res.json({ reply });
 });
 
-app.listen(PORT, async () => {
+app.listen(PORT, () => {
   console.log(`Quantionic backend server running on port ${PORT}`);
-  await seedDefaultAdmin();
+  seedDefaultAdmin().catch((err) => console.error('Admin seed failed:', err));
 });
