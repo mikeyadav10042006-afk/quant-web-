@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -16,15 +16,24 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DATA_DIR = path.join(__dirname, 'data');
 
-// --- Resend Email Setup ---
-let resend = null;
+// --- Gmail SMTP Email Setup ---
+let transporter = null;
 let isEmailConfigured = false;
-if (process.env.RESEND_API_KEY) {
-  resend = new Resend(process.env.RESEND_API_KEY);
+const GMAIL_USER = process.env.GMAIL_USER || 'quantionic@gmail.com';
+const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD || '';
+
+if (GMAIL_APP_PASSWORD) {
+  transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: GMAIL_USER,
+      pass: GMAIL_APP_PASSWORD,
+    },
+  });
   isEmailConfigured = true;
-  console.log('Resend email service configured.');
+  console.log(`Gmail SMTP configured for: ${GMAIL_USER}`);
 } else {
-  console.warn('No RESEND_API_KEY set. Email notifications disabled.');
+  console.warn('No GMAIL_APP_PASSWORD set. Email notifications disabled.');
 }
 
 // Make sure fallback data directory exists
@@ -195,7 +204,7 @@ const seedDefaultAdmin = async () => {
 // --- API ROUTES ---
 
 // --- Email Helpers ---
-const SEND_EMAIL = process.env.SEND_EMAIL || 'onboarding@resend.dev';
+const SEND_EMAIL = GMAIL_USER;
 const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET_KEY || '';
 const isRecaptchaConfigured = !!RECAPTCHA_SECRET;
 
@@ -221,8 +230,8 @@ const sendConsultationEmail = async ({ name, email, enterprise, requirements }) 
   if (!isEmailConfigured) return;
   const adminEmail = process.env.ADMIN_EMAIL || 'mikeyadav10042006@gmail.com';
   try {
-    await resend.emails.send({
-      from: `Quantionic <${SEND_EMAIL}>`,
+    await transporter.sendMail({
+      from: `"Quantionic" <${GMAIL_USER}>`,
       to: adminEmail,
       subject: `New Consultation Booking from ${name}`,
       html: `
@@ -264,7 +273,7 @@ const sendUserConfirmationEmail = async ({ name, email, type }) => {
         </div>
         <p>In the meantime, feel free to explore our services or reach out to us directly:</p>
         <ul style="line-height:2;">
-          <li>Email: <a href="mailto:info@quantionic.com" style="color:#059669;">info@quantionic.com</a></li>
+          <li>Email: <a href="mailto:quantionic@gmail.com" style="color:#059669;">quantionic@gmail.com</a></li>
           <li>Website: <a href="https://quant-web-theta.vercel.app" style="color:#059669;">quant-web-theta.vercel.app</a></li>
         </ul>
       `
@@ -277,8 +286,8 @@ const sendUserConfirmationEmail = async ({ name, email, type }) => {
         <p>Feel free to explore our services at <a href="https://quant-web-theta.vercel.app" style="color:#059669;">quant-web-theta.vercel.app</a>.</p>
       `;
   try {
-    await resend.emails.send({
-      from: `Quantionic <${SEND_EMAIL}>`,
+    await transporter.sendMail({
+      from: `"Quantionic" <${GMAIL_USER}>`,
       to: email,
       subject,
       html: `
@@ -303,8 +312,8 @@ const sendUserConfirmationEmail = async ({ name, email, type }) => {
 const sendNewsletterWelcomeEmail = async ({ email }) => {
   if (!isEmailConfigured) return;
   try {
-    await resend.emails.send({
-      from: `Quantionic <${SEND_EMAIL}>`,
+    await transporter.sendMail({
+      from: `"Quantionic" <${GMAIL_USER}>`,
       to: email,
       subject: 'Welcome to Quantionic Newsletter!',
       html: `
@@ -321,7 +330,7 @@ const sendNewsletterWelcomeEmail = async ({ email }) => {
               <li>Cloud & IoT system architectures</li>
               <li>Industry insights and case studies</li>
             </ul>
-            <p>If you have any questions, feel free to reach out at <a href="mailto:info@quantionic.com" style="color:#059669;">info@quantionic.com</a>.</p>
+            <p>If you have any questions, feel free to reach out at <a href="mailto:quantionic@gmail.com" style="color:#059669;">quantionic@gmail.com</a>.</p>
             <hr style="margin:20px 0;border:none;border-top:1px solid #e5e7eb;" />
             <p style="color:#6b7280;font-size:12px;">Quantionic — Premium Software & Intelligence Engineering.</p>
           </div>
@@ -560,6 +569,6 @@ app.post('/api/chat', async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Quantionic backend server running on port ${PORT}`);
-  console.log(`Email configured: ${isEmailConfigured}, From: ${SEND_EMAIL}, Admin: ${process.env.ADMIN_EMAIL || 'mikeyadav10042006@gmail.com'}`);
+  console.log(`Email configured: ${isEmailConfigured}, From: ${GMAIL_USER}, Admin: ${process.env.ADMIN_EMAIL || 'mikeyadav10042006@gmail.com'}`);
   seedDefaultAdmin().catch((err) => console.error('Admin seed failed:', err));
 });
