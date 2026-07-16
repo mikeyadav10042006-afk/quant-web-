@@ -250,6 +250,56 @@ const sendConsultationEmail = async ({ name, email, enterprise, requirements }) 
   }
 };
 
+const sendUserConfirmationEmail = async ({ name, email, type }) => {
+  if (!isEmailConfigured) return;
+  const subject = type === 'consultation'
+    ? 'Your Consultation Request has been Received — Quantionic'
+    : 'Your Message has been Received — Quantionic';
+  const body = type === 'consultation'
+    ? `
+        <p>Hi <strong>${name}</strong>,</p>
+        <p>Thank you for reaching out to <strong>Quantionic</strong>. We have successfully received your technical consultation request.</p>
+        <div style="background:white;padding:16px;border-radius:8px;border:1px solid #e5e7eb;margin:16px 0;">
+          <p style="margin:0;color:#6b7280;font-size:13px;">Our engineering team will review your requirements and get back to you within <strong>24 hours</strong>.</p>
+        </div>
+        <p>In the meantime, feel free to explore our services or reach out to us directly:</p>
+        <ul style="line-height:2;">
+          <li>Email: <a href="mailto:info@quantionic.com" style="color:#059669;">info@quantionic.com</a></li>
+          <li>Website: <a href="https://quant-web-theta.vercel.app" style="color:#059669;">quant-web-theta.vercel.app</a></li>
+        </ul>
+      `
+    : `
+        <p>Hi <strong>${name}</strong>,</p>
+        <p>Thank you for contacting <strong>Quantionic</strong>. We have received your message and will get back to you shortly.</p>
+        <div style="background:white;padding:16px;border-radius:8px;border:1px solid #e5e7eb;margin:16px 0;">
+          <p style="margin:0;color:#6b7280;font-size:13px;">Our team typically responds within <strong>24 hours</strong>.</p>
+        </div>
+        <p>Feel free to explore our services at <a href="https://quant-web-theta.vercel.app" style="color:#059669;">quant-web-theta.vercel.app</a>.</p>
+      `;
+  try {
+    await resend.emails.send({
+      from: `Quantionic <${SEND_EMAIL}>`,
+      to: email,
+      subject,
+      html: `
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+          <div style="background:#059669;color:white;padding:20px;border-radius:12px 12px 0 0;text-align:center;">
+            <h1 style="margin:0;font-size:22px;">${type === 'consultation' ? 'Consultation Request Received' : 'Message Received'}</h1>
+          </div>
+          <div style="background:#f9fafb;padding:20px;border:1px solid #e5e7eb;border-radius:0 0 12px 12px;">
+            ${body}
+            <hr style="margin:20px 0;border:none;border-top:1px solid #e5e7eb;" />
+            <p style="color:#6b7280;font-size:12px;">Quantionic — Premium Software & Intelligence Engineering.</p>
+          </div>
+        </div>
+      `,
+    });
+    console.log(`User confirmation email sent to: ${email} (${type})`);
+  } catch (err) {
+    console.error('Failed to send user confirmation email:', err);
+  }
+};
+
 const sendNewsletterWelcomeEmail = async ({ email }) => {
   if (!isEmailConfigured) return;
   try {
@@ -389,6 +439,7 @@ app.post('/api/consultations', async (req, res) => {
       const doc = new Consultation(payload);
       await doc.save();
       sendConsultationEmail(payload).catch((e) => console.error('Email error:', e.message));
+      sendUserConfirmationEmail({ name, email, type: 'consultation' }).catch((e) => console.error('Email error:', e.message));
       return res.status(201).json({ success: true, message: 'Consultation saved to MongoDB', data: doc });
     } catch (err) {
       console.error('MongoDB write error:', err);
@@ -402,6 +453,7 @@ app.post('/api/consultations', async (req, res) => {
     list.unshift(payload);
     saveLocalFileStore('consultations.json', list);
     sendConsultationEmail(payload).catch((e) => console.error('Email error:', e.message));
+    sendUserConfirmationEmail({ name, email, type: 'consultation' }).catch((e) => console.error('Email error:', e.message));
     return res.status(201).json({ success: true, message: 'Consultation saved to local JSON store', data: payload });
   } catch (err) {
     return res.status(500).json({ error: 'Could not write consultation to fallback database' });
