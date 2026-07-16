@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import dns from 'dns';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
@@ -9,6 +10,8 @@ import nodemailer from 'nodemailer';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+
+dns.setDefaultResultOrder('ipv4first');
 
 dotenv.config();
 
@@ -19,25 +22,35 @@ const DATA_DIR = path.join(__dirname, 'data');
 // --- Gmail SMTP Email Setup ---
 let transporter = null;
 let isEmailConfigured = false;
-const GMAIL_USER = process.env.GMAIL_USER || 'quantionic@gmail.com';
+const GMAIL_USER = process.env.GMAIL_USER || 'mohityadav10042006@gmail.com';
 const GMAIL_APP_PASSWORD = (process.env.GMAIL_APP_PASSWORD || '').replace(/\s/g, '');
 
 if (GMAIL_APP_PASSWORD) {
+  const smtpHost = 'smtp.gmail.com';
+  let smtpIp = smtpHost;
+  try {
+    const addresses = await dns.promises.resolve4(smtpHost);
+    smtpIp = addresses[0];
+    console.log(`Resolved ${smtpHost} to IPv4: ${smtpIp}`);
+  } catch (e) {
+    console.warn(`DNS resolve4 failed for ${smtpHost}, using hostname directly:`, e.message);
+  }
+
   transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
+    host: smtpIp,
     port: 587,
     secure: false,
-    family: 4,
     auth: {
       user: GMAIL_USER,
       pass: GMAIL_APP_PASSWORD,
     },
     tls: {
+      servername: smtpHost,
       rejectUnauthorized: true,
     },
   });
   isEmailConfigured = true;
-  console.log(`Gmail SMTP configured for: ${GMAIL_USER} (IPv4, port 587 STARTTLS)`);
+  console.log(`Gmail SMTP configured for: ${GMAIL_USER} (IPv4: ${smtpIp}, port 587 STARTTLS)`);
 } else {
   console.warn('No GMAIL_APP_PASSWORD set. Email notifications disabled.');
 }
