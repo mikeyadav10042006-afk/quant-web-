@@ -20,18 +20,24 @@ const DATA_DIR = path.join(__dirname, 'data');
 let transporter = null;
 let isEmailConfigured = false;
 const GMAIL_USER = process.env.GMAIL_USER || 'quantionic@gmail.com';
-const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD || '';
+const GMAIL_APP_PASSWORD = (process.env.GMAIL_APP_PASSWORD || '').replace(/\s/g, '');
 
 if (GMAIL_APP_PASSWORD) {
   transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
+    family: 4,
     auth: {
       user: GMAIL_USER,
       pass: GMAIL_APP_PASSWORD,
     },
+    tls: {
+      rejectUnauthorized: true,
+    },
   });
   isEmailConfigured = true;
-  console.log(`Gmail SMTP configured for: ${GMAIL_USER}`);
+  console.log(`Gmail SMTP configured for: ${GMAIL_USER} (IPv4, port 587 STARTTLS)`);
 } else {
   console.warn('No GMAIL_APP_PASSWORD set. Email notifications disabled.');
 }
