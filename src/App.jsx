@@ -1,5 +1,5 @@
 import { useState, useCallback, lazy, Suspense } from 'react';
-import { HashRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Stats from './components/Stats';
@@ -83,7 +83,7 @@ function HomePage() {
 
 function App() {
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Suspense fallback={
         <div className="h-screen flex items-center justify-center bg-[#fafbfd]">
           <div className="flex flex-col items-center gap-4">
@@ -100,7 +100,7 @@ function App() {
           <Route path="/salesforce-checklist" element={<SalesforceChecklist />} />
         </Routes>
       </Suspense>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
 

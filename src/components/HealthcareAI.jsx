@@ -815,7 +815,7 @@ export default function HealthcareAI() {
               {/* CTA */}
               <div className="pt-2">
                 <a
-                  href="/#/contact"
+                  href="/contact"
                   className="group/btn2 relative inline-flex items-center gap-2 bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.08] hover:border-[#009966]/20 text-white/70 hover:text-white font-semibold px-8 py-4 rounded-2xl transition-all duration-500 whitespace-nowrap"
                 >
                   <span>Talk to Expert</span>
