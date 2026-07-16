@@ -2,16 +2,12 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import dns from 'dns';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import nodemailer from 'nodemailer';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-
-dns.setDefaultResultOrder('ipv4first');
 
 dotenv.config();
 
@@ -19,41 +15,46 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DATA_DIR = path.join(__dirname, 'data');
 
-// --- Gmail SMTP Email Setup ---
-let transporter = null;
+// --- Brevo Email Setup ---
+const BREVO_API_KEY = process.env.BREVO_API_KEY || '';
+const BREVO_SENDER_EMAIL = process.env.BREVO_SENDER_EMAIL || 'mohityadav10042006@gmail.com';
+const BREVO_SENDER_NAME = 'Quantionic';
 let isEmailConfigured = false;
-const GMAIL_USER = process.env.GMAIL_USER || 'mohityadav10042006@gmail.com';
-const GMAIL_APP_PASSWORD = (process.env.GMAIL_APP_PASSWORD || '').replace(/\s/g, '');
 
-if (GMAIL_APP_PASSWORD) {
-  const smtpHost = 'smtp.gmail.com';
-  let smtpIp = smtpHost;
-  try {
-    const addresses = await dns.promises.resolve4(smtpHost);
-    smtpIp = addresses[0];
-    console.log(`Resolved ${smtpHost} to IPv4: ${smtpIp}`);
-  } catch (e) {
-    console.warn(`DNS resolve4 failed for ${smtpHost}, using hostname directly:`, e.message);
-  }
-
-  transporter = nodemailer.createTransport({
-    host: smtpIp,
-    port: 587,
-    secure: false,
-    auth: {
-      user: GMAIL_USER,
-      pass: GMAIL_APP_PASSWORD,
-    },
-    tls: {
-      servername: smtpHost,
-      rejectUnauthorized: true,
-    },
-  });
+if (BREVO_API_KEY) {
   isEmailConfigured = true;
-  console.log(`Gmail SMTP configured for: ${GMAIL_USER} (IPv4: ${smtpIp}, port 587 STARTTLS)`);
+  console.log(`Brevo email configured. Sender: ${BREVO_SENDER_EMAIL}`);
 } else {
-  console.warn('No GMAIL_APP_PASSWORD set. Email notifications disabled.');
+  console.warn('No BREVO_API_KEY set. Email notifications disabled.');
 }
+
+const sendBrevoEmail = async ({ to, subject, html }) => {
+  if (!isEmailConfigured) return;
+  try {
+    const resp = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'content-type': 'application/json',
+        'api-key': BREVO_API_KEY,
+      },
+      body: JSON.stringify({
+        sender: { name: BREVO_SENDER_NAME, email: BREVO_SENDER_EMAIL },
+        to: Array.isArray(to) ? to.map(e => ({ email: e })) : [{ email: to }],
+        subject,
+        htmlContent: html,
+      }),
+    });
+    const data = await resp.json();
+    if (!resp.ok) {
+      console.error('Brevo API error:', resp.status, data);
+    } else {
+      console.log(`Brevo email sent: ${subject} -> ${JSON.stringify(to)} (messageId: ${data.messageId})`);
+    }
+  } catch (err) {
+    console.error('Failed to send Brevo email:', err);
+  }
+};
 
 // Make sure fallback data directory exists
 if (!fs.existsSync(DATA_DIR)) {
@@ -223,7 +224,6 @@ const seedDefaultAdmin = async () => {
 // --- API ROUTES ---
 
 // --- Email Helpers ---
-const SEND_EMAIL = GMAIL_USER;
 const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET_KEY || '';
 const isRecaptchaConfigured = !!RECAPTCHA_SECRET;
 
@@ -248,34 +248,28 @@ const verifyRecaptcha = async (token) => {
 const sendConsultationEmail = async ({ name, email, enterprise, requirements }) => {
   if (!isEmailConfigured) return;
   const adminEmail = process.env.ADMIN_EMAIL || 'mikeyadav10042006@gmail.com';
-  try {
-    await transporter.sendMail({
-      from: `"Quantionic" <${GMAIL_USER}>`,
-      to: adminEmail,
-      subject: `New Consultation Booking from ${name}`,
-      html: `
-        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
-          <div style="background:#059669;color:white;padding:20px;border-radius:12px 12px 0 0;text-align:center;">
-            <h1 style="margin:0;font-size:22px;">New Consultation Booking</h1>
-          </div>
-          <div style="background:#f9fafb;padding:20px;border:1px solid #e5e7eb;border-radius:0 0 12px 12px;">
-            <p><strong>Name:</strong> ${name}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Company:</strong> ${enterprise || 'N/A'}</p>
-            <p><strong>Requirements:</strong></p>
-            <div style="background:white;padding:12px;border-radius:8px;border:1px solid #e5e7eb;margin-top:8px;">
-              ${requirements}
-            </div>
-            <hr style="margin:20px 0;border:none;border-top:1px solid #e5e7eb;" />
-            <p style="color:#6b7280;font-size:12px;">This booking was submitted from the Quantionic website contact form.</p>
-          </div>
+  await sendBrevoEmail({
+    to: adminEmail,
+    subject: `New Consultation Booking from ${name}`,
+    html: `
+      <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+        <div style="background:#059669;color:white;padding:20px;border-radius:12px 12px 0 0;text-align:center;">
+          <h1 style="margin:0;font-size:22px;">New Consultation Booking</h1>
         </div>
-      `,
-    });
-    console.log(`Consultation email sent for: ${email}`);
-  } catch (err) {
-    console.error('Failed to send consultation email:', err);
-  }
+        <div style="background:#f9fafb;padding:20px;border:1px solid #e5e7eb;border-radius:0 0 12px 12px;">
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Company:</strong> ${enterprise || 'N/A'}</p>
+          <p><strong>Requirements:</strong></p>
+          <div style="background:white;padding:12px;border-radius:8px;border:1px solid #e5e7eb;margin-top:8px;">
+            ${requirements}
+          </div>
+          <hr style="margin:20px 0;border:none;border-top:1px solid #e5e7eb;" />
+          <p style="color:#6b7280;font-size:12px;">This booking was submitted from the Quantionic website contact form.</p>
+        </div>
+      </div>
+    `,
+  });
 };
 
 const sendUserConfirmationEmail = async ({ name, email, type }) => {
@@ -292,7 +286,7 @@ const sendUserConfirmationEmail = async ({ name, email, type }) => {
         </div>
         <p>In the meantime, feel free to explore our services or reach out to us directly:</p>
         <ul style="line-height:2;">
-          <li>Email: <a href="mailto:quantionic@gmail.com" style="color:#059669;">quantionic@gmail.com</a></li>
+          <li>Email: <a href="mailto:info@quantionic.com" style="color:#059669;">info@quantionic.com</a></li>
           <li>Website: <a href="https://quant-web-theta.vercel.app" style="color:#059669;">quant-web-theta.vercel.app</a></li>
         </ul>
       `
@@ -304,62 +298,50 @@ const sendUserConfirmationEmail = async ({ name, email, type }) => {
         </div>
         <p>Feel free to explore our services at <a href="https://quant-web-theta.vercel.app" style="color:#059669;">quant-web-theta.vercel.app</a>.</p>
       `;
-  try {
-    await transporter.sendMail({
-      from: `"Quantionic" <${GMAIL_USER}>`,
-      to: email,
-      subject,
-      html: `
-        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
-          <div style="background:#059669;color:white;padding:20px;border-radius:12px 12px 0 0;text-align:center;">
-            <h1 style="margin:0;font-size:22px;">${type === 'consultation' ? 'Consultation Request Received' : 'Message Received'}</h1>
-          </div>
-          <div style="background:#f9fafb;padding:20px;border:1px solid #e5e7eb;border-radius:0 0 12px 12px;">
-            ${body}
-            <hr style="margin:20px 0;border:none;border-top:1px solid #e5e7eb;" />
-            <p style="color:#6b7280;font-size:12px;">Quantionic — Premium Software & Intelligence Engineering.</p>
-          </div>
+  await sendBrevoEmail({
+    to: email,
+    subject,
+    html: `
+      <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+        <div style="background:#059669;color:white;padding:20px;border-radius:12px 12px 0 0;text-align:center;">
+          <h1 style="margin:0;font-size:22px;">${type === 'consultation' ? 'Consultation Request Received' : 'Message Received'}</h1>
         </div>
-      `,
-    });
-    console.log(`User confirmation email sent to: ${email} (${type})`);
-  } catch (err) {
-    console.error('Failed to send user confirmation email:', err);
-  }
+        <div style="background:#f9fafb;padding:20px;border:1px solid #e5e7eb;border-radius:0 0 12px 12px;">
+          ${body}
+          <hr style="margin:20px 0;border:none;border-top:1px solid #e5e7eb;" />
+          <p style="color:#6b7280;font-size:12px;">Quantionic — Premium Software & Intelligence Engineering.</p>
+        </div>
+      </div>
+    `,
+  });
 };
 
 const sendNewsletterWelcomeEmail = async ({ email }) => {
   if (!isEmailConfigured) return;
-  try {
-    await transporter.sendMail({
-      from: `"Quantionic" <${GMAIL_USER}>`,
-      to: email,
-      subject: 'Welcome to Quantionic Newsletter!',
-      html: `
-        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
-          <div style="background:#059669;color:white;padding:20px;border-radius:12px 12px 0 0;text-align:center;">
-            <h1 style="margin:0;font-size:22px;">Welcome to Quantionic!</h1>
-          </div>
-          <div style="background:#f9fafb;padding:20px;border:1px solid #e5e7eb;border-radius:0 0 12px 12px;">
-            <p>Hi there,</p>
-            <p>Thank you for subscribing to the <strong>Quantionic Newsletter</strong>. You'll now receive regular updates on:</p>
-            <ul style="line-height:1.8;">
-              <li>AI & Machine Learning innovations</li>
-              <li>Enterprise integration solutions</li>
-              <li>Cloud & IoT system architectures</li>
-              <li>Industry insights and case studies</li>
-            </ul>
-            <p>If you have any questions, feel free to reach out at <a href="mailto:quantionic@gmail.com" style="color:#059669;">quantionic@gmail.com</a>.</p>
-            <hr style="margin:20px 0;border:none;border-top:1px solid #e5e7eb;" />
-            <p style="color:#6b7280;font-size:12px;">Quantionic — Premium Software & Intelligence Engineering.</p>
-          </div>
+  await sendBrevoEmail({
+    to: email,
+    subject: 'Welcome to Quantionic Newsletter!',
+    html: `
+      <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+        <div style="background:#059669;color:white;padding:20px;border-radius:12px 12px 0 0;text-align:center;">
+          <h1 style="margin:0;font-size:22px;">Welcome to Quantionic!</h1>
         </div>
-      `,
-    });
-    console.log(`Welcome email sent to: ${email}`);
-  } catch (err) {
-    console.error('Failed to send newsletter welcome email:', err);
-  }
+        <div style="background:#f9fafb;padding:20px;border:1px solid #e5e7eb;border-radius:0 0 12px 12px;">
+          <p>Hi there,</p>
+          <p>Thank you for subscribing to the <strong>Quantionic Newsletter</strong>. You'll now receive regular updates on:</p>
+          <ul style="line-height:1.8;">
+            <li>AI & Machine Learning innovations</li>
+            <li>Enterprise integration solutions</li>
+            <li>Cloud & IoT system architectures</li>
+            <li>Industry insights and case studies</li>
+          </ul>
+          <p>If you have any questions, feel free to reach out at <a href="mailto:info@quantionic.com" style="color:#059669;">info@quantionic.com</a>.</p>
+          <hr style="margin:20px 0;border:none;border-top:1px solid #e5e7eb;" />
+          <p style="color:#6b7280;font-size:12px;">Quantionic — Premium Software & Intelligence Engineering.</p>
+        </div>
+      </div>
+    `,
+  });
 };
 
 // Health check
@@ -588,6 +570,6 @@ app.post('/api/chat', async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Quantionic backend server running on port ${PORT}`);
-  console.log(`Email configured: ${isEmailConfigured}, From: ${GMAIL_USER}, Admin: ${process.env.ADMIN_EMAIL || 'mikeyadav10042006@gmail.com'}`);
+  console.log(`Email configured: ${isEmailConfigured}, Sender: ${BREVO_SENDER_EMAIL}, Admin: ${process.env.ADMIN_EMAIL || 'mikeyadav10042006@gmail.com'}`);
   seedDefaultAdmin().catch((err) => console.error('Admin seed failed:', err));
 });
