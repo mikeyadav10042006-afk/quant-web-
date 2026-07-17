@@ -17,8 +17,8 @@ const DATA_DIR = path.join(__dirname, 'data');
 
 // --- Brevo Email Setup ---
 const BREVO_API_KEY = process.env.BREVO_API_KEY || '';
+const BREVO_SENDER_NAME = 'Quantionic Support';
 const BREVO_SENDER_EMAIL = process.env.BREVO_SENDER_EMAIL || 'mikeyadav10042006@gmail.com';
-const BREVO_SENDER_NAME = 'Quantionic';
 const BREVO_REPLY_TO = process.env.BREVO_REPLY_TO || 'mikeyadav10042006@gmail.com';
 let isEmailConfigured = false;
 
