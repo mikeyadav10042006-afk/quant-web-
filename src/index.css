@@ -593,3 +593,13 @@ spline-viewer::part(canvas) {
 .animate-marquee-slow {
   animation: marqueeSlow 42s linear infinite;
 }
+
+/* Parallax background — fixed on desktop, scroll on mobile (prevents iOS lag) */
+.parallax-bg {
+  background-attachment: scroll;
+}
+@media (min-width: 768px) {
+  .parallax-bg {
+    background-attachment: fixed;
+  }
+}

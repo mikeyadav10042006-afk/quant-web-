@@ -576,12 +576,11 @@ export default function HealthcareAI() {
       {/* ── 5. CLINICAL ENGINES ── */}
       <section className="relative py-32 px-6 overflow-hidden">
         {/* Futuristic hospital corridor background — spans both Cancer & Chiropractic rows */}
-        <div className="absolute inset-0 pointer-events-none" style={{
+        <div className="absolute inset-0 pointer-events-none parallax-bg" style={{
           backgroundImage: `url(https://thumbs.dreamstime.com/b/futuristic-hospital-corridor-advanced-medical-technology-futuristic-hospital-corridor-advanced-medical-technology-376080883.jpg)`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          backgroundAttachment: 'scroll',
         }} />
         {/* Light sky blue overlay — clean hospital feel, image still visible */}
         <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(180deg, rgba(224,242,254,0.92) 0%, rgba(240,249,255,0.88) 40%, rgba(224,242,254,0.92) 100%)' }} />
