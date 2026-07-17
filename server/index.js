@@ -321,7 +321,10 @@ const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET_KEY || '';
 const isRecaptchaConfigured = !!RECAPTCHA_SECRET;
 
 const verifyRecaptcha = async (token) => {
-  if (!isRecaptchaConfigured) return true;
+  if (!isRecaptchaConfigured) {
+    console.warn('reCAPTCHA not configured — blocking request as protection is disabled.');
+    return false;
+  }
   if (!token) return false;
   try {
     const resp = await fetch('https://www.google.com/recaptcha/api/siteverify', {
@@ -334,7 +337,7 @@ const verifyRecaptcha = async (token) => {
     return data.success && data.score >= 0.5;
   } catch (err) {
     console.error('reCAPTCHA verification failed:', err);
-    return true;
+    return false;
   }
 };
 
