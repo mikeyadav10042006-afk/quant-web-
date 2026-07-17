@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -260,7 +261,10 @@ Remember: Be the AI that people ENJOY talking to, not the one they get annoyed b
 `;
 
 // --- Auth Middleware ---
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret_change_me';
+const JWT_SECRET = process.env.JWT_SECRET || (() => {
+  console.warn('WARNING: JWT_SECRET not set. Using random secret — tokens will not survive server restarts.');
+  return crypto.randomBytes(32).toString('hex');
+})();
 
 const authMiddleware = (req, res, next) => {
   const header = req.headers.authorization;
