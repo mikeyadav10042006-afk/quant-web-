@@ -159,10 +159,12 @@ let aiModel = null;
 
 if (process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'your_gemini_api_key_here') {
   try {
-    genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    aiModel = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+    genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY, {
+      apiVersion: 'v1'
+    });
+    aiModel = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
     isGenAIConfigured = true;
-    console.log('Gemini API configured successfully.');
+    console.log('Gemini API configured successfully (v1, gemini-1.5-flash).');
   } catch (e) {
     console.error('Failed to configure Gemini AI:', e);
     isGenAIConfigured = false;
