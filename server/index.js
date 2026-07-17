@@ -2,7 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import fs from 'fs';
@@ -154,23 +153,14 @@ const saveLocalFileStore = (filename, data) => {
 
 // --- Gemini AI Setup ---
 let isGenAIConfigured = false;
-let genAI = null;
-let aiModel = null;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const GEMINI_MODEL = 'gemini-1.5-flash';
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1/models/${GEMINI_MODEL}:generateContent`;
 
-if (process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'your_gemini_api_key_here') {
-  try {
-    genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY, {
-      apiVersion: 'v1'
-    });
-    aiModel = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-    isGenAIConfigured = true;
-    console.log('Gemini API configured successfully (v1, gemini-1.5-flash).');
-  } catch (e) {
-    console.error('Failed to configure Gemini AI:', e);
-    isGenAIConfigured = false;
-  }
+if (GEMINI_API_KEY && GEMINI_API_KEY !== 'your_gemini_api_key_here') {
+  isGenAIConfigured = true;
+  console.log(`Gemini API configured (raw fetch, ${GEMINI_MODEL}).`);
 } else {
-  // No Gemini API key provided; running in mock mode without warning.
   isGenAIConfigured = false;
 }
 
@@ -561,13 +551,17 @@ app.post('/api/chat', async (req, res) => {
 
   if (isGenAIConfigured) {
     try {
-      const response = await aiModel.generateContent({
-        contents: [
-          { role: 'user', parts: [{ text: `${AI_SYSTEM_PROMPT}\n\nClient message: ${message}` }] }
-        ]
+      const apiRes = await fetch(`${GEMINI_URL}?key=${GEMINI_API_KEY}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ role: 'user', parts: [{ text: `${AI_SYSTEM_PROMPT}\n\nClient message: ${message}` }] }]
+        })
       });
-      const text = response.response.text();
-      return res.json({ reply: text });
+      const data = await apiRes.json();
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (text) return res.json({ reply: text });
+      console.error('Gemini response missing text:', JSON.stringify(data).slice(0, 500));
     } catch (err) {
       console.error('Gemini API call failed:', err);
     }
