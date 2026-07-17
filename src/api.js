@@ -2,9 +2,10 @@ import axios from 'axios';
 import emailjs from '@emailjs/browser';
 
 const RECAPTCHA_SITE_KEY = '6LfcclUtAAAAAM9ISGQsZpRIqYxHxph3_6jEHAcu';
+const PROD_BACKEND = 'https://quantionic-backend.onrender.com';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '',
+  baseURL: import.meta.env.VITE_API_URL || (import.meta.env.PROD ? PROD_BACKEND : ''),
   timeout: 15000,
 });
 
