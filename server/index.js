@@ -17,19 +17,24 @@ const DATA_DIR = path.join(__dirname, 'data');
 
 // --- Brevo Email Setup ---
 const BREVO_API_KEY = process.env.BREVO_API_KEY || '';
-const BREVO_SENDER_EMAIL = process.env.BREVO_SENDER_EMAIL || 'mohityadav10042006@gmail.com';
+const BREVO_SENDER_EMAIL = process.env.BREVO_SENDER_EMAIL || 'mikeyadav10042006@gmail.com';
 const BREVO_SENDER_NAME = 'Quantionic';
+const BREVO_REPLY_TO = process.env.BREVO_REPLY_TO || 'mikeyadav10042006@gmail.com';
 let isEmailConfigured = false;
 
 if (BREVO_API_KEY) {
   isEmailConfigured = true;
-  console.log(`Brevo email configured. Sender: ${BREVO_SENDER_EMAIL}`);
+  console.log(`Brevo email configured. Sender: ${BREVO_SENDER_EMAIL}, Reply-To: ${BREVO_REPLY_TO}`);
 } else {
   console.warn('No BREVO_API_KEY set. Email notifications disabled.');
 }
 
 const sendBrevoEmail = async ({ to, subject, html }) => {
-  if (!isEmailConfigured) return;
+  if (!isEmailConfigured) throw new Error('Email not configured: missing BREVO_API_KEY');
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000);
+
   try {
     const resp = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
@@ -38,21 +43,34 @@ const sendBrevoEmail = async ({ to, subject, html }) => {
         'content-type': 'application/json',
         'api-key': BREVO_API_KEY,
       },
+      signal: controller.signal,
       body: JSON.stringify({
         sender: { name: BREVO_SENDER_NAME, email: BREVO_SENDER_EMAIL },
         to: Array.isArray(to) ? to.map(e => ({ email: e })) : [{ email: to }],
+        replyTo: { email: BREVO_REPLY_TO, name: BREVO_SENDER_NAME },
         subject,
         htmlContent: html,
       }),
     });
+
     const data = await resp.json();
+
     if (!resp.ok) {
-      console.error('Brevo API error:', resp.status, data);
-    } else {
-      console.log(`Brevo email sent: ${subject} -> ${JSON.stringify(to)} (messageId: ${data.messageId})`);
+      const errMsg = `Brevo API error ${resp.status}: ${JSON.stringify(data)}`;
+      console.error(errMsg);
+      throw new Error(errMsg);
     }
+
+    console.log(`Brevo email sent: ${subject} -> ${JSON.stringify(to)} (messageId: ${data.messageId})`);
   } catch (err) {
-    console.error('Failed to send Brevo email:', err);
+    if (err.name === 'AbortError') {
+      console.error(`Brevo email timed out after 10s: ${subject} -> ${JSON.stringify(to)}`);
+      throw new Error(`Brevo email timeout: ${subject}`);
+    }
+    console.error('Failed to send Brevo email:', err.message || err);
+    throw err;
+  } finally {
+    clearTimeout(timeout);
   }
 };
 
@@ -570,6 +588,6 @@ app.post('/api/chat', async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Quantionic backend server running on port ${PORT}`);
-  console.log(`Email configured: ${isEmailConfigured}, Sender: ${BREVO_SENDER_EMAIL}, Admin: ${process.env.ADMIN_EMAIL || 'mikeyadav10042006@gmail.com'}`);
+  console.log(`Email configured: ${isEmailConfigured}, Sender: ${BREVO_SENDER_EMAIL}, Reply-To: ${BREVO_REPLY_TO}, Admin: ${process.env.ADMIN_EMAIL || 'mikeyadav10042006@gmail.com'}`);
   seedDefaultAdmin().catch((err) => console.error('Admin seed failed:', err));
 });
