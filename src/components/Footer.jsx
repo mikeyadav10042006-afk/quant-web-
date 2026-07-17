@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Send, CheckCircle2, Loader2, Bot, Calendar, ArrowRight } from 'lucide-react';
-import api, { getRecaptchaToken } from '../api';
+import api, { getRecaptchaToken, sendAdminEmail, sendUserEmail } from '../api';
 
 export default function Footer({ onOpenChat, onOpenAdmin }) {
   // Booking Form State
@@ -33,6 +33,8 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
       const token = await getRecaptchaToken('consultation');
       await api.post('/api/consultations', { ...bookingData, recaptchaToken: token });
       setBookingSuccess(true);
+      sendAdminEmail({ from_name: bookingData.name, from_email: bookingData.email, message: `Company: ${bookingData.enterprise || 'N/A'}\n\n${bookingData.requirements}` }).catch(() => {});
+      sendUserEmail({ from_name: bookingData.name, from_email: bookingData.email, message: bookingData.requirements }).catch(() => {});
       setBookingData({ name: '', email: '', enterprise: '', requirements: '' });
     } catch (err) {
       const current = JSON.parse(localStorage.getItem('quant_bookings') || '[]');
@@ -60,6 +62,8 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
       const token = await getRecaptchaToken('newsletter');
       await api.post('/api/newsletter', { email: newsletterEmail, recaptchaToken: token });
       setNewsSuccess(true);
+      sendAdminEmail({ from_name: 'Newsletter Subscriber', from_email: newsletterEmail, message: 'New newsletter subscription' }).catch(() => {});
+      sendUserEmail({ from_name: 'Valued Subscriber', from_email: newsletterEmail, message: 'Thank you for subscribing to Quantionic newsletter!' }).catch(() => {});
       setNewsletterEmail('');
     } catch (err) {
       const current = JSON.parse(localStorage.getItem('quant_subscribers') || '[]');
