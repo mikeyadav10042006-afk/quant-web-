@@ -99,6 +99,43 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// --- Rate Limiter (in-memory) ---
+const rateLimitStore = new Map();
+
+function rateLimit({ windowMs = 60000, max = 10 } = {}) {
+  return (req, res, next) => {
+    const ip = req.ip || req.connection.remoteAddress;
+    const now = Date.now();
+    const key = `${ip}:${req.baseUrl}${req.path}`;
+
+    if (!rateLimitStore.has(key)) {
+      rateLimitStore.set(key, { count: 1, resetAt: now + windowMs });
+      return next();
+    }
+
+    const entry = rateLimitStore.get(key);
+    if (now > entry.resetAt) {
+      entry.count = 1;
+      entry.resetAt = now + windowMs;
+      return next();
+    }
+
+    entry.count++;
+    if (entry.count > max) {
+      return res.status(429).json({ error: 'Too many requests. Please try again later.' });
+    }
+    next();
+  };
+}
+
+// Cleanup old entries every 5 minutes
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, entry] of rateLimitStore) {
+    if (now > entry.resetAt) rateLimitStore.delete(key);
+  }
+}, 300000);
+
 // --- Database Connectivity / Fallback Store ---
 let isMongoConnected = false;
 
@@ -402,7 +439,7 @@ app.get('/', (req, res) => {
 });
 
 // Auth: Login
-app.post('/api/auth/login', async (req, res) => {
+app.post('/api/auth/login', rateLimit({ windowMs: 60000, max: 5 }), async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ error: 'Email and password are required' });
@@ -483,7 +520,7 @@ app.get('/api/auth/me', authMiddleware, (req, res) => {
 });
 
 // 1. Submit consultation booking
-app.post('/api/consultations', async (req, res) => {
+app.post('/api/consultations', rateLimit({ windowMs: 60000, max: 5 }), async (req, res) => {
   const { name, email, enterprise, requirements, recaptchaToken } = req.body;
   if (!name || !email || !requirements) {
     return res.status(400).json({ error: 'Name, email, and requirements are required' });
@@ -523,7 +560,7 @@ app.post('/api/consultations', async (req, res) => {
 });
 
 // 2. Submit newsletter subscription
-app.post('/api/newsletter', async (req, res) => {
+app.post('/api/newsletter', rateLimit({ windowMs: 60000, max: 3 }), async (req, res) => {
   const { email, recaptchaToken } = req.body;
   if (!email) {
     return res.status(400).json({ error: 'Email is required' });
