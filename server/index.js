@@ -151,17 +151,18 @@ const saveLocalFileStore = (filename, data) => {
   fs.writeFileSync(filepath, JSON.stringify(data, null, 2));
 };
 
-// --- Gemini AI Setup ---
+// --- Groq AI Setup ---
 let isGenAIConfigured = false;
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_MODEL = 'gemini-1.5-flash';
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1/models/${GEMINI_MODEL}:generateContent`;
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
+const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
+const GROQ_MODEL = 'llama-3.3-70b-versatile';
 
-if (GEMINI_API_KEY && GEMINI_API_KEY !== 'your_gemini_api_key_here') {
+if (GROQ_API_KEY && GROQ_API_KEY !== 'your_groq_api_key_here') {
   isGenAIConfigured = true;
-  console.log(`Gemini API configured (raw fetch, ${GEMINI_MODEL}).`);
+  console.log(`Groq AI configured (${GROQ_MODEL}).`);
 } else {
   isGenAIConfigured = false;
+  console.log('No GROQ_API_KEY found. Running in fallback mode.');
 }
 
 const AI_SYSTEM_PROMPT = `
@@ -551,19 +552,28 @@ app.post('/api/chat', async (req, res) => {
 
   if (isGenAIConfigured) {
     try {
-      const apiRes = await fetch(`${GEMINI_URL}?key=${GEMINI_API_KEY}`, {
+      const apiRes = await fetch(GROQ_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${GROQ_API_KEY}`
+        },
         body: JSON.stringify({
-          contents: [{ role: 'user', parts: [{ text: `${AI_SYSTEM_PROMPT}\n\nClient message: ${message}` }] }]
+          model: GROQ_MODEL,
+          messages: [
+            { role: 'system', content: AI_SYSTEM_PROMPT },
+            { role: 'user', content: message }
+          ],
+          temperature: 0.7,
+          max_tokens: 1024
         })
       });
       const data = await apiRes.json();
-      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      const text = data.choices?.[0]?.message?.content;
       if (text) return res.json({ reply: text });
-      console.error('Gemini response missing text:', JSON.stringify(data).slice(0, 500));
+      console.error('Groq response missing text:', JSON.stringify(data).slice(0, 500));
     } catch (err) {
-      console.error('Gemini API call failed:', err);
+      console.error('Groq API call failed:', err);
     }
   }
 
@@ -585,5 +595,6 @@ app.post('/api/chat', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Quantionic backend server running on port ${PORT}`);
   console.log(`Email configured: ${isEmailConfigured}, Sender: ${BREVO_SENDER_EMAIL}, Reply-To: ${BREVO_REPLY_TO}, Admin: ${process.env.ADMIN_EMAIL || 'mikeyadav10042006@gmail.com'}`);
+  console.log(`AI configured: ${isGenAIConfigured}, Model: ${isGenAIConfigured ? GROQ_MODEL : 'fallback'}`);
   seedDefaultAdmin().catch((err) => console.error('Admin seed failed:', err));
 });
