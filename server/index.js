@@ -81,7 +81,22 @@ if (!fs.existsSync(DATA_DIR)) {
 const app = express();
 const PORT = Number(process.env.PORT) || 5000;
 
-app.use(cors());
+const ALLOWED_ORIGINS = [
+  'https://quant-web-theta.vercel.app',
+  'http://localhost:5173',
+  'http://localhost:5000',
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || ALLOWED_ORIGINS.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+}));
 app.use(express.json());
 
 // --- Database Connectivity / Fallback Store ---
