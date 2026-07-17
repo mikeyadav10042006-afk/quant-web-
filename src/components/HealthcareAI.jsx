@@ -172,7 +172,7 @@ export default function HealthcareAI() {
           <div className="lg:col-span-6 flex justify-center lg:justify-end relative">
             <div
               ref={laptopRef}
-              className="relative w-full max-w-[560px] transition-transform duration-100 ease-out"
+              className="relative w-full max-w-[560px] overflow-hidden transition-transform duration-100 ease-out"
             >
               {/* Dynamic glow behind laptop */}
               <div className="absolute -inset-12 bg-gradient-to-br from-[#009966]/12 via-teal-400/5 to-emerald-400/8 rounded-[3rem] blur-3xl pointer-events-none transition-all duration-700" />
@@ -581,7 +581,7 @@ export default function HealthcareAI() {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          backgroundAttachment: 'fixed',
+          backgroundAttachment: 'scroll',
         }} />
         {/* Light sky blue overlay — clean hospital feel, image still visible */}
         <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(180deg, rgba(224,242,254,0.92) 0%, rgba(240,249,255,0.88) 40%, rgba(224,242,254,0.92) 100%)' }} />

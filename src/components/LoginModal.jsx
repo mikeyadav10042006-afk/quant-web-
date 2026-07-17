@@ -59,7 +59,7 @@ export default function LoginModal({ isOpen, onClose, onSuccess }) {
             <div className="bg-slate-950 text-white p-6 text-center relative">
               <button
                 onClick={handleClose}
-                className="absolute top-4 right-4 p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-900 transition-colors"
+                className="absolute top-4 right-4 p-2.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-900 transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
