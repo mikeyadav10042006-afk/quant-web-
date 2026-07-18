@@ -57,8 +57,8 @@ export default function ContactPage() {
         recaptchaToken,
       });
       setFormSubmitted(true);
-      sendAdminEmail({ from_name: formData.name, from_email: formData.email, message: `Company: ${formData.company || 'N/A'}\nSubject: ${formData.subject || 'N/A'}\n\n${formData.message}` }).catch(() => {});
-      sendUserEmail({ from_name: formData.name, from_email: formData.email, message: formData.message }).catch(() => {});
+      sendAdminEmail({ from_name: formData.name, from_email: formData.email, message: `Company: ${formData.company || 'N/A'}\nSubject: ${formData.subject || 'N/A'}\n\n${formData.message}` }).catch((e) => console.error('EmailJS admin email failed:', e));
+      sendUserEmail({ from_name: formData.name, from_email: formData.email, message: formData.message }).catch((e) => console.error('EmailJS user email failed:', e));
       if (formResetTimer.current) clearTimeout(formResetTimer.current);
       formResetTimer.current = setTimeout(() => { setFormSubmitted(false); setFormData({ name: '', email: '', company: '', subject: '', message: '' }); }, 4000);
     } catch (err) {
@@ -78,8 +78,8 @@ export default function ContactPage() {
       const recaptchaToken = await getRecaptchaToken('newsletter');
       await api.post('/api/newsletter', { email: newsEmail, recaptchaToken });
       setNewsSubmitted(true);
-      sendAdminEmail({ from_name: 'Newsletter Subscriber', from_email: newsEmail, message: 'New newsletter subscription' }).catch(() => {});
-      sendUserEmail({ from_name: 'Valued Subscriber', from_email: newsEmail, message: 'Thank you for subscribing to Quantionic newsletter!' }).catch(() => {});
+      sendAdminEmail({ from_name: 'Newsletter Subscriber', from_email: newsEmail, message: 'New newsletter subscription' }).catch((e) => console.error('EmailJS admin email failed:', e));
+      sendUserEmail({ from_name: 'Valued Subscriber', from_email: newsEmail, message: 'Thank you for subscribing to Quantionic newsletter!' }).catch((e) => console.error('EmailJS user email failed:', e));
       if (newsResetTimer.current) clearTimeout(newsResetTimer.current);
       newsResetTimer.current = setTimeout(() => { setNewsSubmitted(false); setNewsEmail(''); }, 4000);
     } catch (err) {

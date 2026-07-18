@@ -33,8 +33,8 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
       const token = await getRecaptchaToken('consultation');
       await api.post('/api/consultations', { ...bookingData, recaptchaToken: token });
       setBookingSuccess(true);
-      sendAdminEmail({ from_name: bookingData.name, from_email: bookingData.email, message: `Company: ${bookingData.enterprise || 'N/A'}\n\n${bookingData.requirements}` }).catch(() => {});
-      sendUserEmail({ from_name: bookingData.name, from_email: bookingData.email, message: bookingData.requirements }).catch(() => {});
+      sendAdminEmail({ from_name: bookingData.name, from_email: bookingData.email, message: `Company: ${bookingData.enterprise || 'N/A'}\n\n${bookingData.requirements}` }).catch((e) => console.error('EmailJS admin email failed:', e));
+      sendUserEmail({ from_name: bookingData.name, from_email: bookingData.email, message: bookingData.requirements }).catch((e) => console.error('EmailJS user email failed:', e));
       setBookingData({ name: '', email: '', enterprise: '', requirements: '' });
     } catch (err) {
       const current = JSON.parse(localStorage.getItem('quant_bookings') || '[]');
@@ -62,8 +62,8 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
       const token = await getRecaptchaToken('newsletter');
       await api.post('/api/newsletter', { email: newsletterEmail, recaptchaToken: token });
       setNewsSuccess(true);
-      sendAdminEmail({ from_name: 'Newsletter Subscriber', from_email: newsletterEmail, message: 'New newsletter subscription' }).catch(() => {});
-      sendUserEmail({ from_name: 'Valued Subscriber', from_email: newsletterEmail, message: 'Thank you for subscribing to Quantionic newsletter!' }).catch(() => {});
+      sendAdminEmail({ from_name: 'Newsletter Subscriber', from_email: newsletterEmail, message: 'New newsletter subscription' }).catch((e) => console.error('EmailJS admin email failed:', e));
+      sendUserEmail({ from_name: 'Valued Subscriber', from_email: newsletterEmail, message: 'Thank you for subscribing to Quantionic newsletter!' }).catch((e) => console.error('EmailJS user email failed:', e));
       setNewsletterEmail('');
     } catch (err) {
       const current = JSON.parse(localStorage.getItem('quant_subscribers') || '[]');
