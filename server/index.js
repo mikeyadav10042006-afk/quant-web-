@@ -11,6 +11,26 @@ import { fileURLToPath } from 'url';
 
 dotenv.config();
 
+// --- Input Sanitization (prevents HTML injection) ---
+const sanitize = (str) => {
+  if (typeof str !== 'string') return str;
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+    .trim();
+};
+
+const sanitizeInput = (obj) => {
+  const clean = {};
+  for (const [key, val] of Object.entries(obj)) {
+    clean[key] = typeof val === 'string' ? sanitize(val) : val;
+  }
+  return clean;
+};
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DATA_DIR = path.join(__dirname, 'data');
@@ -457,11 +477,12 @@ app.post('/api/auth/login', rateLimit({ windowMs: 60000, max: 5 }), async (req, 
     return res.status(400).json({ error: 'Email and password are required' });
   }
 
+  const cleanEmail = sanitize(email.toLowerCase());
   let user = null;
 
   if (isMongoConnected) {
     try {
-      user = await User.findOne({ email: email.toLowerCase() });
+      user = await User.findOne({ email: cleanEmail });
     } catch (e) {
       console.error('MongoDB query error:', e);
     }
@@ -469,7 +490,7 @@ app.post('/api/auth/login', rateLimit({ windowMs: 60000, max: 5 }), async (req, 
 
   if (!user) {
     const users = getLocalFileStore(USERS_FILE);
-    user = users.find(u => u.email === email.toLowerCase());
+    user = users.find(u => u.email === cleanEmail);
   }
 
   if (!user) {
@@ -500,14 +521,17 @@ app.post('/api/auth/register', authMiddleware, async (req, res) => {
     return res.status(400).json({ error: 'Password must be at least 8 characters' });
   }
 
+  const cleanName = sanitize(name);
+  const cleanEmail = sanitize(email.toLowerCase());
+
   if (isMongoConnected) {
     try {
-      const exists = await User.findOne({ email: email.toLowerCase() });
+      const exists = await User.findOne({ email: cleanEmail });
       if (exists) {
         return res.status(409).json({ error: 'Email already registered' });
       }
       const hashed = await bcrypt.hash(password, 12);
-      const newUser = await User.create({ name, email: email.toLowerCase(), password: hashed, role: 'admin' });
+      const newUser = await User.create({ name: cleanName, email: cleanEmail, password: hashed, role: 'admin' });
       return res.status(201).json({ success: true, user: { name: newUser.name, email: newUser.email, role: newUser.role } });
     } catch (e) {
       console.error('MongoDB write error:', e);
@@ -516,11 +540,11 @@ app.post('/api/auth/register', authMiddleware, async (req, res) => {
 
   // Fallback
   const users = getLocalFileStore(USERS_FILE);
-  if (users.find(u => u.email === email.toLowerCase())) {
+  if (users.find(u => u.email === cleanEmail)) {
     return res.status(409).json({ error: 'Email already registered' });
   }
   const hashed = await bcrypt.hash(password, 12);
-  const newUser = { _id: 'user-' + Date.now(), name, email: email.toLowerCase(), password: hashed, role: 'admin', createdAt: new Date().toISOString() };
+  const newUser = { _id: 'user-' + Date.now(), name: cleanName, email: cleanEmail, password: hashed, role: 'admin', createdAt: new Date().toISOString() };
   users.push(newUser);
   saveLocalFileStore(USERS_FILE, users);
   return res.status(201).json({ success: true, user: { name: newUser.name, email: newUser.email, role: newUser.role } });
@@ -543,14 +567,15 @@ app.post('/api/consultations', rateLimit({ windowMs: 60000, max: 5 }), async (re
     return res.status(403).json({ error: 'reCAPTCHA verification failed. Please try again.' });
   }
 
-  const payload = { name, email, enterprise, requirements, createdAt: new Date() };
+  const clean = sanitizeInput({ name, email, enterprise, requirements });
+  const payload = { ...clean, createdAt: new Date() };
 
   if (isMongoConnected) {
     try {
       const doc = new Consultation(payload);
       await doc.save();
-      sendConsultationEmail(payload).catch((e) => console.error('Email error:', e.message));
-      sendUserConfirmationEmail({ name, email, type: 'consultation' }).catch((e) => console.error('Email error:', e.message));
+      sendConsultationEmail(clean).catch((e) => console.error('Email error:', e.message));
+      sendUserConfirmationEmail({ name: clean.name, email: clean.email, type: 'consultation' }).catch((e) => console.error('Email error:', e.message));
       return res.status(201).json({ success: true, message: 'Consultation saved to MongoDB', data: doc });
     } catch (err) {
       console.error('MongoDB write error:', err);
@@ -564,7 +589,7 @@ app.post('/api/consultations', rateLimit({ windowMs: 60000, max: 5 }), async (re
     list.unshift(payload);
     saveLocalFileStore('consultations.json', list);
     sendConsultationEmail(payload).catch((e) => console.error('Email error:', e.message));
-    sendUserConfirmationEmail({ name, email, type: 'consultation' }).catch((e) => console.error('Email error:', e.message));
+    sendUserConfirmationEmail({ name: clean.name, email: clean.email, type: 'consultation' }).catch((e) => console.error('Email error:', e.message));
     return res.status(201).json({ success: true, message: 'Consultation saved to local JSON store', data: payload });
   } catch (err) {
     return res.status(500).json({ error: 'Could not write consultation to fallback database' });
@@ -583,13 +608,14 @@ app.post('/api/newsletter', rateLimit({ windowMs: 60000, max: 3 }), async (req, 
     return res.status(403).json({ error: 'reCAPTCHA verification failed. Please try again.' });
   }
 
-  const payload = { email, createdAt: new Date() };
+  const cleanEmail = sanitize(email);
+  const payload = { email: cleanEmail, createdAt: new Date() };
 
   if (isMongoConnected) {
     try {
       const doc = new Subscriber(payload);
       await doc.save();
-      sendNewsletterWelcomeEmail({ email }).catch((e) => console.error('Email error:', e.message));
+      sendNewsletterWelcomeEmail({ email: cleanEmail }).catch((e) => console.error('Email error:', e.message));
       return res.status(201).json({ success: true, message: 'Newsletter subscribed in MongoDB', data: doc });
     } catch (err) {
       if (err.code === 11000) {
@@ -602,13 +628,13 @@ app.post('/api/newsletter', rateLimit({ windowMs: 60000, max: 3 }), async (req, 
   // Fallback storage
   try {
     const list = getLocalFileStore('subscribers.json');
-    if (list.some(s => s.email.toLowerCase() === email.toLowerCase())) {
+    if (list.some(s => s.email.toLowerCase() === cleanEmail.toLowerCase())) {
       return res.status(409).json({ error: 'Email already subscribed' });
     }
     payload._id = 'local-sub-' + Date.now();
     list.unshift(payload);
     saveLocalFileStore('subscribers.json', list);
-    sendNewsletterWelcomeEmail({ email }).catch((e) => console.error('Email error:', e.message));
+    sendNewsletterWelcomeEmail({ email: cleanEmail }).catch((e) => console.error('Email error:', e.message));
     return res.status(201).json({ success: true, message: 'Newsletter subscribed in local JSON store', data: payload });
   } catch (err) {
     return res.status(500).json({ error: 'Could not subscribe to fallback database' });

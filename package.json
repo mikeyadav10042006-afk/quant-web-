@@ -12,6 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@splinetool/viewer": "^1.12.98",
     "@tailwindcss/vite": "^4.3.2",
     "axios": "^1.18.1",
