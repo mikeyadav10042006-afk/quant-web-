@@ -60,16 +60,33 @@ export default function Services() {
             <div className="phone-power-btn" />
             <div className="phone-notch" />
             <div className="phone-screen" style={{ background: service.screenBg }}>
-              {/* Background image — subtle, reveals on hover */}
-              <div
-                className="phone-bg-image"
-                style={{ backgroundImage: `url(${service.bgImage})` }}
-              />
-              {/* Color glow overlay on hover */}
-              <div
-                className="phone-glow-overlay"
-                style={{ background: `radial-gradient(ellipse at 50% 30%, ${service.glowColor} 0%, transparent 60%)` }}
-              />
+              {/* Liquid Energy Fill */}
+              <div className="liquid-fill">
+                <div className="liquid-body" />
+                <div className="liquid-glow" />
+                <svg className="liquid-wave" viewBox="0 0 600 60" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id={`wg${index}`} x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#67E8F9" stopOpacity="0.6" />
+                      <stop offset="100%" stopColor="#4FD1FF" stopOpacity="0.45" />
+                    </linearGradient>
+                  </defs>
+                  <path d="M0,25 C80,8 160,42 240,25 C320,8 400,42 480,25 C560,8 600,18 600,25 L600,60 L0,60Z" fill={`url(#wg${index})`} />
+                </svg>
+                <svg className="liquid-wave liquid-wave-2" viewBox="0 0 600 60" preserveAspectRatio="none">
+                  <path d="M0,30 C100,12 160,48 260,30 C360,12 420,48 520,30 C580,18 600,22 600,30 L600,60 L0,60Z" fill="#4FD1FF" fillOpacity="0.25" />
+                </svg>
+                <div className="liquid-particles">
+                  {[...Array(10)].map((_, i) => (
+                    <span key={i} className="liquid-particle" style={{
+                      left: `${8 + (i * 9)}%`,
+                      animationDelay: `${i * 0.25}s`,
+                      animationDuration: `${2.2 + (i % 4) * 0.5}s`,
+                    }} />
+                  ))}
+                </div>
+              </div>
+
               <div className="phone-status-bar">
                 <span className="text-[10px] font-semibold" style={{ color: 'rgba(30,40,60,0.5)' }}>9:41</span>
                 <div className="flex items-center gap-1">
@@ -80,7 +97,7 @@ export default function Services() {
               </div>
 
               <div className="phone-content">
-                <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300" style={{ background: service.iconBg }}>
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110" style={{ background: service.iconBg }}>
                   {service.icon}
                 </div>
                 <h3 className="text-lg font-bold mb-2" style={{ color: '#1e293b' }}>{service.title}</h3>
@@ -96,7 +113,7 @@ export default function Services() {
                 </ul>
 
                 <div className="mt-auto">
-                  <div className="w-full flex items-center justify-center gap-1.5 rounded-xl py-2.5 px-4 text-sm font-semibold text-white group-hover:opacity-90 transition-opacity duration-300" style={{
+                  <div className="w-full flex items-center justify-center gap-1.5 rounded-xl py-2.5 px-4 text-sm font-semibold text-white transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(79,209,255,0.4)]" style={{
                     background: service.buttonBg,
                     boxShadow: '0 4px 14px rgba(0,0,0,0.12)',
                   }}>
