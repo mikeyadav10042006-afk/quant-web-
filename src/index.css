@@ -604,12 +604,13 @@ spline-viewer::part(canvas) {
   transform: translateY(-14px);
 }
 
-/* SIDE phones — small + depth */
+/* SIDE phones — small + depth + shifted up */
 .phone-mockup-side {
   width: 210px;
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   opacity: 0.88;
   z-index: 1;
+  margin-bottom: 70px;
 }
 .phone-mockup-side:hover {
   transform: translateY(-10px) scale(1.03);
@@ -853,12 +854,13 @@ spline-viewer::part(canvas) {
   flex-shrink: 0;
 }
 
-/* ── Mobile: all same size ── */
+/* ── Mobile: all same size, no shift ── */
 @media (max-width: 768px) {
   .phone-mockup-center,
   .phone-mockup-side {
     width: 280px;
     opacity: 1;
+    margin-bottom: 0;
   }
   .phone-mockup-center .phone-frame,
   .phone-mockup-side .phone-frame {
