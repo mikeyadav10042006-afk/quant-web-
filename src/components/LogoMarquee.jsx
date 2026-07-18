@@ -229,7 +229,7 @@ export default function LogoMarquee() {
                 inset 0 -1px 0 rgba(0,0,0,0.02),
                 0 0 0 1px rgba(255,255,255,0.3)
               `.replace(/\s+/g, ' '),
-              minHeight: '72px',
+              minHeight: '90px',
             }}
           >
             {/* Inner ambient edge glow */}
@@ -238,7 +238,7 @@ export default function LogoMarquee() {
             <div className="absolute top-0 left-4 right-4 h-[1px] bg-gradient-to-r from-transparent via-white/70 to-transparent pointer-events-none" />
             
             {/* ── Marquee ── */}
-            <div className="relative group/marquee px-4 md:px-6 py-2">
+            <div className="relative group/marquee px-5 md:px-8 py-3">
               {/* Left fade */}
               <div className="pointer-events-none absolute inset-y-0 left-0 w-14 md:w-20 bg-gradient-to-r from-white/60 via-white/30 to-transparent z-10" />
               {/* Right fade */}
