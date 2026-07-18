@@ -784,6 +784,16 @@ spline-viewer::part(canvas) {
   position: relative;
   padding-top: 14px;
 }
+/* Premium light shine — top-left diagonal */
+.phone-mockup-center .phone-screen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 45px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.1) 30%, transparent 55%);
+  pointer-events: none;
+  z-index: 6;
+}
 .phone-mockup-center .phone-status-bar {
   display: flex;
   justify-content: space-between;
@@ -817,6 +827,16 @@ spline-viewer::part(canvas) {
   flex-direction: column;
   position: relative;
   padding-top: 10px;
+}
+/* Premium light shine — top-left diagonal */
+.phone-mockup-side .phone-screen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 33px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.08) 30%, transparent 55%);
+  pointer-events: none;
+  z-index: 6;
 }
 .phone-mockup-side .phone-status-bar {
   display: flex;

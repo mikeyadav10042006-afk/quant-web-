@@ -119,6 +119,12 @@ export default function Services() {
         filter: 'blur(80px)',
       }} />
 
+      {/* Premium top light beam — illuminates phones from above */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] pointer-events-none" style={{
+        background: 'radial-gradient(ellipse 100% 70% at 50% 0%, rgba(255,250,240,0.7) 0%, rgba(255,248,235,0.3) 40%, transparent 70%)',
+        filter: 'blur(30px)',
+      }} />
+
       <div className="relative max-w-7xl mx-auto px-6">
         <div className="text-center max-w-2xl mx-auto mb-20 space-y-5">
           <span className="inline-block text-[11px] font-semibold uppercase tracking-[0.2em] px-4 py-1.5 rounded-full" style={{
