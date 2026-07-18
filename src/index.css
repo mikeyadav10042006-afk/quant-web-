@@ -594,16 +594,16 @@ spline-viewer::part(canvas) {
    Body: 70.6mm × 146.6mm (1:2.077 ratio)
    ════════════════════════════════════════════════════════════ */
 
-/* CENTER phone — big + glow */
+/* CENTER phone — big + subtle glow */
 .phone-mockup-center {
   width: 290px;
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   z-index: 2;
-  filter: drop-shadow(0 0 40px rgba(16, 185, 129, 0.12));
+  filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.15));
 }
 .phone-mockup-center:hover {
   transform: translateY(-14px);
-  filter: drop-shadow(0 0 60px rgba(16, 185, 129, 0.18));
+  filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.18)) drop-shadow(0 0 40px rgba(16, 185, 129, 0.08));
 }
 
 /* SIDE phones — small + depth + shifted up */
@@ -613,12 +613,12 @@ spline-viewer::part(canvas) {
   opacity: 0.88;
   z-index: 1;
   margin-bottom: 70px;
-  filter: drop-shadow(0 0 25px rgba(16, 185, 129, 0.06));
+  filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.12));
 }
 .phone-mockup-side:hover {
   transform: translateY(-10px) scale(1.03);
   opacity: 1;
-  filter: drop-shadow(0 0 40px rgba(16, 185, 129, 0.12));
+  filter: drop-shadow(0 20px 45px rgba(0, 0, 0, 0.15)) drop-shadow(0 0 25px rgba(16, 185, 129, 0.06));
 }
 
 /* CENTER frame — 290×602 */
