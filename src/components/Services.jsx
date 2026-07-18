@@ -5,6 +5,15 @@ import { HeartPulse, Landmark, ShoppingBag, ChevronRight } from 'lucide-react';
 export default function Services() {
   const offerings = [
     {
+      icon: <ShoppingBag className="w-7 h-7" style={{ color: '#8b5e50' }} />,
+      title: 'Go-To-Market',
+      desc: 'Launch and scale your technology through localization, enablement, and outreach.',
+      points: ['Market localization strategies', 'Channel partner enablement'],
+      link: '/salesforce-checklist',
+      screenBg: '#d4a99a',
+      iconBg: '#c49988',
+    },
+    {
       icon: <HeartPulse className="w-7 h-7" style={{ color: '#4a6741' }} />,
       title: 'Healthcare AI',
       desc: 'AI-powered clinical diagnostics and HIPAA-compliant patient workflow automations.',
@@ -21,15 +30,6 @@ export default function Services() {
       link: '/smart-city',
       screenBg: '#d9ccb0',
       iconBg: '#c9bb9e',
-    },
-    {
-      icon: <ShoppingBag className="w-7 h-7" style={{ color: '#8b5e50' }} />,
-      title: 'Go-To-Market',
-      desc: 'Launch and scale your technology through localization, enablement, and outreach.',
-      points: ['Market localization strategies', 'Channel partner enablement'],
-      link: '/salesforce-checklist',
-      screenBg: '#d4a99a',
-      iconBg: '#c49988',
     }
   ];
 
