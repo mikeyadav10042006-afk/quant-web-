@@ -594,14 +594,16 @@ spline-viewer::part(canvas) {
    Body: 70.6mm × 146.6mm (1:2.077 ratio)
    ════════════════════════════════════════════════════════════ */
 
-/* CENTER phone — big */
+/* CENTER phone — big + glow */
 .phone-mockup-center {
   width: 290px;
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   z-index: 2;
+  filter: drop-shadow(0 0 40px rgba(16, 185, 129, 0.12));
 }
 .phone-mockup-center:hover {
   transform: translateY(-14px);
+  filter: drop-shadow(0 0 60px rgba(16, 185, 129, 0.18));
 }
 
 /* SIDE phones — small + depth + shifted up */
@@ -611,10 +613,12 @@ spline-viewer::part(canvas) {
   opacity: 0.88;
   z-index: 1;
   margin-bottom: 70px;
+  filter: drop-shadow(0 0 25px rgba(16, 185, 129, 0.06));
 }
 .phone-mockup-side:hover {
   transform: translateY(-10px) scale(1.03);
   opacity: 1;
+  filter: drop-shadow(0 0 40px rgba(16, 185, 129, 0.12));
 }
 
 /* CENTER frame — 290×602 */

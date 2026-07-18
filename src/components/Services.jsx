@@ -10,7 +10,7 @@ export default function Services() {
       desc: 'AI-powered clinical diagnostics and HIPAA-compliant patient workflow automations.',
       points: ['Diagnostics support systems', 'Multi-modal EHR processing'],
       link: '/healthcare-ai',
-      gradient: 'linear-gradient(160deg, #0d3d38 0%, #0a5c4f 40%, #10b981 100%)',
+      gradient: 'linear-gradient(160deg, #042f2e 0%, #0d9488 50%, #34d399 100%)',
     },
     {
       icon: <Landmark className="w-7 h-7 text-white" />,
@@ -18,7 +18,7 @@ export default function Services() {
       desc: 'AI frameworks to optimize urban infrastructure, traffic, energy, and public safety.',
       points: ['Intelligent traffic routing', 'Smart grid energy optimization'],
       link: '/smart-city',
-      gradient: 'linear-gradient(160deg, #0c2d48 0%, #134e6f 40%, #0ea5e9 100%)',
+      gradient: 'linear-gradient(160deg, #0c1a33 0%, #0369a1 50%, #38bdf8 100%)',
     },
     {
       icon: <ShoppingBag className="w-7 h-7 text-white" />,
@@ -26,7 +26,7 @@ export default function Services() {
       desc: 'Launch and scale your technology through localization, enablement, and outreach.',
       points: ['Market localization strategies', 'Channel partner enablement'],
       link: '/salesforce-checklist',
-      gradient: 'linear-gradient(160deg, #1a1a2e 0%, #2d3561 40%, #7c3aed 100%)',
+      gradient: 'linear-gradient(160deg, #130f26 0%, #6d28d9 50%, #a78bfa 100%)',
     }
   ];
 
@@ -89,18 +89,53 @@ export default function Services() {
   };
 
   return (
-    <section id="services" className="py-14 md:py-24 bg-white border-b border-slate-100">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
-          <span className="text-xs font-semibold uppercase tracking-widest text-teal-600 bg-teal-50 px-3 py-1 rounded-full">
+    <section id="services" className="relative py-20 md:py-32 overflow-hidden" style={{
+      background: 'linear-gradient(180deg, #0a0f1a 0%, #0d1525 40%, #0a1628 100%)',
+    }}>
+      {/* Subtle grid pattern */}
+      <div className="absolute inset-0 opacity-[0.03]" style={{
+        backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
+        backgroundSize: '60px 60px',
+      }} />
+
+      {/* Top gradient accent */}
+      <div className="absolute top-0 left-0 right-0 h-px" style={{
+        background: 'linear-gradient(90deg, transparent 0%, rgba(20,184,166,0.3) 50%, transparent 100%)',
+      }} />
+
+      {/* Ambient glow orbs */}
+      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full opacity-[0.04] pointer-events-none" style={{
+        background: 'radial-gradient(circle, #14b8a6 0%, transparent 70%)',
+        filter: 'blur(80px)',
+      }} />
+      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full opacity-[0.03] pointer-events-none" style={{
+        background: 'radial-gradient(circle, #0ea5e9 0%, transparent 70%)',
+        filter: 'blur(80px)',
+      }} />
+
+      <div className="relative max-w-7xl mx-auto px-6">
+        <div className="text-center max-w-2xl mx-auto mb-20 space-y-5">
+          <span className="inline-block text-[11px] font-semibold uppercase tracking-[0.2em] px-4 py-1.5 rounded-full" style={{
+            background: 'linear-gradient(135deg, rgba(20,184,166,0.12) 0%, rgba(14,165,233,0.08) 100%)',
+            color: '#5eead4',
+            border: '1px solid rgba(20,184,166,0.15)',
+          }}>
             Our Offerings
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 font-sans">
-            Start Your Digital Transformation Journey
+          <h2 className="text-4xl md:text-5xl lg:text-[3.4rem] font-bold tracking-tight leading-[1.15]" style={{
+            background: 'linear-gradient(180deg, #ffffff 0%, #94a3b8 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}>
+            Start Your Digital<br />Transformation Journey
           </h2>
-          <p className="text-slate-500 font-normal">
+          <p className="text-base md:text-lg font-normal max-w-lg mx-auto leading-relaxed" style={{ color: '#64748b' }}>
             Bespoke engineering solutions engineered for maximum performance, compliance, and enterprise scalability.
           </p>
+          {/* Decorative line */}
+          <div className="mx-auto w-16 h-0.5 mt-6 rounded-full" style={{
+            background: 'linear-gradient(90deg, #14b8a6, #0ea5e9)',
+          }} />
         </div>
 
         <div className="flex flex-col md:flex-row items-center md:items-end justify-center gap-8 md:gap-6 lg:gap-10 pt-4">
