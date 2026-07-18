@@ -382,7 +382,7 @@ export default function HealthcareAI() {
           {/* Image */}
           <div className="lg:col-span-5 flex justify-center order-2 lg:order-1 relative group">
             <div className="absolute -inset-8 bg-gradient-to-tr from-[#009966]/[0.06] via-transparent to-teal-50/40 rounded-[3rem] pointer-events-none group-hover:from-[#009966]/[0.1] transition-all duration-700" />
-            <div className="relative rounded-3xl overflow-hidden premium-shadow border border-slate-100/60 transition-all duration-700 rotate-[-3deg] group-hover:rotate-0 group-hover:shadow-2xl group-hover:shadow-[#009966]/[0.08]">
+            <div className="relative rounded-3xl overflow-hidden transition-all duration-700 rotate-[-5deg] group-hover:rotate-0 shadow-[0_20px_60px_-12px_rgba(0,0,0,0.18),0_0_0_1px_rgba(0,0,0,0.04)] group-hover:shadow-[0_25px_80px_-12px_rgba(0,153,102,0.22),0_0_0_1px_rgba(0,153,102,0.1)]">
               <img
                 src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=800&q=80"
                 alt="HIMS Database Software"
