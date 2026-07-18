@@ -28,7 +28,7 @@ export default function Hero() {
       backgroundRepeat: 'no-repeat',
     }}>
       {/* White overlay for text readability */}
-      <div className="absolute inset-0 bg-white/85 pointer-events-none" />
+      <div className="absolute inset-0 bg-white/85 pointer-events-none z-0" />
       {/* Soft ambient gradient across left content area */}
       <div className="absolute inset-y-0 left-0 w-3/5 pointer-events-none opacity-60" style={{
         background: 'radial-gradient(ellipse 100% 80% at -5% 45%, rgba(20,184,166,0.04) 0%, transparent 65%), radial-gradient(ellipse 70% 60% at 35% 70%, rgba(103,232,249,0.025) 0%, transparent 55%), radial-gradient(ellipse 60% 50% at 20% 25%, rgba(167,243,208,0.02) 0%, transparent 45%)'
@@ -38,7 +38,7 @@ export default function Hero() {
       <div className="hero-blob hero-blob-2 pointer-events-none" />
       <div className="hero-blob hero-blob-3 pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div className="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
         {/* Left Content Column */}
         <div className="lg:col-span-7 flex flex-col text-left space-y-6">
           <motion.div
