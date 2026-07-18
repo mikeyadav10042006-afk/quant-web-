@@ -612,7 +612,7 @@ spline-viewer::part(canvas) {
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   opacity: 0.88;
   z-index: 1;
-  margin-bottom: 70px;
+  margin-bottom: 80px;
   filter: drop-shadow(0 15px 35px rgba(59, 130, 246, 0.12));
 }
 .phone-mockup-side:hover {
@@ -879,15 +879,16 @@ spline-viewer::part(canvas) {
 /* ── Glowing Pedestal ── */
 .phone-pedestal {
   position: relative;
-  width: 160px;
-  height: 24px;
-  margin: -8px auto 0;
+  width: 180px;
+  height: 30px;
+  margin: -4px auto 0;
 }
 .phone-mockup-side .phone-pedestal {
-  width: 120px;
-  height: 18px;
-  margin: -6px auto 0;
+  width: 130px;
+  height: 22px;
+  margin: -4px auto 0;
 }
+/* Outer ring */
 .phone-pedestal-ring {
   position: absolute;
   bottom: 0;
@@ -896,28 +897,62 @@ spline-viewer::part(canvas) {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background: linear-gradient(180deg, rgba(59,130,246,0.15) 0%, rgba(6,182,212,0.08) 100%);
-  border: 1.5px solid rgba(59,130,246,0.2);
+  background: linear-gradient(180deg, rgba(59,130,246,0.08) 0%, rgba(6,182,212,0.04) 100%);
+  border: 1.5px solid rgba(59,130,246,0.25);
   box-shadow:
-    0 0 20px rgba(59,130,246,0.15),
-    0 0 40px rgba(6,182,212,0.08),
-    inset 0 0 15px rgba(59,130,246,0.05);
+    0 0 25px rgba(59,130,246,0.2),
+    0 0 50px rgba(6,182,212,0.1),
+    0 0 80px rgba(59,130,246,0.05),
+    inset 0 0 20px rgba(59,130,246,0.06);
 }
+/* Inner ring — stacked depth */
+.phone-pedestal-ring::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 12%;
+  right: 12%;
+  height: 60%;
+  border-radius: 50%;
+  border: 1px solid rgba(59,130,246,0.15);
+  background: linear-gradient(180deg, rgba(59,130,246,0.04) 0%, transparent 100%);
+}
+/* Bottom reflection line */
+.phone-pedestal-ring::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 15%;
+  right: 15%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(59,130,246,0.3) 50%, transparent 100%);
+}
+/* Ambient glow beneath */
 .phone-pedestal-glow {
   position: absolute;
-  bottom: -8px;
+  bottom: -12px;
   left: 50%;
   transform: translateX(-50%);
-  width: 140%;
-  height: 20px;
+  width: 160%;
+  height: 28px;
   border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(59,130,246,0.2) 0%, rgba(6,182,212,0.1) 40%, transparent 70%);
-  filter: blur(8px);
+  background: radial-gradient(ellipse, rgba(59,130,246,0.25) 0%, rgba(6,182,212,0.12) 35%, transparent 70%);
+  filter: blur(10px);
+}
+/* Reflective floor line */
+.phone-pedestal-glow::before {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(59,130,246,0.15) 50%, transparent 100%);
 }
 .phone-mockup-side .phone-pedestal-glow {
-  width: 140%;
-  height: 16px;
-  bottom: -6px;
+  width: 160%;
+  height: 22px;
+  bottom: -10px;
 }
 
 /* ── Mobile: all same size, no shift ── */
@@ -938,6 +973,6 @@ spline-viewer::part(canvas) {
   .phone-mockup-side .phone-content p { font-size: 13px; }
   .phone-mockup-side .phone-content ul li { font-size: 12px; }
   .phone-mockup-side .phone-content .mt-auto > div { font-size: 14px; padding: 10px 16px; }
-  .phone-pedestal { width: 150px; height: 20px; }
-  .phone-mockup-side .phone-pedestal { width: 150px; height: 20px; }
+  .phone-pedestal { width: 160px; height: 26px; }
+  .phone-mockup-side .phone-pedestal { width: 160px; height: 26px; }
 }

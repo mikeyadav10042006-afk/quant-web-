@@ -148,7 +148,7 @@ export default function Services() {
           }} />
         </div>
 
-        <div className="flex flex-col md:flex-row items-center md:items-end justify-center gap-8 md:gap-6 lg:gap-10 pt-4">
+        <div className="flex flex-col md:flex-row items-center md:items-end justify-center gap-12 md:gap-8 lg:gap-14 pt-8 pb-4">
           {renderPhone(offerings[0], 0)}
           {renderPhone(offerings[1], 1)}
           {renderPhone(offerings[2], 2)}
