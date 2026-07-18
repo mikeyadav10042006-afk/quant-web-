@@ -590,11 +590,14 @@ spline-viewer::part(canvas) {
 }
 
 /* ════════════════════════════════════════════════════════════
-   Phone Mockup — Services Section
+   Phone Mockup — iPhone 15 Pro Exact Proportions
+   Body: 70.6mm × 146.6mm (1:2.077 ratio)
+   Bezel: ~2mm, Corner radius: ~12mm
+   Dynamic Island: ~30mm × 8mm pill
    ════════════════════════════════════════════════════════════ */
 
 .phone-mockup {
-  width: 260px;
+  width: 270px;
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .phone-mockup:hover {
@@ -603,52 +606,77 @@ spline-viewer::part(canvas) {
 
 .phone-frame {
   position: relative;
-  width: 100%;
-  border-radius: 2.2rem;
-  padding: 0.55rem;
-  background: linear-gradient(145deg, #2a2a2e 0%, #1a1a1d 50%, #111113 100%);
+  width: 270px;
+  height: 561px;
+  border-radius: 44px;
+  padding: 3px;
+  background: linear-gradient(145deg, #3a3a3e 0%, #2a2a2d 30%, #1c1c1f 70%, #111113 100%);
   box-shadow:
-    0 25px 50px rgba(0, 0, 0, 0.2),
-    0 10px 20px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    0 25px 50px rgba(0, 0, 0, 0.25),
+    0 8px 16px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
 }
 .phone-mockup:hover .phone-frame {
   box-shadow:
-    0 30px 60px rgba(0, 0, 0, 0.25),
-    0 15px 30px rgba(0, 0, 0, 0.12),
-    0 0 40px rgba(16, 185, 129, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    0 30px 60px rgba(0, 0, 0, 0.3),
+    0 15px 30px rgba(0, 0, 0, 0.15),
+    0 0 40px rgba(16, 185, 129, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Side buttons — volume + action */
+.phone-frame::before {
+  content: '';
+  position: absolute;
+  left: -3px;
+  top: 100px;
+  width: 3px;
+  height: 28px;
+  background: linear-gradient(180deg, #3a3a3e, #2a2a2d);
+  border-radius: 3px 0 0 3px;
+}
+.phone-frame::after {
+  content: '';
+  position: absolute;
+  left: -3px;
+  top: 145px;
+  width: 3px;
+  height: 48px;
+  background: linear-gradient(180deg, #3a3a3e, #2a2a2d);
+  border-radius: 3px 0 0 3px;
 }
 
 .phone-notch {
   position: absolute;
-  top: 0.55rem;
+  top: 3px;
   left: 50%;
   transform: translateX(-50%);
-  width: 36%;
-  height: 26px;
+  width: 100px;
+  height: 28px;
   background: #1a1a1d;
-  border-radius: 0 0 1rem 1rem;
+  border-radius: 0 0 18px 18px;
   z-index: 10;
 }
 .phone-notch::after {
   content: '';
   position: absolute;
-  top: 8px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 9px;
+  right: 18px;
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #2a2a2e;
+  background: radial-gradient(circle, #2d2d30 40%, #1a1a1d 100%);
 }
 
 .phone-screen {
-  border-radius: 1.7rem;
+  width: 100%;
+  height: 100%;
+  border-radius: 41px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  min-height: 440px;
   position: relative;
 }
 
@@ -656,7 +684,7 @@ spline-viewer::part(canvas) {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 22px 6px;
+  padding: 16px 28px 8px;
   z-index: 5;
 }
 
@@ -664,22 +692,24 @@ spline-viewer::part(canvas) {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 8px 22px 18px;
+  padding: 4px 24px 20px;
 }
 
 .phone-home-bar {
-  width: 35%;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.25);
+  width: 54px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.35);
   border-radius: 100px;
-  margin: 6px auto 8px;
+  margin: 0 auto 8px;
+  flex-shrink: 0;
 }
 
 @media (max-width: 768px) {
   .phone-mockup {
-    width: 280px;
+    width: 290px;
   }
-  .phone-screen {
-    min-height: 460px;
+  .phone-frame {
+    width: 290px;
+    height: 602px;
   }
 }
