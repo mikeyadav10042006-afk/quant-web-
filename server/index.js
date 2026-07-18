@@ -281,35 +281,40 @@ const authMiddleware = (req, res, next) => {
 };
 
 // --- Seed Default Admin Account ---
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+
 const seedDefaultAdmin = async () => {
-  const defaultEmail = 'admin@quantionic.com';
-  const defaultPassword = 'Quantionic@2026';
+  if (!ADMIN_EMAIL || !ADMIN_PASSWORD) {
+    console.warn('ADMIN_EMAIL or ADMIN_PASSWORD not set. Skipping admin seed. Set these env vars to create a default admin.');
+    return;
+  }
 
   if (isMongoConnected) {
     try {
-      const exists = await User.findOne({ email: defaultEmail });
+      const exists = await User.findOne({ email: ADMIN_EMAIL });
       if (!exists) {
-        const hashed = await bcrypt.hash(defaultPassword, 12);
-        await User.create({ name: 'Admin', email: defaultEmail, password: hashed, role: 'admin' });
-        console.log('Default admin seeded: admin@quantionic.com / Quantum@2026');
+        const hashed = await bcrypt.hash(ADMIN_PASSWORD, 12);
+        await User.create({ name: 'Admin', email: ADMIN_EMAIL, password: hashed, role: 'admin' });
+        console.log(`Default admin seeded: ${ADMIN_EMAIL}`);
       }
     } catch (e) {
       console.error('Failed to seed admin to MongoDB:', e);
     }
   } else {
     const users = getLocalFileStore(USERS_FILE);
-    if (!users.find(u => u.email === defaultEmail)) {
-      const hashed = await bcrypt.hash(defaultPassword, 12);
+    if (!users.find(u => u.email === ADMIN_EMAIL)) {
+      const hashed = await bcrypt.hash(ADMIN_PASSWORD, 12);
       users.push({
         _id: 'user-admin-1',
         name: 'Admin',
-        email: defaultEmail,
+        email: ADMIN_EMAIL,
         password: hashed,
         role: 'admin',
         createdAt: new Date().toISOString()
       });
       saveLocalFileStore(USERS_FILE, users);
-      console.log('Default admin seeded to local JSON: admin@quantionic.com / Quantionic@2026');
+      console.log(`Default admin seeded to local JSON: ${ADMIN_EMAIL}`);
     }
   }
 };
