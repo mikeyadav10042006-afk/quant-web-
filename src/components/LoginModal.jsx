@@ -71,7 +71,7 @@ export default function LoginModal({ isOpen, onClose, onSuccess }) {
             </div>
 
             {/* Form */}
-            <form onSubmit={handleLogin} className="p-6 space-y-4">
+            <form onSubmit={handleLogin} className="p-6 space-y-4" autoComplete="off">
               {error && (
                 <div className="bg-red-50 border border-red-100 rounded-xl px-4 py-3 flex items-center space-x-2 text-red-700 text-xs font-semibold">
                   <AlertCircle className="w-4 h-4 shrink-0" />
@@ -86,6 +86,7 @@ export default function LoginModal({ isOpen, onClose, onSuccess }) {
                   <input
                     type="email"
                     required
+                    autoComplete="off"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="admin@quantionic.com"
@@ -101,6 +102,7 @@ export default function LoginModal({ isOpen, onClose, onSuccess }) {
                   <input
                     type="password"
                     required
+                    autoComplete="new-password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
