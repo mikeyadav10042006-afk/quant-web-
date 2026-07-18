@@ -361,8 +361,8 @@ const isRecaptchaConfigured = !!RECAPTCHA_SECRET;
 
 const verifyRecaptcha = async (token) => {
   if (!isRecaptchaConfigured) {
-    console.warn('reCAPTCHA not configured — blocking request as protection is disabled.');
-    return false;
+    console.warn('reCAPTCHA secret not set — skipping verification. Set RECAPTCHA_SECRET_KEY env var to enable.');
+    return true;
   }
   if (!token) return false;
   try {
