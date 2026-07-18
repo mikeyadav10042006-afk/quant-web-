@@ -807,6 +807,8 @@ spline-viewer::part(canvas) {
   display: flex;
   flex-direction: column;
   padding: 4px 26px 20px;
+  position: relative;
+  z-index: 2;
 }
 .phone-mockup-center .phone-home-bar {
   width: 58px;
@@ -815,6 +817,33 @@ spline-viewer::part(canvas) {
   border-radius: 100px;
   margin: 0 auto 8px;
   flex-shrink: 0;
+}
+
+/* ── Background Image — subtle reveal on hover ── */
+.phone-bg-image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.06;
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+.group:hover .phone-bg-image {
+  opacity: 0.2;
+}
+/* Extra gradient overlay on hover for depth */
+.phone-bg-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.2) 100%);
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.group:hover .phone-bg-image::after {
+  opacity: 1;
 }
 
 /* ── Screen — SIDE ── */
@@ -851,6 +880,8 @@ spline-viewer::part(canvas) {
   display: flex;
   flex-direction: column;
   padding: 2px 18px 14px;
+  position: relative;
+  z-index: 2;
 }
 .phone-mockup-side .phone-content h3 {
   font-size: 0.875rem;

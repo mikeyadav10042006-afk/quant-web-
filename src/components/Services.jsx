@@ -13,6 +13,7 @@ export default function Services() {
       screenBg: 'linear-gradient(180deg, #eef4ff 0%, #e0ecff 100%)',
       iconBg: 'rgba(59,130,246,0.12)',
       buttonBg: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+      bgImage: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=60',
     },
     {
       icon: <HeartPulse className="w-7 h-7" style={{ color: '#06b6d4' }} />,
@@ -23,6 +24,7 @@ export default function Services() {
       screenBg: 'linear-gradient(180deg, #ecfeff 0%, #e0f7fa 100%)',
       iconBg: 'rgba(6,182,212,0.12)',
       buttonBg: 'linear-gradient(135deg, #06b6d4, #0891b2)',
+      bgImage: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=60',
     },
     {
       icon: <Landmark className="w-7 h-7" style={{ color: '#6366f1' }} />,
@@ -33,6 +35,7 @@ export default function Services() {
       screenBg: 'linear-gradient(180deg, #eef2ff 0%, #e0e7ff 100%)',
       iconBg: 'rgba(99,102,241,0.12)',
       buttonBg: 'linear-gradient(135deg, #6366f1, #4f46e5)',
+      bgImage: 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=800&q=60',
     }
   ];
 
@@ -54,6 +57,11 @@ export default function Services() {
             <div className="phone-power-btn" />
             <div className="phone-notch" />
             <div className="phone-screen" style={{ background: service.screenBg }}>
+              {/* Subtle background image — reveals on hover */}
+              <div
+                className="phone-bg-image"
+                style={{ backgroundImage: `url(${service.bgImage})` }}
+              />
               <div className="phone-status-bar">
                 <span className="text-[10px] font-semibold" style={{ color: 'rgba(30,40,60,0.5)' }}>9:41</span>
                 <div className="flex items-center gap-1">
