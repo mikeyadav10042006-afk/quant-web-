@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Phone, Mail, MapPin, ArrowLeft, Send, MessageSquare, User, Building2, HelpCircle, Sparkles, Clock, Headphones, Check, CheckCircle } from 'lucide-react';
+import { Phone, Mail, MapPin, ArrowLeft, Send, MessageSquare, User, Building2, HelpCircle, Sparkles, Clock, Headphones, CheckCircle } from 'lucide-react';
 import api, { getRecaptchaToken, sendAdminEmail, sendUserEmail } from '../api';
 
 function MeshBackground() {

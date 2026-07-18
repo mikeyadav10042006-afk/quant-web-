@@ -4,7 +4,7 @@ import { motion, useInView } from 'framer-motion';
 import {
   ArrowLeft, Target, Calendar, DollarSign, BarChart3,
   Rocket, Users, GraduationCap, Settings, ChevronDown,
-  CheckCircle2, ArrowRight, Sparkles, ClipboardCheck,
+  ArrowRight, Sparkles, ClipboardCheck,
 } from 'lucide-react';
 import Footer from './Footer';
 

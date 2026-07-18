@@ -13,7 +13,6 @@ export default function SplashScreen({ onComplete }) {
     if (!root) return;
     const text = textRef.current;
     const cursor = cursorRef.current;
-    const tagline = textRef.current?.closest('.fixed')?.querySelector('[data-tagline]');
     const chars = text?.querySelectorAll('.tc');
 
     gsap.set(chars, { opacity: 0, y: 8, filter: 'blur(4px)' });

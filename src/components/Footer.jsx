@@ -118,13 +118,15 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
                 <div>
                   <p className="font-bold text-slate-200">Interactive Assistant</p>
                   <p className="text-xs text-slate-400">Can't wait? Consult our AI Assistant for answers now.</p>
-                  <button 
-                    onClick={onOpenChat}
-                    className="text-xs text-teal-400 hover:text-teal-300 font-bold flex items-center space-x-1 mt-1 transition-colors"
-                  >
-                    <span>Activate Agent</span>
-                    <ArrowRight className="w-3 h-3" />
-                  </button>
+                  {onOpenChat && (
+                    <button 
+                      onClick={onOpenChat}
+                      className="text-xs text-teal-400 hover:text-teal-300 font-bold flex items-center space-x-1 mt-1 transition-colors"
+                    >
+                      <span>Activate Agent</span>
+                      <ArrowRight className="w-3 h-3" />
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

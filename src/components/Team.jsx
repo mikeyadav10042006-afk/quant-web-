@@ -421,48 +421,28 @@ export default function Team() {
       name: 'Arun Kumar',
       title: 'Senior AI Architect',
       img: '/assets/team/expert1.jpg',
-      aiImg: '/assets/team/expert1_ai.jpg',
       badge: '🧠 AI Strategy',
-      experience: '12+ Years Experience',
-      primaryExpertise: 'Enterprise AI Systems',
-      skills: ['AI Strategy', 'Deep Learning', 'Neural Networks', 'Automation'],
-      quote: 'Building intelligent systems that create meaningful business impact.',
       aiTheme: 'ai-command-center'
     },
     {
       name: 'Priya Singh',
       title: 'AI Research Engineer',
       img: '/assets/team/expert2.jpg',
-      aiImg: '/assets/team/expert2_ai.jpg',
       badge: '🤖 Machine Learning',
-      experience: '8+ Years Experience',
-      primaryExpertise: 'Machine Learning Pipelines',
-      skills: ['NLP Models', 'PyTorch', 'Vector Databases', 'Model Tuning'],
-      quote: 'Pushing the boundaries of learning algorithms to solve complex data challenges.',
       aiTheme: 'cyber-security'
     },
     {
       name: 'Rahul Mehta',
       title: 'Product Strategy Lead',
       img: '/assets/team/expert3.jpg',
-      aiImg: '/assets/team/expert3_ai.jpg',
       badge: '☁️ Cloud Architecture',
-      experience: '10+ Years Experience',
-      primaryExpertise: 'Cloud AI Orchestration',
-      skills: ['Kubernetes', 'Multi-Cloud', 'Security Compliance', 'CI/CD'],
-      quote: 'Aligning complex backend cloud pipelines with real-world enterprise speed.',
       aiTheme: 'cloud-infrastructure'
     },
     {
       name: 'Anjali Patel',
       title: 'Cloud Integration Specialist',
       img: '/assets/team/expert4.jpg',
-      aiImg: '/assets/team/expert4_ai.jpg',
       badge: '🔒 AI Security',
-      experience: '9+ Years Experience',
-      primaryExpertise: 'Secure Cloud Operations',
-      skills: ['IAM Systems', 'Data Encryption', 'SIEM Logs', 'Threat Shield'],
-      quote: 'Defending corporate data integrity is a continuous, non-negotiable process.',
       aiTheme: 'innovation-lab'
     }
   ];

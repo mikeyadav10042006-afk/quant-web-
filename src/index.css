@@ -348,27 +348,12 @@ spline-viewer::part(canvas) {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
-@keyframes gradientShift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
 @keyframes pulseRing {
   0% { transform: scale(1); opacity: 0.4; }
   100% { transform: scale(1.5); opacity: 0; }
 }
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
 .hero-card-hover { transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1); }
 .hero-card-hover:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 25px 60px -12px rgba(0, 153, 102, 0.15); }
-.glow-border { position: relative; }
-.glow-border::before {
-  content: ''; position: absolute; inset: -1px; border-radius: inherit;
-  background: linear-gradient(135deg, rgba(0,153,102,0.3), transparent, rgba(0,153,102,0.2));
-  opacity: 0; transition: opacity 0.5s; z-index: -1;
-}
-.glow-border:hover::before { opacity: 1; }
 .glow-border-purple { position: relative; }
 .glow-border-purple::before {
   content: ''; position: absolute; inset: -1px; border-radius: inherit;
