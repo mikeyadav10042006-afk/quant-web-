@@ -310,21 +310,28 @@ const seedDefaultAdmin = async () => {
     return;
   }
 
+  const hashed = await bcrypt.hash(ADMIN_PASSWORD, 12);
+
   if (isMongoConnected) {
     try {
       const exists = await User.findOne({ email: ADMIN_EMAIL });
       if (!exists) {
-        const hashed = await bcrypt.hash(ADMIN_PASSWORD, 12);
         await User.create({ name: 'Admin', email: ADMIN_EMAIL, password: hashed, role: 'admin' });
         console.log(`Default admin seeded: ${ADMIN_EMAIL}`);
+      } else {
+        const pwMatch = await bcrypt.compare(ADMIN_PASSWORD, exists.password);
+        if (!pwMatch) {
+          await User.updateOne({ email: ADMIN_EMAIL }, { $set: { password: hashed } });
+          console.log(`Admin password synced from env var: ${ADMIN_EMAIL}`);
+        }
       }
     } catch (e) {
       console.error('Failed to seed admin to MongoDB:', e);
     }
   } else {
     const users = getLocalFileStore(USERS_FILE);
-    if (!users.find(u => u.email === ADMIN_EMAIL)) {
-      const hashed = await bcrypt.hash(ADMIN_PASSWORD, 12);
+    const idx = users.findIndex(u => u.email === ADMIN_EMAIL);
+    if (idx === -1) {
       users.push({
         _id: 'user-admin-1',
         name: 'Admin',
@@ -335,6 +342,13 @@ const seedDefaultAdmin = async () => {
       });
       saveLocalFileStore(USERS_FILE, users);
       console.log(`Default admin seeded to local JSON: ${ADMIN_EMAIL}`);
+    } else {
+      const pwMatch = await bcrypt.compare(ADMIN_PASSWORD, users[idx].password);
+      if (!pwMatch) {
+        users[idx].password = hashed;
+        saveLocalFileStore(USERS_FILE, users);
+        console.log(`Admin password synced from env var (local): ${ADMIN_EMAIL}`);
+      }
     }
   }
 };
