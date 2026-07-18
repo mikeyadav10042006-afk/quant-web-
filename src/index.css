@@ -810,7 +810,7 @@ spline-viewer::part(canvas) {
   flex-shrink: 0;
 }
 
-/* ── Liquid Energy Fill — Apple keynote style ── */
+/* ── Liquid Water Fill — realistic rising water ── */
 .liquid-fill {
   position: absolute;
   bottom: 0;
@@ -819,7 +819,7 @@ spline-viewer::part(canvas) {
   height: 0%;
   z-index: 2;
   pointer-events: none;
-  transition: height 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: height 1s cubic-bezier(0.22, 1, 0.36, 1);
   overflow: hidden;
 }
 .group:hover .liquid-fill {
@@ -828,43 +828,41 @@ spline-viewer::part(canvas) {
 .liquid-body {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(79,209,255,0.02) 0%, rgba(79,209,255,0.12) 40%, rgba(77,200,250,0.22) 100%);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
 }
 .liquid-glow {
   position: absolute;
-  top: -30px;
+  top: -40px;
   left: 0;
   right: 0;
-  height: 60px;
-  background: linear-gradient(180deg, rgba(79,209,255,0.35) 0%, rgba(125,211,252,0.15) 40%, transparent 100%);
-  filter: blur(12px);
+  height: 80px;
+  filter: blur(14px);
   opacity: 0;
-  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .group:hover .liquid-glow {
   opacity: 1;
 }
 .liquid-wave {
   position: absolute;
-  top: -22px;
+  top: -26px;
   left: -50%;
   width: 200%;
-  height: 44px;
-  animation: waveShift 3.5s ease-in-out infinite;
+  height: 52px;
+  animation: waterFill 3s ease-in-out infinite;
   will-change: transform;
 }
 .liquid-wave-2 {
-  top: -16px;
-  animation: waveShift2 4.2s ease-in-out infinite;
-  opacity: 0.5;
+  top: -18px;
+  animation: waterFill2 3.8s ease-in-out infinite;
+  opacity: 0.6;
 }
-@keyframes waveShift {
+@keyframes waterFill {
   0%, 100% { transform: translateX(0); }
   50% { transform: translateX(-25%); }
 }
-@keyframes waveShift2 {
+@keyframes waterFill2 {
   0%, 100% { transform: translateX(-25%); }
   50% { transform: translateX(0); }
 }
@@ -878,24 +876,22 @@ spline-viewer::part(canvas) {
   bottom: -8px;
   width: 3px;
   height: 3px;
-  background: rgba(255,255,255,0.6);
   border-radius: 50%;
-  box-shadow: 0 0 6px rgba(79,209,255,0.6), 0 0 12px rgba(125,211,252,0.3);
   opacity: 0;
-  animation: particleRise 2.5s ease-in-out infinite;
+  animation: bubbleRise 2.5s ease-in-out infinite;
   will-change: transform, opacity;
 }
 .group:hover .liquid-particle {
   opacity: 1;
 }
-@keyframes particleRise {
+@keyframes bubbleRise {
   0% { transform: translateY(0) scale(1); opacity: 0; }
-  15% { opacity: 0.7; }
+  15% { opacity: 0.8; }
   85% { opacity: 0.3; }
-  100% { transform: translateY(-220px) scale(0.3); opacity: 0; }
+  100% { transform: translateY(-240px) scale(0.2); opacity: 0; }
 }
 
-/* ── Phone hover — only 6px lift, liquid does the rest ── */
+/* ── Phone hover — 6px lift ── */
 .phone-mockup-center:hover {
   transform: translateY(-6px);
   filter: drop-shadow(0 30px 60px rgba(59, 130, 246, 0.2));

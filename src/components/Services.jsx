@@ -13,8 +13,7 @@ export default function Services() {
       screenBg: 'linear-gradient(180deg, #eef4ff 0%, #e0ecff 100%)',
       iconBg: 'rgba(59,130,246,0.12)',
       buttonBg: 'linear-gradient(135deg, #3b82f6, #2563eb)',
-      bgImage: '/phone-bg/gtm.jpg',
-      glowColor: 'rgba(59,130,246,0.12)',
+      liquid: { body: 'rgba(59,130,246,0.18)', wave1: '#3b82f6', wave2: '#60a5fa', glow: '#3b82f6', particle: '#93c5fd' },
     },
     {
       icon: <HeartPulse className="w-7 h-7" style={{ color: '#06b6d4' }} />,
@@ -25,8 +24,7 @@ export default function Services() {
       screenBg: 'linear-gradient(180deg, #ecfeff 0%, #e0f7fa 100%)',
       iconBg: 'rgba(6,182,212,0.12)',
       buttonBg: 'linear-gradient(135deg, #06b6d4, #0891b2)',
-      bgImage: '/phone-bg/healthcare.jpg',
-      glowColor: 'rgba(6,182,212,0.12)',
+      liquid: { body: 'rgba(6,182,212,0.18)', wave1: '#06b6d4', wave2: '#22d3ee', glow: '#06b6d4', particle: '#67e8f9' },
     },
     {
       icon: <Landmark className="w-7 h-7" style={{ color: '#6366f1' }} />,
@@ -37,8 +35,7 @@ export default function Services() {
       screenBg: 'linear-gradient(180deg, #eef2ff 0%, #e0e7ff 100%)',
       iconBg: 'rgba(99,102,241,0.12)',
       buttonBg: 'linear-gradient(135deg, #6366f1, #4f46e5)',
-      bgImage: '/phone-bg/smartcity.jpg',
-      glowColor: 'rgba(99,102,241,0.12)',
+      liquid: { body: 'rgba(99,102,241,0.18)', wave1: '#6366f1', wave2: '#818cf8', glow: '#6366f1', particle: '#a5b4fc' },
     }
   ];
 
@@ -60,21 +57,21 @@ export default function Services() {
             <div className="phone-power-btn" />
             <div className="phone-notch" />
             <div className="phone-screen" style={{ background: service.screenBg }}>
-              {/* Liquid Energy Fill */}
+              {/* Liquid Energy Fill — per-phone color */}
               <div className="liquid-fill">
-                <div className="liquid-body" />
-                <div className="liquid-glow" />
+                <div className="liquid-body" style={{ background: `linear-gradient(180deg, ${service.liquid.body.replace('0.18','0.04')} 0%, ${service.liquid.body} 100%)` }} />
+                <div className="liquid-glow" style={{ background: `linear-gradient(180deg, ${service.liquid.glow}55 0%, ${service.liquid.glow}22 40%, transparent 100%)` }} />
                 <svg className="liquid-wave" viewBox="0 0 600 60" preserveAspectRatio="none">
                   <defs>
                     <linearGradient id={`wg${index}`} x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#67E8F9" stopOpacity="0.6" />
-                      <stop offset="100%" stopColor="#4FD1FF" stopOpacity="0.45" />
+                      <stop offset="0%" stopColor={service.liquid.wave1} stopOpacity="0.7" />
+                      <stop offset="100%" stopColor={service.liquid.wave2} stopOpacity="0.5" />
                     </linearGradient>
                   </defs>
                   <path d="M0,25 C80,8 160,42 240,25 C320,8 400,42 480,25 C560,8 600,18 600,25 L600,60 L0,60Z" fill={`url(#wg${index})`} />
                 </svg>
                 <svg className="liquid-wave liquid-wave-2" viewBox="0 0 600 60" preserveAspectRatio="none">
-                  <path d="M0,30 C100,12 160,48 260,30 C360,12 420,48 520,30 C580,18 600,22 600,30 L600,60 L0,60Z" fill="#4FD1FF" fillOpacity="0.25" />
+                  <path d="M0,30 C100,12 160,48 260,30 C360,12 420,48 520,30 C580,18 600,22 600,30 L600,60 L0,60Z" fill={service.liquid.wave2} fillOpacity="0.3" />
                 </svg>
                 <div className="liquid-particles">
                   {[...Array(10)].map((_, i) => (
@@ -82,6 +79,8 @@ export default function Services() {
                       left: `${8 + (i * 9)}%`,
                       animationDelay: `${i * 0.25}s`,
                       animationDuration: `${2.2 + (i % 4) * 0.5}s`,
+                      background: service.liquid.particle,
+                      boxShadow: `0 0 6px ${service.liquid.glow}99, 0 0 12px ${service.liquid.glow}44`,
                     }} />
                   ))}
                 </div>
