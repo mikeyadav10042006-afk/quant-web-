@@ -1,29 +1,32 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { HeartPulse, Landmark, ShoppingBag, ArrowRight } from 'lucide-react';
+import { HeartPulse, Landmark, ShoppingBag, ChevronRight } from 'lucide-react';
 
 export default function Services() {
   const offerings = [
     {
-      icon: <HeartPulse className="w-8 h-8 text-teal-600" />,
+      icon: <HeartPulse className="w-7 h-7 text-white" />,
       title: 'Healthcare AI',
-      desc: 'Deploy custom models for clinical operations, diagnostics routing, and HIPAA-compliant patient workflow automations.',
-      points: ['Diagnostics support systems', 'Multi-modal EHR processing', 'Clinical shift models'],
-      link: '/healthcare-ai'
+      desc: 'AI-powered clinical diagnostics and HIPAA-compliant patient workflow automations.',
+      points: ['Diagnostics support systems', 'Multi-modal EHR processing'],
+      link: '/healthcare-ai',
+      gradient: 'linear-gradient(160deg, #0d3d38 0%, #0a5c4f 40%, #10b981 100%)',
     },
     {
-      icon: <Landmark className="w-8 h-8 text-emerald-600" />,
+      icon: <Landmark className="w-7 h-7 text-white" />,
       title: 'Smart City Solutions',
-      desc: 'Leverage AI-driven frameworks to optimize urban infrastructure, manage traffic congestion, reduce energy waste, and streamline public safety systems.',
-      points: ['Intelligent traffic routing', 'Smart grid energy optimization', 'AI-powered public safety'],
-      link: '/smart-city'
+      desc: 'AI frameworks to optimize urban infrastructure, traffic, energy, and public safety.',
+      points: ['Intelligent traffic routing', 'Smart grid energy optimization'],
+      link: '/smart-city',
+      gradient: 'linear-gradient(160deg, #0c2d48 0%, #134e6f 40%, #0ea5e9 100%)',
     },
     {
-      icon: <ShoppingBag className="w-8 h-8 text-teal-700" />,
+      icon: <ShoppingBag className="w-7 h-7 text-white" />,
       title: 'Go-To-Market',
-      desc: 'We help you launch and scale your technology in new markets through localization, channel enablement, and strategic outreach.',
-      points: ['Market localization strategies', 'Channel partner enablement', 'Strategic outreach scaling'],
-      link: '/salesforce-checklist'
+      desc: 'Launch and scale your technology through localization, enablement, and outreach.',
+      points: ['Market localization strategies', 'Channel partner enablement'],
+      link: '/salesforce-checklist',
+      gradient: 'linear-gradient(160deg, #1a1a2e 0%, #2d3561 40%, #7c3aed 100%)',
     }
   ];
 
@@ -42,60 +45,56 @@ export default function Services() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-12 justify-items-center">
           {offerings.map((service, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-[0_20px_40px_rgba(0,153,102,0.15),_0_0_15px_rgba(0,153,102,0.1)] transition-all duration-500 ease-out flex flex-col text-left group hover:-translate-y-2"
+              transition={{ duration: 0.6, delay: index * 0.15 }}
+              className="phone-mockup group cursor-pointer"
             >
-              <div className="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center mb-6 group-hover:bg-teal-50 transition-colors duration-200">
-                {service.icon}
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">{service.title}</h3>
-              <p className="text-sm text-slate-500 leading-relaxed font-medium mb-6">
-                {service.desc}
-              </p>
+              <Link to={service.link} className="block">
+                <div className="phone-frame">
+                  <div className="phone-notch" />
+                  <div className="phone-screen" style={{ background: service.gradient }}>
+                    <div className="phone-status-bar">
+                      <span className="text-[10px] font-semibold text-white/70">9:41</span>
+                      <div className="flex items-center gap-1">
+                        <div className="w-3.5 h-2 border border-white/50 rounded-sm relative">
+                          <div className="absolute inset-[1px] bg-white/70 rounded-[1px]" style={{ width: '70%' }} />
+                        </div>
+                      </div>
+                    </div>
 
-              <hr className="border-slate-50 mb-6" />
+                    <div className="phone-content">
+                      <div className="w-12 h-12 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center mb-4 border border-white/20 group-hover:scale-110 transition-transform duration-300">
+                        {service.icon}
+                      </div>
+                      <h3 className="text-lg font-bold text-white mb-2">{service.title}</h3>
+                      <p className="text-[13px] text-white/75 leading-relaxed mb-5">{service.desc}</p>
 
-              <ul className="space-y-3 mb-8 flex-1">
-                {service.points.map((pt, idx) => (
-                  <li key={idx} className="flex items-center space-x-2 text-xs font-semibold text-slate-600">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[#059669]" />
-                    <span>{pt}</span>
-                  </li>
-                ))}
-              </ul>
+                      <ul className="space-y-2.5 mb-6">
+                        {service.points.map((pt, idx) => (
+                          <li key={idx} className="flex items-center gap-2 text-[12px] font-medium text-white/85">
+                            <div className="w-1.5 h-1.5 rounded-full bg-white/60 shrink-0" />
+                            <span>{pt}</span>
+                          </li>
+                        ))}
+                      </ul>
 
-              <div className="mt-auto pt-6 border-t border-slate-100 space-y-4">
-                <a
-                  href="#contact"
-                  className="flex items-center space-x-2 text-sm font-bold text-teal-600 group-hover:text-teal-700 transition-colors"
-                >
-                  <span>Request Case Study</span>
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </a>
-
-                {service.link ? (
-                  <Link
-                    to={service.link}
-                    className="block w-full text-center rounded-xl border-2 border-[#059669] bg-transparent text-[#059669] text-sm font-bold px-6 py-3 transition-all duration-300 ease-out hover:bg-[#059669] hover:text-white hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(5,150,105,0.6)]"
-                  >
-                    Know More
-                  </Link>
-                ) : (
-                  <a
-                    href="#contact"
-                    className="block w-full text-center rounded-xl border-2 border-[#059669] bg-transparent text-[#059669] text-sm font-bold px-6 py-3 transition-all duration-300 ease-out hover:bg-[#059669] hover:text-white hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(5,150,105,0.6)]"
-                  >
-                    Know More
-                  </a>
-                )}
-              </div>
+                      <div className="mt-auto">
+                        <div className="w-full flex items-center justify-center gap-1.5 bg-white/15 backdrop-blur-sm border border-white/25 rounded-xl py-2.5 px-4 text-white text-sm font-semibold group-hover:bg-white/25 transition-colors duration-300">
+                          <span>Know More</span>
+                          <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="phone-home-bar" />
+                </div>
+              </Link>
             </motion.div>
           ))}
         </div>
