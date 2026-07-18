@@ -386,7 +386,7 @@ export default function HealthcareAI() {
               <img
                 src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=800&q=80"
                 alt="HIMS Database Software"
-                className="w-full h-80 lg:h-[440px] object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                className="w-full h-80 lg:h-[440px] object-cover transition-all duration-700 rotate-[-3deg] group-hover:rotate-0 group-hover:scale-[1.03]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a1e4d]/30 via-[#0a1e4d]/5 to-transparent" />
               {/* Overlay metric */}
