@@ -29,7 +29,7 @@ export default function Hero() {
     }}>
       {/* Premium semi-transparent overlay */}
       <div className="absolute inset-0 pointer-events-none z-0" style={{
-        background: 'linear-gradient(135deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.45) 40%, rgba(255,255,255,0.6) 100%)'
+        background: 'linear-gradient(135deg, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0.25) 45%, rgba(240,253,250,0.45) 100%)'
       }} />
       {/* Soft ambient gradient across left content area */}
       <div className="absolute inset-y-0 left-0 w-3/5 pointer-events-none opacity-60" style={{
