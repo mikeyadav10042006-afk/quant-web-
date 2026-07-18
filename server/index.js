@@ -35,65 +35,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DATA_DIR = path.join(__dirname, 'data');
 
-// --- Brevo Email Setup ---
-const BREVO_API_KEY = process.env.BREVO_API_KEY || '';
-const BREVO_SENDER_NAME = 'Quantionic Support';
-const BREVO_SENDER_EMAIL = process.env.BREVO_SENDER_EMAIL || 'mikeyadav10042006@gmail.com';
-const BREVO_REPLY_TO = process.env.BREVO_REPLY_TO || 'mikeyadav10042006@gmail.com';
-let isEmailConfigured = false;
-
-if (BREVO_API_KEY) {
-  isEmailConfigured = true;
-  console.log(`Brevo email configured. Sender: ${BREVO_SENDER_EMAIL}, Reply-To: ${BREVO_REPLY_TO}`);
-} else {
-  console.warn('No BREVO_API_KEY set. Email notifications disabled.');
-}
-
-const sendBrevoEmail = async ({ to, subject, html }) => {
-  if (!isEmailConfigured) throw new Error('Email not configured: missing BREVO_API_KEY');
-
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 10000);
-
-  try {
-    const resp = await fetch('https://api.brevo.com/v3/smtp/email', {
-      method: 'POST',
-      headers: {
-        'accept': 'application/json',
-        'content-type': 'application/json',
-        'api-key': BREVO_API_KEY,
-      },
-      signal: controller.signal,
-      body: JSON.stringify({
-        sender: { name: BREVO_SENDER_NAME, email: BREVO_SENDER_EMAIL },
-        to: Array.isArray(to) ? to.map(e => ({ email: e })) : [{ email: to }],
-        replyTo: { email: BREVO_REPLY_TO, name: BREVO_SENDER_NAME },
-        subject,
-        htmlContent: html,
-      }),
-    });
-
-    const data = await resp.json();
-
-    if (!resp.ok) {
-      const errMsg = `Brevo API error ${resp.status}: ${JSON.stringify(data)}`;
-      console.error(errMsg);
-      throw new Error(errMsg);
-    }
-
-    console.log(`Brevo email sent: ${subject} -> ${JSON.stringify(to)} (messageId: ${data.messageId})`);
-  } catch (err) {
-    if (err.name === 'AbortError') {
-      console.error(`Brevo email timed out after 10s: ${subject} -> ${JSON.stringify(to)}`);
-      throw new Error(`Brevo email timeout: ${subject}`);
-    }
-    console.error('Failed to send Brevo email:', err.message || err);
-    throw err;
-  } finally {
-    clearTimeout(timeout);
-  }
-};
-
 // Make sure fallback data directory exists
 if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -380,105 +321,6 @@ const verifyRecaptcha = async (token) => {
   }
 };
 
-const sendConsultationEmail = async ({ name, email, enterprise, requirements }) => {
-  if (!isEmailConfigured) return;
-  const adminEmail = process.env.ADMIN_EMAIL || 'mikeyadav10042006@gmail.com';
-  await sendBrevoEmail({
-    to: adminEmail,
-    subject: `New Consultation Booking from ${name}`,
-    html: `
-      <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
-        <div style="background:#059669;color:white;padding:20px;border-radius:12px 12px 0 0;text-align:center;">
-          <h1 style="margin:0;font-size:22px;">New Consultation Booking</h1>
-        </div>
-        <div style="background:#f9fafb;padding:20px;border:1px solid #e5e7eb;border-radius:0 0 12px 12px;">
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Company:</strong> ${enterprise || 'N/A'}</p>
-          <p><strong>Requirements:</strong></p>
-          <div style="background:white;padding:12px;border-radius:8px;border:1px solid #e5e7eb;margin-top:8px;">
-            ${requirements}
-          </div>
-          <hr style="margin:20px 0;border:none;border-top:1px solid #e5e7eb;" />
-          <p style="color:#6b7280;font-size:12px;">This booking was submitted from the Quantionic website contact form.</p>
-        </div>
-      </div>
-    `,
-  });
-};
-
-const sendUserConfirmationEmail = async ({ name, email, type }) => {
-  if (!isEmailConfigured) return;
-  const subject = type === 'consultation'
-    ? 'Your Consultation Request has been Received — Quantionic'
-    : 'Your Message has been Received — Quantionic';
-  const body = type === 'consultation'
-    ? `
-        <p>Hi <strong>${name}</strong>,</p>
-        <p>Thank you for reaching out to <strong>Quantionic</strong>. We have successfully received your technical consultation request.</p>
-        <div style="background:white;padding:16px;border-radius:8px;border:1px solid #e5e7eb;margin:16px 0;">
-          <p style="margin:0;color:#6b7280;font-size:13px;">Our engineering team will review your requirements and get back to you within <strong>24 hours</strong>.</p>
-        </div>
-        <p>In the meantime, feel free to explore our services or reach out to us directly:</p>
-        <ul style="line-height:2;">
-          <li>Email: <a href="mailto:info@quantionic.com" style="color:#059669;">info@quantionic.com</a></li>
-          <li>Website: <a href="https://quant-web-theta.vercel.app" style="color:#059669;">quant-web-theta.vercel.app</a></li>
-        </ul>
-      `
-    : `
-        <p>Hi <strong>${name}</strong>,</p>
-        <p>Thank you for contacting <strong>Quantionic</strong>. We have received your message and will get back to you shortly.</p>
-        <div style="background:white;padding:16px;border-radius:8px;border:1px solid #e5e7eb;margin:16px 0;">
-          <p style="margin:0;color:#6b7280;font-size:13px;">Our team typically responds within <strong>24 hours</strong>.</p>
-        </div>
-        <p>Feel free to explore our services at <a href="https://quant-web-theta.vercel.app" style="color:#059669;">quant-web-theta.vercel.app</a>.</p>
-      `;
-  await sendBrevoEmail({
-    to: email,
-    subject,
-    html: `
-      <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
-        <div style="background:#059669;color:white;padding:20px;border-radius:12px 12px 0 0;text-align:center;">
-          <h1 style="margin:0;font-size:22px;">${type === 'consultation' ? 'Consultation Request Received' : 'Message Received'}</h1>
-        </div>
-        <div style="background:#f9fafb;padding:20px;border:1px solid #e5e7eb;border-radius:0 0 12px 12px;">
-          ${body}
-          <hr style="margin:20px 0;border:none;border-top:1px solid #e5e7eb;" />
-          <p style="color:#6b7280;font-size:12px;">Quantionic — Premium Software & Intelligence Engineering.</p>
-        </div>
-      </div>
-    `,
-  });
-};
-
-const sendNewsletterWelcomeEmail = async ({ email }) => {
-  if (!isEmailConfigured) return;
-  await sendBrevoEmail({
-    to: email,
-    subject: 'Welcome to Quantionic Newsletter!',
-    html: `
-      <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
-        <div style="background:#059669;color:white;padding:20px;border-radius:12px 12px 0 0;text-align:center;">
-          <h1 style="margin:0;font-size:22px;">Welcome to Quantionic!</h1>
-        </div>
-        <div style="background:#f9fafb;padding:20px;border:1px solid #e5e7eb;border-radius:0 0 12px 12px;">
-          <p>Hi there,</p>
-          <p>Thank you for subscribing to the <strong>Quantionic Newsletter</strong>. You'll now receive regular updates on:</p>
-          <ul style="line-height:1.8;">
-            <li>AI & Machine Learning innovations</li>
-            <li>Enterprise integration solutions</li>
-            <li>Cloud & IoT system architectures</li>
-            <li>Industry insights and case studies</li>
-          </ul>
-          <p>If you have any questions, feel free to reach out at <a href="mailto:info@quantionic.com" style="color:#059669;">info@quantionic.com</a>.</p>
-          <hr style="margin:20px 0;border:none;border-top:1px solid #e5e7eb;" />
-          <p style="color:#6b7280;font-size:12px;">Quantionic — Premium Software & Intelligence Engineering.</p>
-        </div>
-      </div>
-    `,
-  });
-};
-
 // Health check
 app.get('/', (req, res) => {
   res.json({ status: 'ok', service: 'quantionic-backend', timestamp: new Date().toISOString() });
@@ -718,7 +560,7 @@ app.post('/api/chat', async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Quantionic backend server running on port ${PORT}`);
-  console.log(`Email configured: ${isEmailConfigured}, Sender: ${BREVO_SENDER_EMAIL}, Reply-To: ${BREVO_REPLY_TO}, Admin: ${process.env.ADMIN_EMAIL || 'mikeyadav10042006@gmail.com'}`);
+  console.log(`Backend running. Admin: ${process.env.ADMIN_EMAIL || 'not set'}`);
   console.log(`AI configured: ${isGenAIConfigured}, Model: ${isGenAIConfigured ? GROQ_MODEL : 'fallback'}`);
   seedDefaultAdmin().catch((err) => console.error('Admin seed failed:', err));
 });
