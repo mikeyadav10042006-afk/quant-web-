@@ -453,7 +453,6 @@ export default function SalesforceChecklist() {
         <div className="absolute inset-0">
           <iframe
             src="https://my.spline.design/webdiagram-W20iwxjTl0tosfMl8ppwXo76/"
-            frameBorder="0"
             className="w-full h-full"
             style={{ border: 'none' }}
           />

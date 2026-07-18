@@ -109,7 +109,6 @@ export default function Hero() {
             {iframeSrc && (
               <iframe
                 src={iframeSrc}
-                frameBorder="0"
                 width="100%"
                 height="100%"
                 allow="autoplay"

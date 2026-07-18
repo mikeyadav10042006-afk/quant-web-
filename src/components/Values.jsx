@@ -67,7 +67,6 @@ export default function Values() {
                 {iframeSrc && (
                 <iframe
                   src={iframeSrc}
-                  frameBorder="0"
                   allow="autoplay"
                   title="Stackable Glass 3D"
                   style={{

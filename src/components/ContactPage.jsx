@@ -145,7 +145,6 @@ export default function ContactPage() {
 
                 <iframe
                   src="https://my.spline.design/connectingcard-zEtMCrRfbDIKth5h59C00buS/"
-                  frameBorder="0"
                   width="100%"
                   height="520"
                   allow="autoplay"
