@@ -1,5 +1,5 @@
-import { useState, useCallback, lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useState, useCallback, useEffect, lazy, Suspense } from 'react';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Stats from './components/Stats';
@@ -19,6 +19,12 @@ const ContactPage = lazy(() => import('./components/ContactPage'));
 const SmartCity = lazy(() => import('./components/SmartCity'));
 const SalesforceChecklist = lazy(() => import('./components/SalesforceChecklist'));
 const NotFoundPage = lazy(() => import('./components/NotFoundPage'));
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  return null;
+}
 
 function HomePage() {
   const [chatOpen, setChatOpen] = useState(false);
@@ -85,6 +91,7 @@ function HomePage() {
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Suspense fallback={
         <div className="h-screen flex items-center justify-center bg-[#fafbfd]">
           <div className="flex flex-col items-center gap-4">
