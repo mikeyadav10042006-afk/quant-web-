@@ -588,8 +588,6 @@ app.post('/api/consultations', rateLimit({ windowMs: 60000, max: 5 }), async (re
     try {
       const doc = new Consultation(payload);
       await doc.save();
-      sendConsultationEmail(clean).catch((e) => console.error('Email error:', e.message));
-      sendUserConfirmationEmail({ name: clean.name, email: clean.email, type: 'consultation' }).catch((e) => console.error('Email error:', e.message));
       return res.status(201).json({ success: true, message: 'Consultation saved to MongoDB', data: doc });
     } catch (err) {
       console.error('MongoDB write error:', err);
@@ -602,8 +600,6 @@ app.post('/api/consultations', rateLimit({ windowMs: 60000, max: 5 }), async (re
     payload._id = 'local-' + Date.now();
     list.unshift(payload);
     saveLocalFileStore('consultations.json', list);
-    sendConsultationEmail(payload).catch((e) => console.error('Email error:', e.message));
-    sendUserConfirmationEmail({ name: clean.name, email: clean.email, type: 'consultation' }).catch((e) => console.error('Email error:', e.message));
     return res.status(201).json({ success: true, message: 'Consultation saved to local JSON store', data: payload });
   } catch (err) {
     return res.status(500).json({ error: 'Could not write consultation to fallback database' });
@@ -629,7 +625,6 @@ app.post('/api/newsletter', rateLimit({ windowMs: 60000, max: 3 }), async (req, 
     try {
       const doc = new Subscriber(payload);
       await doc.save();
-      sendNewsletterWelcomeEmail({ email: cleanEmail }).catch((e) => console.error('Email error:', e.message));
       return res.status(201).json({ success: true, message: 'Newsletter subscribed in MongoDB', data: doc });
     } catch (err) {
       if (err.code === 11000) {
@@ -648,7 +643,6 @@ app.post('/api/newsletter', rateLimit({ windowMs: 60000, max: 3 }), async (req, 
     payload._id = 'local-sub-' + Date.now();
     list.unshift(payload);
     saveLocalFileStore('subscribers.json', list);
-    sendNewsletterWelcomeEmail({ email: cleanEmail }).catch((e) => console.error('Email error:', e.message));
     return res.status(201).json({ success: true, message: 'Newsletter subscribed in local JSON store', data: payload });
   } catch (err) {
     return res.status(500).json({ error: 'Could not subscribe to fallback database' });
