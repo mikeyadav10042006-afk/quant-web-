@@ -5,31 +5,34 @@ import { HeartPulse, Landmark, ShoppingBag, ChevronRight } from 'lucide-react';
 export default function Services() {
   const offerings = [
     {
-      icon: <ShoppingBag className="w-7 h-7" style={{ color: '#8b5e50' }} />,
+      icon: <ShoppingBag className="w-7 h-7" style={{ color: '#3b82f6' }} />,
       title: 'Go-To-Market',
       desc: 'Launch and scale your technology through localization, enablement, and outreach.',
       points: ['Market localization strategies', 'Channel partner enablement'],
       link: '/salesforce-checklist',
-      screenBg: '#d4a99a',
-      iconBg: '#c49988',
+      screenBg: 'linear-gradient(180deg, #eef4ff 0%, #e0ecff 100%)',
+      iconBg: 'rgba(59,130,246,0.12)',
+      buttonBg: 'linear-gradient(135deg, #3b82f6, #2563eb)',
     },
     {
-      icon: <HeartPulse className="w-7 h-7" style={{ color: '#4a6741' }} />,
+      icon: <HeartPulse className="w-7 h-7" style={{ color: '#06b6d4' }} />,
       title: 'Healthcare AI',
       desc: 'AI-powered clinical diagnostics and HIPAA-compliant patient workflow automations.',
       points: ['Diagnostics support systems', 'Multi-modal EHR processing'],
       link: '/healthcare-ai',
-      screenBg: '#c8d5be',
-      iconBg: '#b8c5ad',
+      screenBg: 'linear-gradient(180deg, #ecfeff 0%, #e0f7fa 100%)',
+      iconBg: 'rgba(6,182,212,0.12)',
+      buttonBg: 'linear-gradient(135deg, #06b6d4, #0891b2)',
     },
     {
-      icon: <Landmark className="w-7 h-7" style={{ color: '#6b5c3e' }} />,
+      icon: <Landmark className="w-7 h-7" style={{ color: '#6366f1' }} />,
       title: 'Smart City Solutions',
       desc: 'AI frameworks to optimize urban infrastructure, traffic, energy, and public safety.',
       points: ['Intelligent traffic routing', 'Smart grid energy optimization'],
       link: '/smart-city',
-      screenBg: '#d9ccb0',
-      iconBg: '#c9bb9e',
+      screenBg: 'linear-gradient(180deg, #eef2ff 0%, #e0e7ff 100%)',
+      iconBg: 'rgba(99,102,241,0.12)',
+      buttonBg: 'linear-gradient(135deg, #6366f1, #4f46e5)',
     }
   ];
 
@@ -52,10 +55,10 @@ export default function Services() {
             <div className="phone-notch" />
             <div className="phone-screen" style={{ background: service.screenBg }}>
               <div className="phone-status-bar">
-                <span className="text-[10px] font-semibold" style={{ color: 'rgba(60,50,40,0.6)' }}>9:41</span>
+                <span className="text-[10px] font-semibold" style={{ color: 'rgba(30,40,60,0.5)' }}>9:41</span>
                 <div className="flex items-center gap-1">
-                  <div className="w-3.5 h-2 rounded-sm relative" style={{ border: '1px solid rgba(60,50,40,0.3)' }}>
-                    <div className="absolute inset-[1px] rounded-[1px]" style={{ width: '70%', background: 'rgba(60,50,40,0.4)' }} />
+                  <div className="w-3.5 h-2 rounded-sm relative" style={{ border: '1px solid rgba(30,40,60,0.25)' }}>
+                    <div className="absolute inset-[1px] rounded-[1px]" style={{ width: '70%', background: 'rgba(30,40,60,0.35)' }} />
                   </div>
                 </div>
               </div>
@@ -64,22 +67,22 @@ export default function Services() {
                 <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300" style={{ background: service.iconBg }}>
                   {service.icon}
                 </div>
-                <h3 className="text-lg font-bold mb-2" style={{ color: '#2c2418' }}>{service.title}</h3>
-                <p className="text-[13px] leading-relaxed mb-5" style={{ color: 'rgba(60,50,40,0.7)' }}>{service.desc}</p>
+                <h3 className="text-lg font-bold mb-2" style={{ color: '#1e293b' }}>{service.title}</h3>
+                <p className="text-[13px] leading-relaxed mb-5" style={{ color: 'rgba(30,40,60,0.55)' }}>{service.desc}</p>
 
                 <ul className="space-y-2.5 mb-6">
                   {service.points.map((pt, idx) => (
-                    <li key={idx} className="flex items-center gap-2 text-[12px] font-medium" style={{ color: 'rgba(60,50,40,0.75)' }}>
-                      <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: 'rgba(60,50,40,0.35)' }} />
+                    <li key={idx} className="flex items-center gap-2 text-[12px] font-medium" style={{ color: 'rgba(30,40,60,0.6)' }}>
+                      <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: 'rgba(30,40,60,0.25)' }} />
                       <span>{pt}</span>
                     </li>
                   ))}
                 </ul>
 
                 <div className="mt-auto">
-                  <div className="w-full flex items-center justify-center gap-1.5 rounded-xl py-2.5 px-4 text-sm font-semibold group-hover:opacity-90 transition-opacity duration-300" style={{
-                    background: 'linear-gradient(135deg, #a08060, #8b6f50)',
-                    color: '#fff',
+                  <div className="w-full flex items-center justify-center gap-1.5 rounded-xl py-2.5 px-4 text-sm font-semibold text-white group-hover:opacity-90 transition-opacity duration-300" style={{
+                    background: service.buttonBg,
+                    boxShadow: '0 4px 14px rgba(0,0,0,0.12)',
                   }}>
                     <span>Know More</span>
                     <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -90,80 +93,58 @@ export default function Services() {
             <div className="phone-home-bar" />
           </div>
         </Link>
+        {/* Glowing Pedestal */}
+        <div className="phone-pedestal">
+          <div className="phone-pedestal-ring" />
+          <div className="phone-pedestal-glow" />
+        </div>
       </motion.div>
     );
   };
 
   return (
     <section id="services" className="relative py-20 md:py-32 overflow-hidden" style={{
-      background: 'linear-gradient(180deg, #f5f0e8 0%, #f0ebe0 40%, #f5f0e8 100%)',
+      background: 'linear-gradient(180deg, #ffffff 0%, #f8faff 40%, #f0f4ff 70%, #ffffff 100%)',
     }}>
-      {/* Subtle warm pattern */}
-      <div className="absolute inset-0 opacity-[0.015] pointer-events-none" style={{
-        backgroundImage: 'radial-gradient(circle at 1px 1px, #8b7355 1px, transparent 0)',
+      {/* Subtle dot pattern */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
+        backgroundImage: 'radial-gradient(circle at 1px 1px, #3b82f6 0.5px, transparent 0)',
         backgroundSize: '32px 32px',
       }} />
 
-      {/* Top accent line */}
-      <div className="absolute top-0 left-0 right-0 h-px" style={{
-        background: 'linear-gradient(90deg, transparent 0%, rgba(160,128,96,0.25) 50%, transparent 100%)',
-      }} />
-
-      {/* Ambient warm orbs */}
-      <div className="absolute top-1/3 left-1/6 w-[600px] h-[600px] rounded-full opacity-[0.06] pointer-events-none" style={{
-        background: 'radial-gradient(circle, #d4c4a8 0%, transparent 70%)',
+      {/* Ambient blue orbs */}
+      <div className="absolute top-1/4 left-[10%] w-[500px] h-[500px] rounded-full opacity-[0.06] pointer-events-none" style={{
+        background: 'radial-gradient(circle, #93c5fd 0%, transparent 70%)',
         filter: 'blur(80px)',
       }} />
-      <div className="absolute bottom-1/4 right-1/6 w-[500px] h-[500px] rounded-full opacity-[0.05] pointer-events-none" style={{
-        background: 'radial-gradient(circle, #c9b8a0 0%, transparent 70%)',
+      <div className="absolute bottom-1/4 right-[10%] w-[400px] h-[400px] rounded-full opacity-[0.05] pointer-events-none" style={{
+        background: 'radial-gradient(circle, #67e8f9 0%, transparent 70%)',
         filter: 'blur(80px)',
       }} />
 
-      {/* Premium top light beam — illuminates phones from above */}
+      {/* Top light beam */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] pointer-events-none" style={{
-        background: 'radial-gradient(ellipse 100% 70% at 50% 0%, rgba(255,250,240,0.7) 0%, rgba(255,248,235,0.3) 40%, transparent 70%)',
+        background: 'radial-gradient(ellipse 100% 70% at 50% 0%, rgba(255,255,255,0.8) 0%, rgba(240,244,255,0.3) 40%, transparent 70%)',
         filter: 'blur(30px)',
       }} />
-
-      {/* Focused spotlights — 3 beams from top */}
-      <div className="absolute top-0 left-0 right-0 h-full pointer-events-none z-0" style={{ overflow: 'hidden' }}>
-        {/* Left spotlight — warm rose gold */}
-        <div className="absolute top-[-20%] left-[18%] w-[120px] h-[550px] opacity-[0.12]" style={{
-          background: 'linear-gradient(180deg, rgba(212,169,154,0.8) 0%, rgba(212,169,154,0.2) 50%, transparent 100%)',
-          filter: 'blur(25px)',
-          transform: 'rotate(-4deg)',
-        }} />
-        {/* Center spotlight — warm white gold */}
-        <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[160px] h-[600px] opacity-[0.18]" style={{
-          background: 'linear-gradient(180deg, rgba(255,248,235,0.9) 0%, rgba(200,213,190,0.3) 50%, transparent 100%)',
-          filter: 'blur(30px)',
-        }} />
-        {/* Right spotlight — warm beige */}
-        <div className="absolute top-[-20%] right-[18%] w-[120px] h-[550px] opacity-[0.12]" style={{
-          background: 'linear-gradient(180deg, rgba(217,204,176,0.8) 0%, rgba(217,204,176,0.2) 50%, transparent 100%)',
-          filter: 'blur(25px)',
-          transform: 'rotate(4deg)',
-        }} />
-      </div>
 
       <div className="relative max-w-7xl mx-auto px-6">
         <div className="text-center max-w-2xl mx-auto mb-20 space-y-5">
           <span className="inline-block text-[11px] font-semibold uppercase tracking-[0.2em] px-4 py-1.5 rounded-full" style={{
-            color: '#8b7355',
-            background: 'rgba(139,115,85,0.08)',
-            border: '1px solid rgba(139,115,85,0.12)',
+            color: '#3b82f6',
+            background: 'rgba(59,130,246,0.06)',
+            border: '1px solid rgba(59,130,246,0.1)',
           }}>
             Our Offerings
           </span>
-          <h2 className="text-4xl md:text-5xl lg:text-[3.4rem] font-bold tracking-tight leading-[1.15]" style={{ color: '#2c2418' }}>
+          <h2 className="text-4xl md:text-5xl lg:text-[3.4rem] font-bold tracking-tight leading-[1.15]" style={{ color: '#0f172a' }}>
             Start Your Digital<br />Transformation Journey
           </h2>
-          <p className="text-base md:text-lg font-normal max-w-lg mx-auto leading-relaxed" style={{ color: '#8b7355' }}>
+          <p className="text-base md:text-lg font-normal max-w-lg mx-auto leading-relaxed" style={{ color: '#64748b' }}>
             Bespoke engineering solutions engineered for maximum performance, compliance, and enterprise scalability.
           </p>
-          {/* Decorative line */}
           <div className="mx-auto w-16 h-0.5 mt-6 rounded-full" style={{
-            background: 'linear-gradient(90deg, #a08060, #c49988)',
+            background: 'linear-gradient(90deg, #3b82f6, #06b6d4)',
           }} />
         </div>
 
