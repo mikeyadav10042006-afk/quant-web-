@@ -125,6 +125,27 @@ export default function Services() {
         filter: 'blur(30px)',
       }} />
 
+      {/* Focused spotlights — 3 beams from top */}
+      <div className="absolute top-0 left-0 right-0 h-full pointer-events-none z-0" style={{ overflow: 'hidden' }}>
+        {/* Left spotlight — warm rose gold */}
+        <div className="absolute top-[-20%] left-[18%] w-[120px] h-[550px] opacity-[0.12]" style={{
+          background: 'linear-gradient(180deg, rgba(212,169,154,0.8) 0%, rgba(212,169,154,0.2) 50%, transparent 100%)',
+          filter: 'blur(25px)',
+          transform: 'rotate(-4deg)',
+        }} />
+        {/* Center spotlight — warm white gold */}
+        <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[160px] h-[600px] opacity-[0.18]" style={{
+          background: 'linear-gradient(180deg, rgba(255,248,235,0.9) 0%, rgba(200,213,190,0.3) 50%, transparent 100%)',
+          filter: 'blur(30px)',
+        }} />
+        {/* Right spotlight — warm beige */}
+        <div className="absolute top-[-20%] right-[18%] w-[120px] h-[550px] opacity-[0.12]" style={{
+          background: 'linear-gradient(180deg, rgba(217,204,176,0.8) 0%, rgba(217,204,176,0.2) 50%, transparent 100%)',
+          filter: 'blur(25px)',
+          transform: 'rotate(4deg)',
+        }} />
+      </div>
+
       <div className="relative max-w-7xl mx-auto px-6">
         <div className="text-center max-w-2xl mx-auto mb-20 space-y-5">
           <span className="inline-block text-[11px] font-semibold uppercase tracking-[0.2em] px-4 py-1.5 rounded-full" style={{
