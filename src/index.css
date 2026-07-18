@@ -626,14 +626,14 @@ spline-viewer::part(canvas) {
     inset 0 -1px 0 rgba(0, 0, 0, 0.3);
 }
 
-/* Side buttons — volume + action */
+/* Side buttons — Action + Volume (left), Power (right) */
 .phone-frame::before {
   content: '';
   position: absolute;
   left: -3px;
-  top: 100px;
+  top: 95px;
   width: 3px;
-  height: 28px;
+  height: 24px;
   background: linear-gradient(180deg, #3a3a3e, #2a2a2d);
   border-radius: 3px 0 0 3px;
 }
@@ -641,11 +641,20 @@ spline-viewer::part(canvas) {
   content: '';
   position: absolute;
   left: -3px;
-  top: 145px;
+  top: 128px;
   width: 3px;
-  height: 48px;
+  height: 52px;
   background: linear-gradient(180deg, #3a3a3e, #2a2a2d);
   border-radius: 3px 0 0 3px;
+}
+.phone-power-btn {
+  position: absolute;
+  right: -3px;
+  top: 135px;
+  width: 3px;
+  height: 56px;
+  background: linear-gradient(180deg, #3a3a3e, #2a2a2d);
+  border-radius: 0 3px 3px 0;
 }
 
 /* Dynamic Island — floating pill, not old notch */

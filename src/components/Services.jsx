@@ -57,6 +57,7 @@ export default function Services() {
             >
               <Link to={service.link} className="block">
                 <div className="phone-frame">
+                  <div className="phone-power-btn" />
                   <div className="phone-notch" />
                   <div className="phone-screen" style={{ background: service.gradient }}>
                     <div className="phone-status-bar">
