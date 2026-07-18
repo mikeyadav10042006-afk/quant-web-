@@ -34,6 +34,44 @@
 
     <!-- reCAPTCHA -->
     <script src="https://www.google.com/recaptcha/api.js?render=6LfcclUtAAAAAM9ISGQsZpRIqYxHxph3_6jEHAcu"></script>
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://quant-web-theta.vercel.app/#organization",
+          "name": "Quantionic",
+          "url": "https://quant-web-theta.vercel.app",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://quant-web-theta.vercel.app/favicon.svg",
+            "width": 512,
+            "height": 512
+          },
+          "description": "Premium software and intelligence engineering consultancy. We build custom AI pipelines, cloud IoT systems, enterprise integrations, and modern frontend designs.",
+          "sameAs": [],
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "email": "info@quantionic.com",
+            "contactType": "customer service"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://quant-web-theta.vercel.app/#website",
+          "url": "https://quant-web-theta.vercel.app",
+          "name": "Quantionic",
+          "description": "AI & Full-Stack Software Engineering Consultancy",
+          "publisher": {
+            "@id": "https://quant-web-theta.vercel.app/#organization"
+          }
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>
