@@ -13,7 +13,8 @@ export default function Services() {
       screenBg: 'linear-gradient(180deg, #eef4ff 0%, #e0ecff 100%)',
       iconBg: 'rgba(59,130,246,0.12)',
       buttonBg: 'linear-gradient(135deg, #3b82f6, #2563eb)',
-      bgClass: 'phone-bg-gtm',
+      bgImage: '/phone-bg/gtm.jpg',
+      glowColor: 'rgba(59,130,246,0.12)',
     },
     {
       icon: <HeartPulse className="w-7 h-7" style={{ color: '#06b6d4' }} />,
@@ -24,7 +25,8 @@ export default function Services() {
       screenBg: 'linear-gradient(180deg, #ecfeff 0%, #e0f7fa 100%)',
       iconBg: 'rgba(6,182,212,0.12)',
       buttonBg: 'linear-gradient(135deg, #06b6d4, #0891b2)',
-      bgClass: 'phone-bg-healthcare',
+      bgImage: '/phone-bg/healthcare.jpg',
+      glowColor: 'rgba(6,182,212,0.12)',
     },
     {
       icon: <Landmark className="w-7 h-7" style={{ color: '#6366f1' }} />,
@@ -35,7 +37,8 @@ export default function Services() {
       screenBg: 'linear-gradient(180deg, #eef2ff 0%, #e0e7ff 100%)',
       iconBg: 'rgba(99,102,241,0.12)',
       buttonBg: 'linear-gradient(135deg, #6366f1, #4f46e5)',
-      bgClass: 'phone-bg-smartcity',
+      bgImage: '/phone-bg/smartcity.jpg',
+      glowColor: 'rgba(99,102,241,0.12)',
     }
   ];
 
@@ -57,10 +60,16 @@ export default function Services() {
             <div className="phone-power-btn" />
             <div className="phone-notch" />
             <div className="phone-screen" style={{ background: service.screenBg }}>
-              {/* CSS abstract background — reveals on hover */}
-              <div className={`phone-bg-art ${service.bgClass}`} />
-              {/* Glow overlay on hover */}
-              <div className="phone-glow-overlay" />
+              {/* Background image — subtle, reveals on hover */}
+              <div
+                className="phone-bg-image"
+                style={{ backgroundImage: `url(${service.bgImage})` }}
+              />
+              {/* Color glow overlay on hover */}
+              <div
+                className="phone-glow-overlay"
+                style={{ background: `radial-gradient(ellipse at 50% 30%, ${service.glowColor} 0%, transparent 60%)` }}
+              />
               <div className="phone-status-bar">
                 <span className="text-[10px] font-semibold" style={{ color: 'rgba(30,40,60,0.5)' }}>9:41</span>
                 <div className="flex items-center gap-1">

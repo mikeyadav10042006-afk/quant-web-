@@ -819,64 +819,22 @@ spline-viewer::part(canvas) {
   flex-shrink: 0;
 }
 
-/* ── Background Art — CSS-only abstract patterns ── */
-.phone-bg-art {
+/* ── Background Image — subtle, reveals on hover ── */
+.phone-bg-image {
   position: absolute;
   inset: 0;
-  opacity: 0.07;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.05;
   transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1);
   pointer-events: none;
   z-index: 1;
 }
-.group:hover .phone-bg-art {
-  opacity: 0.22;
+.group:hover .phone-bg-image {
+  opacity: 0.18;
 }
 
-/* Go-To-Market — business grid + chart lines */
-.phone-bg-gtm {
-  background:
-    linear-gradient(90deg, rgba(59,130,246,0.3) 1px, transparent 1px),
-    linear-gradient(rgba(59,130,246,0.3) 1px, transparent 1px),
-    linear-gradient(135deg, transparent 40%, rgba(59,130,246,0.15) 40%, rgba(59,130,246,0.15) 42%, transparent 42%),
-    linear-gradient(135deg, transparent 55%, rgba(59,130,246,0.12) 55%, rgba(59,130,246,0.12) 57%, transparent 57%),
-    linear-gradient(135deg, transparent 70%, rgba(59,130,246,0.1) 70%, rgba(59,130,246,0.1) 72%, transparent 72%),
-    radial-gradient(circle at 30% 25%, rgba(59,130,246,0.2) 0%, transparent 25%),
-    radial-gradient(circle at 70% 65%, rgba(59,130,246,0.15) 0%, transparent 20%),
-    radial-gradient(circle at 50% 85%, rgba(59,130,246,0.12) 0%, transparent 15%);
-  background-size: 40px 40px, 40px 40px, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
-}
-
-/* Healthcare AI — medical cross + pulse wave */
-.phone-bg-healthcare {
-  background:
-    linear-gradient(90deg, transparent 46%, rgba(6,182,212,0.25) 46%, rgba(6,182,212,0.25) 54%, transparent 54%),
-    linear-gradient(0deg, transparent 42%, rgba(6,182,212,0.25) 42%, rgba(6,182,212,0.25) 58%, transparent 58%),
-    radial-gradient(circle at 50% 50%, rgba(6,182,212,0.12) 30%, transparent 30%),
-    radial-gradient(circle at 20% 20%, rgba(6,182,212,0.15) 0%, transparent 18%),
-    radial-gradient(circle at 80% 30%, rgba(6,182,212,0.1) 0%, transparent 15%),
-    radial-gradient(circle at 30% 75%, rgba(6,182,212,0.12) 0%, transparent 12%),
-    radial-gradient(circle at 75% 80%, rgba(6,182,212,0.08) 0%, transparent 10%),
-    linear-gradient(135deg, transparent 20%, rgba(6,182,212,0.06) 20%, rgba(6,182,212,0.06) 22%, transparent 22%),
-    linear-gradient(135deg, transparent 35%, rgba(6,182,212,0.04) 35%, rgba(6,182,212,0.04) 37%, transparent 37%);
-}
-
-/* Smart City — circuit board + city blocks */
-.phone-bg-smartcity {
-  background:
-    linear-gradient(90deg, rgba(99,102,241,0.2) 1px, transparent 1px),
-    linear-gradient(rgba(99,102,241,0.2) 1px, transparent 1px),
-    linear-gradient(135deg, transparent 30%, rgba(99,102,241,0.12) 30%, rgba(99,102,241,0.12) 31%, transparent 31%),
-    linear-gradient(45deg, transparent 60%, rgba(99,102,241,0.1) 60%, rgba(99,102,241,0.1) 61%, transparent 61%),
-    radial-gradient(circle at 25% 30%, rgba(99,102,241,0.18) 0%, transparent 20%),
-    radial-gradient(circle at 75% 25%, rgba(99,102,241,0.12) 0%, transparent 15%),
-    radial-gradient(circle at 50% 70%, rgba(99,102,241,0.15) 0%, transparent 18%),
-    radial-gradient(circle at 20% 80%, rgba(99,102,241,0.1) 0%, transparent 12%),
-    radial-gradient(circle at 80% 75%, rgba(99,102,241,0.08) 0%, transparent 10%),
-    linear-gradient(180deg, transparent 45%, rgba(99,102,241,0.06) 45%, rgba(99,102,241,0.06) 55%, transparent 55%);
-  background-size: 35px 35px, 35px 35px, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
-}
-
-/* ── Glow Overlay — premium hover glow ── */
+/* ── Glow Overlay — color-matched hover glow ── */
 .phone-glow-overlay {
   position: absolute;
   inset: 0;
@@ -888,15 +846,6 @@ spline-viewer::part(canvas) {
 }
 .group:hover .phone-glow-overlay {
   opacity: 1;
-}
-.phone-bg-gtm ~ .phone-glow-overlay {
-  background: radial-gradient(ellipse at 50% 30%, rgba(59,130,246,0.08) 0%, transparent 60%);
-}
-.phone-bg-healthcare ~ .phone-glow-overlay {
-  background: radial-gradient(ellipse at 50% 30%, rgba(6,182,212,0.08) 0%, transparent 60%);
-}
-.phone-bg-smartcity ~ .phone-glow-overlay {
-  background: radial-gradient(ellipse at 50% 30%, rgba(99,102,241,0.08) 0%, transparent 60%);
 }
 
 /* ── Screen — SIDE ── */
