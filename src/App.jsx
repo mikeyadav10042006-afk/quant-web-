@@ -18,6 +18,7 @@ const HealthcareAI = lazy(() => import('./components/HealthcareAI'));
 const ContactPage = lazy(() => import('./components/ContactPage'));
 const SmartCity = lazy(() => import('./components/SmartCity'));
 const SalesforceChecklist = lazy(() => import('./components/SalesforceChecklist'));
+const NotFoundPage = lazy(() => import('./components/NotFoundPage'));
 
 function HomePage() {
   const [chatOpen, setChatOpen] = useState(false);
@@ -98,6 +99,7 @@ function App() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/smart-city" element={<SmartCity />} />
           <Route path="/salesforce-checklist" element={<SalesforceChecklist />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
