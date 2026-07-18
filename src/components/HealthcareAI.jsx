@@ -380,13 +380,13 @@ export default function HealthcareAI() {
 
         <div className="relative max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           {/* Image */}
-          <div className="lg:col-span-5 flex justify-center order-2 lg:order-1 relative group overflow-hidden">
+          <div className="lg:col-span-5 flex justify-center order-2 lg:order-1 relative group">
             <div className="absolute -inset-8 bg-gradient-to-tr from-[#009966]/[0.06] via-transparent to-teal-50/40 rounded-[3rem] pointer-events-none group-hover:from-[#009966]/[0.1] transition-all duration-700" />
-            <div className="relative rounded-3xl overflow-hidden premium-shadow border border-slate-100/60 bg-slate-100 group-hover:shadow-2xl group-hover:shadow-[#009966]/[0.08] transition-all duration-700">
+            <div className="relative rounded-3xl overflow-hidden premium-shadow border border-slate-100/60 transition-all duration-700 rotate-[-3deg] group-hover:rotate-0 group-hover:shadow-2xl group-hover:shadow-[#009966]/[0.08]">
               <img
                 src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=800&q=80"
                 alt="HIMS Database Software"
-                className="w-full h-80 lg:h-[440px] object-cover transition-all duration-700 rotate-[-3deg] group-hover:rotate-0 group-hover:scale-[1.03]"
+                className="w-full h-80 lg:h-[440px] object-cover transition-transform duration-700 group-hover:scale-[1.03]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a1e4d]/30 via-[#0a1e4d]/5 to-transparent" />
               {/* Overlay metric */}
