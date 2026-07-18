@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  ArrowLeft, Check, Shield, Lock, Users, AlertTriangle,
+  ArrowLeft, Shield, Lock, Users, AlertTriangle,
   ChevronRight, CheckCircle, ArrowUpRight, Activity, Database,
   Zap, Heart, Brain, Cpu, Globe, ShieldCheck,
   TrendingUp, Clock, Sparkles
