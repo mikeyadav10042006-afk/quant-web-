@@ -27,8 +27,10 @@ export default function Hero() {
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
     }}>
-      {/* White overlay for text readability */}
-      <div className="absolute inset-0 bg-white/85 pointer-events-none z-0" />
+      {/* Premium semi-transparent overlay */}
+      <div className="absolute inset-0 pointer-events-none z-0" style={{
+        background: 'linear-gradient(135deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.45) 40%, rgba(255,255,255,0.6) 100%)'
+      }} />
       {/* Soft ambient gradient across left content area */}
       <div className="absolute inset-y-0 left-0 w-3/5 pointer-events-none opacity-60" style={{
         background: 'radial-gradient(ellipse 100% 80% at -5% 45%, rgba(20,184,166,0.04) 0%, transparent 65%), radial-gradient(ellipse 70% 60% at 35% 70%, rgba(103,232,249,0.025) 0%, transparent 55%), radial-gradient(ellipse 60% 50% at 20% 25%, rgba(167,243,208,0.02) 0%, transparent 45%)'
