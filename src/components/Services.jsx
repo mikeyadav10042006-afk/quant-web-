@@ -30,6 +30,64 @@ export default function Services() {
     }
   ];
 
+  const renderPhone = (service, index) => {
+    const isCenter = index === 1;
+    const sizeClass = isCenter ? 'phone-mockup-center' : 'phone-mockup-side';
+
+    return (
+      <motion.div
+        key={index}
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: index * 0.15 }}
+        className={`${sizeClass} group cursor-pointer`}
+      >
+        <Link to={service.link} className="block">
+          <div className="phone-frame">
+            <div className="phone-power-btn" />
+            <div className="phone-notch" />
+            <div className="phone-screen" style={{ background: service.gradient }}>
+              <div className="phone-status-bar">
+                <span className="text-[10px] font-semibold text-white/70">9:41</span>
+                <div className="flex items-center gap-1">
+                  <div className="w-3.5 h-2 border border-white/50 rounded-sm relative">
+                    <div className="absolute inset-[1px] bg-white/70 rounded-[1px]" style={{ width: '70%' }} />
+                  </div>
+                </div>
+              </div>
+
+              <div className="phone-content">
+                <div className="w-12 h-12 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center mb-4 border border-white/20 group-hover:scale-110 transition-transform duration-300">
+                  {service.icon}
+                </div>
+                <h3 className="text-lg font-bold text-white mb-2">{service.title}</h3>
+                <p className="text-[13px] text-white/75 leading-relaxed mb-5">{service.desc}</p>
+
+                <ul className="space-y-2.5 mb-6">
+                  {service.points.map((pt, idx) => (
+                    <li key={idx} className="flex items-center gap-2 text-[12px] font-medium text-white/85">
+                      <div className="w-1.5 h-1.5 rounded-full bg-white/60 shrink-0" />
+                      <span>{pt}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-auto">
+                  <div className="w-full flex items-center justify-center gap-1.5 bg-white/15 backdrop-blur-sm border border-white/25 rounded-xl py-2.5 px-4 text-white text-sm font-semibold group-hover:bg-white/25 transition-colors duration-300">
+                    <span>Know More</span>
+                    <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="phone-home-bar" />
+          </div>
+        </Link>
+      </motion.div>
+    );
+  };
+
   return (
     <section id="services" className="py-14 md:py-24 bg-white border-b border-slate-100">
       <div className="max-w-7xl mx-auto px-6">
@@ -45,59 +103,10 @@ export default function Services() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-12 justify-items-center">
-          {offerings.map((service, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.15 }}
-              className="phone-mockup group cursor-pointer"
-            >
-              <Link to={service.link} className="block">
-                <div className="phone-frame">
-                  <div className="phone-power-btn" />
-                  <div className="phone-notch" />
-                  <div className="phone-screen" style={{ background: service.gradient }}>
-                    <div className="phone-status-bar">
-                      <span className="text-[10px] font-semibold text-white/70">9:41</span>
-                      <div className="flex items-center gap-1">
-                        <div className="w-3.5 h-2 border border-white/50 rounded-sm relative">
-                          <div className="absolute inset-[1px] bg-white/70 rounded-[1px]" style={{ width: '70%' }} />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="phone-content">
-                      <div className="w-12 h-12 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center mb-4 border border-white/20 group-hover:scale-110 transition-transform duration-300">
-                        {service.icon}
-                      </div>
-                      <h3 className="text-lg font-bold text-white mb-2">{service.title}</h3>
-                      <p className="text-[13px] text-white/75 leading-relaxed mb-5">{service.desc}</p>
-
-                      <ul className="space-y-2.5 mb-6">
-                        {service.points.map((pt, idx) => (
-                          <li key={idx} className="flex items-center gap-2 text-[12px] font-medium text-white/85">
-                            <div className="w-1.5 h-1.5 rounded-full bg-white/60 shrink-0" />
-                            <span>{pt}</span>
-                          </li>
-                        ))}
-                      </ul>
-
-                      <div className="mt-auto">
-                        <div className="w-full flex items-center justify-center gap-1.5 bg-white/15 backdrop-blur-sm border border-white/25 rounded-xl py-2.5 px-4 text-white text-sm font-semibold group-hover:bg-white/25 transition-colors duration-300">
-                          <span>Know More</span>
-                          <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="phone-home-bar" />
-                </div>
-              </Link>
-            </motion.div>
-          ))}
+        <div className="flex flex-col md:flex-row items-center md:items-end justify-center gap-8 lg:gap-10">
+          {renderPhone(offerings[0], 0)}
+          {renderPhone(offerings[1], 1)}
+          {renderPhone(offerings[2], 2)}
         </div>
       </div>
     </section>
