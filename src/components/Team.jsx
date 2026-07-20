@@ -6,12 +6,12 @@ const cardVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
 };
 const fallOverVariants = {
-  rest: { rotateX: 0, y: 0, scale: 1, boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)', borderColor: 'rgba(148, 163, 184, 0.2)', transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
-  hover: { rotateX: 7, y: -6, scale: 1.02, boxShadow: '0 30px 60px -15px rgba(41, 121, 255, 0.3)', borderColor: 'rgba(41, 121, 255, 0.4)', transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
+  rest: { rotateX: 0, y: 0, scale: 1, boxShadow: '0 4px 20px -4px rgba(0,0,0,0.06)', borderColor: 'rgba(226, 232, 240, 0.6)', transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+  hover: { rotateX: 5, y: -8, scale: 1.03, boxShadow: '0 25px 60px -12px rgba(0,153,102,0.18)', borderColor: 'rgba(0,153,102,0.25)', transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
 };
 const interweaveVariants = {
-  rest: { y: 0, scale: 1, boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)', borderColor: 'rgba(148, 163, 184, 0.2)', transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
-  hover: { y: -6, scale: 1.02, boxShadow: '0 30px 60px -15px rgba(41, 121, 255, 0.3)', borderColor: 'rgba(41, 121, 255, 0.4)', transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
+  rest: { y: 0, scale: 1, boxShadow: '0 4px 20px -4px rgba(0,0,0,0.06)', borderColor: 'rgba(226, 232, 240, 0.6)', transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+  hover: { y: -8, scale: 1.03, boxShadow: '0 25px 60px -12px rgba(0,153,102,0.18)', borderColor: 'rgba(0,153,102,0.25)', transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
 };
 const contentVariants = {
   rest: { opacity: 1, scale: 1, x: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
@@ -332,7 +332,7 @@ function TeamCard({ member, index }) {
   return (
     <motion.div variants={cardVariants} className="group w-full flex justify-center">
       <motion.div
-        className="expert-card relative bg-white/95 backdrop-blur-md rounded-2xl border border-slate-100 shadow-sm p-4 flex flex-col items-center text-center max-w-[220px] w-full"
+        className="expert-card relative bg-white/80 backdrop-blur-xl rounded-3xl border border-slate-200/60 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] p-5 flex flex-col items-center text-center max-w-[240px] w-full hover:shadow-[0_20px_50px_-10px_rgba(0,153,102,0.15)] hover:border-[#009966]/20 transition-all duration-500"
         variants={index < 2 ? fallOverVariants : interweaveVariants}
         initial="rest"
         animate={hovered ? 'hover' : 'rest'}
@@ -340,8 +340,8 @@ function TeamCard({ member, index }) {
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
-        {/* Compact Image */}
-        <div className="relative w-full aspect-square overflow-hidden rounded-xl bg-slate-50 border border-slate-100">
+        {/* Premium Image Container */}
+        <div className="relative w-full aspect-square overflow-hidden rounded-2xl bg-gradient-to-br from-slate-100 to-slate-50 border border-slate-200/50 shadow-inner">
           <AnimatePresence mode="wait">
             {!hovered ? (
               <motion.img
@@ -366,16 +366,21 @@ function TeamCard({ member, index }) {
               </motion.div>
             )}
           </AnimatePresence>
+          {/* Subtle gradient overlay on image */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none" />
         </div>
 
-        {/* Compact Card Content */}
-        <div className="space-y-1.5 mt-3">
-          <h4 className="font-bold text-sm text-[#0A1E4D] leading-snug">{member.name}</h4>
-          <p className="text-[10px] font-semibold text-[#4B5563] tracking-wider uppercase">{member.title}</p>
-          <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-medium rounded-full bg-teal-50/80 text-teal-700 border border-teal-100/50">
+        {/* Premium Card Content */}
+        <div className="space-y-2 mt-4">
+          <h4 className="font-bold text-[15px] text-[#0A1E4D] leading-snug">{member.name}</h4>
+          <p className="text-[11px] font-semibold text-slate-500 tracking-wider uppercase">{member.title}</p>
+          <span className="inline-flex items-center px-3 py-1 text-[10px] font-semibold rounded-full bg-gradient-to-r from-[#009966]/10 to-emerald-50 text-[#009966] border border-[#009966]/15 shadow-sm">
             {member.badge}
           </span>
         </div>
+
+        {/* Premium bottom accent line */}
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-[2px] rounded-full bg-gradient-to-r from-transparent via-[#009966]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       </motion.div>
     </motion.div>
   );
