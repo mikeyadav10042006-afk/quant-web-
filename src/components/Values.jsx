@@ -67,9 +67,9 @@ export default function Values() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="bg-slate-50/60 p-6 rounded-2xl border border-slate-100 flex flex-col text-left space-y-4 hover:bg-white hover:border-[#009966]/20 transition-all duration-300 hover:-translate-y-2 hover-values-glow cursor-default"
+                className="bg-slate-50/60 p-6 rounded-2xl border border-slate-100 flex flex-col text-left space-y-4 hover:bg-white hover:border-cyan-400/30 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_15px_30px_rgba(6,182,212,0.15),0_0_15px_rgba(6,182,212,0.1)] cursor-default group"
               >
-                <div className="w-10 h-10 rounded-full bg-[#009966]/10 flex items-center justify-center text-[#009966] shrink-0">
+                <div className="w-10 h-10 rounded-full bg-cyan-50 flex items-center justify-center text-cyan-600 shrink-0 group-hover:bg-cyan-100 transition-colors duration-300">
                   {v.icon}
                 </div>
                 <div>
