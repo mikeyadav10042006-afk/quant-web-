@@ -131,7 +131,7 @@ export default function Services() {
 
   return (
     <section id="services" className="relative py-20 md:py-32 overflow-hidden" style={{
-      background: 'linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(248,250,255,0.8) 40%, rgba(240,244,255,0.85) 70%, rgba(255,255,255,0.9) 100%)',
+      background: 'linear-gradient(180deg, #f5f0eb 0%, #ede6df 30%, #f0ebe5 60%, #f5f0eb 100%)',
     }}>
       {/* Background Image */}
       <div className="absolute inset-0 z-0" style={{
@@ -139,7 +139,11 @@ export default function Services() {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        opacity: 0.15,
+        opacity: 0.35,
+      }} />
+      {/* Warm tint overlay */}
+      <div className="absolute inset-0 z-0 pointer-events-none" style={{
+        background: 'linear-gradient(180deg, rgba(245,240,235,0.6) 0%, rgba(237,230,223,0.4) 50%, rgba(245,240,235,0.65) 100%)',
       }} />
       {/* Subtle dot pattern */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
@@ -158,8 +162,8 @@ export default function Services() {
       }} />
 
       {/* Top light beam */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] pointer-events-none" style={{
-        background: 'radial-gradient(ellipse 100% 70% at 50% 0%, rgba(255,255,255,0.8) 0%, rgba(240,244,255,0.3) 40%, transparent 70%)',
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] pointer-events-none" style={{
+        background: 'radial-gradient(ellipse 100% 60% at 50% 0%, rgba(255,255,255,0.5) 0%, rgba(245,240,235,0.2) 40%, transparent 70%)',
         filter: 'blur(30px)',
       }} />
 
