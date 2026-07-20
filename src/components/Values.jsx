@@ -26,7 +26,7 @@ export default function Values() {
   ];
 
   return (
-    <section id="values" className="relative py-14 md:py-24 overflow-hidden" style={{ backgroundColor: '#f8fafc', backgroundImage: 'radial-gradient(circle, #64748b 1.2px, transparent 1.2px)', backgroundSize: '28px 28px', backgroundBlendMode: 'multiply' }}>
+    <section id="values" className="relative py-14 md:py-24">
       <div className="relative z-10 max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
           
