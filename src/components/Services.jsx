@@ -13,6 +13,7 @@ export default function Services() {
       screenBg: 'linear-gradient(180deg, #eef4ff 0%, #e0ecff 100%)',
       iconBg: 'rgba(59,130,246,0.12)',
       buttonBg: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+      headingColor: '#3b82f6',
       phoneBgImage: '/phone-bg/gtm.jpg',
       liquid: { body: 'rgba(59,130,246,0.18)', wave1: '#3b82f6', wave2: '#60a5fa', glow: '#3b82f6', particle: '#93c5fd' },
     },
@@ -25,6 +26,7 @@ export default function Services() {
       screenBg: 'linear-gradient(180deg, #ecfeff 0%, #e0f7fa 100%)',
       iconBg: 'rgba(6,182,212,0.12)',
       buttonBg: 'linear-gradient(135deg, #06b6d4, #0891b2)',
+      headingColor: '#06b6d4',
       phoneBgImage: '/phone-bg/healthcare.jpg',
       liquid: { body: 'rgba(6,182,212,0.18)', wave1: '#06b6d4', wave2: '#22d3ee', glow: '#06b6d4', particle: '#67e8f9' },
     },
@@ -37,6 +39,7 @@ export default function Services() {
       screenBg: 'linear-gradient(180deg, #eef2ff 0%, #e0e7ff 100%)',
       iconBg: 'rgba(99,102,241,0.12)',
       buttonBg: 'linear-gradient(135deg, #6366f1, #4f46e5)',
+      headingColor: '#6366f1',
       phoneBgImage: '/phone-bg/smartcity.jpg',
       liquid: { body: 'rgba(99,102,241,0.18)', wave1: '#6366f1', wave2: '#818cf8', glow: '#6366f1', particle: '#a5b4fc' },
     }
@@ -94,7 +97,7 @@ export default function Services() {
                 <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110" style={{ background: service.iconBg }}>
                   {service.icon}
                 </div>
-                <h3 className="text-lg font-bold mb-2" style={{ color: '#1e293b' }}>{service.title}</h3>
+                <h3 className="text-lg font-bold mb-2" style={{ color: service.headingColor }}>{service.title}</h3>
                 <p className="text-[13px] leading-relaxed mb-5" style={{ color: 'rgba(30,40,60,0.55)' }}>{service.desc}</p>
 
                 <ul className="space-y-2.5 mb-6">
