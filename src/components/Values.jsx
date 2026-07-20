@@ -26,12 +26,7 @@ export default function Values() {
   ];
 
   return (
-    <section id="values" className="relative overflow-hidden py-14 md:py-24">
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/section-bg.jpg')" }}
-      />
-      <div className="absolute inset-0 bg-white/70" />
+    <section id="values" className="relative py-14 md:py-24">
       <div className="relative z-10 max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
           

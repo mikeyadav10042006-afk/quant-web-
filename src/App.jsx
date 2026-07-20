@@ -73,9 +73,16 @@ function HomePage() {
         <LogoMarquee />
         <Stats />
         <Services />
-        <Features />
-        <Values />
-        <Projects />
+        <div className="relative overflow-hidden">
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: "url('/section-bg.jpg')" }}
+          />
+          <div className="absolute inset-0 bg-white/70" />
+          <Features />
+          <Values />
+          <Projects />
+        </div>
         <Team />
       </main>
 
