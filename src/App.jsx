@@ -75,7 +75,7 @@ function HomePage() {
         <Services />
         <div className="relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-slate-50 via-white to-slate-50" />
-          <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle, #94a3b8 0.8px, transparent 0.8px)', backgroundSize: '32px 32px', opacity: 0.12 }} />
+          <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle, #64748b 1.2px, transparent 1.2px)', backgroundSize: '28px 28px', opacity: 0.25 }} />
           <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-teal-200/15 rounded-full blur-[120px] pointer-events-none" />
           <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-emerald-200/10 rounded-full blur-[100px] pointer-events-none" />
           <div className="absolute bottom-0 left-1/3 w-[550px] h-[550px] bg-blue-200/8 rounded-full blur-[110px] pointer-events-none" />
