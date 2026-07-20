@@ -128,7 +128,11 @@ export default function ContactPage() {
         }} />
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 z-0" style={{
-          background: 'linear-gradient(135deg, rgba(15,41,66,0.88) 0%, rgba(5,150,105,0.75) 50%, rgba(4,120,87,0.85) 100%)',
+          background: 'linear-gradient(135deg, rgba(10,25,42,0.92) 0%, rgba(5,100,80,0.82) 50%, rgba(8,60,50,0.90) 100%)',
+        }} />
+        {/* Bottom fade for seamless blend into next section */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 z-0" style={{
+          background: 'linear-gradient(to top, #ffffff 0%, transparent 100%)',
         }} />
         {/* Subtle pattern */}
         <div className="absolute inset-0 z-0 opacity-[0.04] pointer-events-none" style={{
@@ -157,6 +161,7 @@ export default function ContactPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
               className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl font-extrabold tracking-tight text-white font-sans leading-[1.1] mt-6"
+              style={{ textShadow: '0 2px 20px rgba(0,0,0,0.3)' }}
             >
               Let's{' '}
               <span className="bg-gradient-to-r from-emerald-300 to-teal-200 bg-clip-text text-transparent">
@@ -170,6 +175,7 @@ export default function ContactPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
               className="text-white/60 leading-relaxed text-sm md:text-base max-w-lg mt-5"
+              style={{ textShadow: '0 1px 8px rgba(0,0,0,0.2)' }}
             >
                 Please fill the form below if you are an Enterprise or Government agency looking for their Digital Transformation. Those interested in careers please email your CV to{' '}
                 <span className="text-[#059669] font-semibold">hr@quantionic.com</span>
