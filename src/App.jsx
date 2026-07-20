@@ -73,10 +73,10 @@ function HomePage() {
         <LogoMarquee />
         <Stats />
         <Services />
-        <div className="relative overflow-hidden">
+        <div className="relative overflow-hidden" style={{ backgroundAttachment: 'fixed', backgroundSize: 'cover', backgroundPosition: 'center' }}>
           <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: "url('/section-bg.jpg')" }}
+            className="absolute inset-0"
+            style={{ backgroundImage: "url('/section-bg.jpg')", backgroundAttachment: 'fixed', backgroundSize: 'cover', backgroundPosition: 'center' }}
           />
           <div className="absolute inset-0 bg-white/70" />
           <Features />
