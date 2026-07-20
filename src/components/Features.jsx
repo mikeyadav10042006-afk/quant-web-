@@ -33,8 +33,13 @@ export default function Features() {
   const currentTab = benefits.find(b => b.id === activeTab);
 
   return (
-    <section id="features" className="py-12 md:py-24 mt-6 md:mt-12 border-b border-slate-100" style={{ backgroundColor: 'rgba(0, 153, 102, 0.03)' }}>
-      <div className="max-w-7xl mx-auto px-6">
+    <section id="features" className="relative overflow-hidden py-12 md:py-24 mt-6 md:mt-12 border-b border-slate-100">
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-[0.15]"
+        style={{ backgroundImage: "url('/section-bg.jpg')" }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-teal-50/80 via-teal-50/60 to-teal-50/90" />
+      <div className="relative z-10 max-w-7xl mx-auto px-6">
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
           <span className="text-xs font-semibold uppercase tracking-widest text-teal-600 bg-teal-50 px-3 py-1 rounded-full">
             Core Competence
