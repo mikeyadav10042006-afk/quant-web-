@@ -196,7 +196,20 @@ export default function LogoMarquee() {
   const duplicated = [...brands, ...brands];
 
   return (
-    <section className="relative overflow-hidden py-10 md:py-14 bg-white">
+    <section className="relative overflow-hidden py-10 md:py-14" style={{ background: '#f8f5fc' }}>
+
+      {/* Background Image — subtle lavender pattern */}
+      <div className="absolute inset-0 z-0" style={{
+        backgroundImage: 'url(/partners-bg.jpg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'repeat',
+        opacity: 0.25,
+      }} />
+      {/* Soft white overlay to keep it premium */}
+      <div className="absolute inset-0 z-0" style={{
+        background: 'linear-gradient(180deg, rgba(248,245,252,0.5) 0%, rgba(255,255,255,0.3) 50%, rgba(248,245,252,0.5) 100%)',
+      }} />
 
       {/* ── CONTENT ── */}
       <div className="relative z-10 max-w-5xl mx-auto px-6">
