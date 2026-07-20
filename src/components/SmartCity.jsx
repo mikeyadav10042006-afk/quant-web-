@@ -578,109 +578,76 @@ export default function SmartCity() {
 
       {/* ── CTA ── */}
       <section className="py-24 px-6 relative overflow-hidden">
-        {/* Dark premium background */}
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(160deg, #0a1a14 0%, #0d2818 30%, #0f1f2e 60%, #0a1a14 100%)' }} />
-        {/* Geometric wireframe grid */}
-        <div className="absolute inset-0 opacity-[0.06]" style={{
+        {/* Premium dark background */}
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, #060f1a 0%, #0a1628 50%, #060f1a 100%)' }} />
+        {/* Subtle grid */}
+        <div className="absolute inset-0 opacity-[0.04]" style={{
           backgroundImage: `
-            linear-gradient(rgba(16,185,129,0.5) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(16,185,129,0.5) 1px, transparent 1px)
+            linear-gradient(rgba(56,189,248,0.4) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(56,189,248,0.4) 1px, transparent 1px)
           `,
-          backgroundSize: '60px 60px',
+          backgroundSize: '80px 80px',
         }} />
-        {/* Floating glow orbs */}
-        <div className="absolute top-[-10%] left-[10%] w-[500px] h-[500px] rounded-full bg-[#059669]/[0.07] blur-[120px]" />
-        <div className="absolute bottom-[-10%] right-[10%] w-[400px] h-[400px] rounded-full bg-teal-400/[0.05] blur-[100px]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-emerald-500/[0.04] blur-[140px]" />
+        {/* Ambient orbs */}
+        <div className="absolute top-[-20%] left-[20%] w-[500px] h-[500px] rounded-full bg-sky-500/[0.06] blur-[150px]" />
+        <div className="absolute bottom-[-20%] right-[20%] w-[400px] h-[400px] rounded-full bg-blue-500/[0.04] blur-[120px]" />
         {/* Top divider */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-sky-500/20 to-transparent" />
 
-        <div className="max-w-4xl mx-auto relative z-10">
+        <div className="max-w-3xl mx-auto relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, type: 'spring' }}
-            className="cta-orbital-card relative"
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
-            {/* ── Orbital ring (SVG) ── */}
-            <svg className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)] pointer-events-none z-20" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <rect x="1" y="1" width="98" height="98" rx="8" ry="8" fill="none" stroke="url(#ctaOrbitalGrad)" strokeWidth="0.3" strokeDasharray="3 5" className="cta-orbital-dash" />
-              <defs>
-                <linearGradient id="ctaOrbitalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#10b981" stopOpacity="0.8" />
-                  <stop offset="25%" stopColor="#06b6d4" stopOpacity="0.4" />
-                  <stop offset="50%" stopColor="#8b5cf6" stopOpacity="0.6" />
-                  <stop offset="75%" stopColor="#10b981" stopOpacity="0.4" />
-                  <stop offset="100%" stopColor="#06b6d4" stopOpacity="0.8" />
-                </linearGradient>
-              </defs>
-            </svg>
-            {/* Traveling dot 1 */}
-            <div className="cta-orbital-dot-1 absolute -inset-3 z-20 pointer-events-none">
-              <div className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_12px_3px_rgba(16,185,129,0.8)]" />
-            </div>
-            {/* Traveling dot 2 */}
-            <div className="cta-orbital-dot-2 absolute -inset-3 z-20 pointer-events-none">
-              <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_12px_3px_rgba(6,182,212,0.8)]" />
-            </div>
-            {/* Traveling dot 3 */}
-            <div className="cta-orbital-dot-3 absolute -inset-3 z-20 pointer-events-none">
-              <div className="w-1 h-1 rounded-full bg-violet-400 shadow-[0_0_10px_2px_rgba(139,92,246,0.8)]" />
-            </div>
-
-            {/* Card inner */}
-            <div className="relative rounded-[28px] overflow-hidden" style={{ background: 'linear-gradient(160deg, rgba(16,185,129,0.08) 0%, rgba(15,31,46,0.95) 40%, rgba(10,26,20,0.97) 100%)', backdropFilter: 'blur(40px)' }}>
-              {/* Mouse reactive radial glow */}
-              <CTAMouseGlow />
-
-              {/* Inner mesh gradient accent */}
-              <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-bl from-emerald-500/[0.06] to-transparent rounded-bl-[100px]" />
-              <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-gradient-to-tr from-teal-500/[0.04] to-transparent rounded-tr-[80px]" />
+            {/* Card */}
+            <div className="relative rounded-[24px] overflow-hidden" style={{
+              background: 'linear-gradient(160deg, rgba(56,189,248,0.06) 0%, rgba(10,22,40,0.95) 30%, rgba(6,15,26,0.98) 100%)',
+              border: '1px solid rgba(56,189,248,0.1)',
+              boxShadow: '0 40px 80px -20px rgba(0,0,0,0.5), 0 0 0 1px rgba(56,189,248,0.05)',
+            }}>
+              {/* Top glow line */}
+              <div className="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-sky-400/40 to-transparent" />
+              {/* Inner accent glow */}
+              <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-bl from-sky-500/[0.04] to-transparent rounded-bl-[100px]" />
+              <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-gradient-to-tr from-blue-500/[0.03] to-transparent rounded-tr-[80px]" />
 
               <div className="relative z-10 text-center px-8 py-16 md:px-16 md:py-20">
-                {/* Pulsing icon with concentric rings */}
-                <div className="relative w-20 h-20 mx-auto mb-10">
-                  {/* Concentric pulse rings */}
-                  <div className="cta-pulse-ring-1 absolute inset-0 rounded-2xl border border-emerald-400/30" />
-                  <div className="cta-pulse-ring-2 absolute inset-0 rounded-2xl border border-emerald-400/20" />
-                  <div className="cta-pulse-ring-3 absolute inset-0 rounded-2xl border border-emerald-400/10" />
-                  <div className="relative w-20 h-20 rounded-2xl bg-gradient-to-br from-[#059669] to-teal-400 flex items-center justify-center shadow-2xl shadow-[#059669]/40 cta-icon-float">
-                    <Cpu className="w-9 h-9 text-white" />
+                {/* Icon */}
+                <div className="relative w-16 h-16 mx-auto mb-8">
+                  <div className="absolute inset-0 rounded-2xl bg-sky-400/10 blur-xl" />
+                  <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center shadow-[0_8px_32px_rgba(56,189,248,0.3)]">
+                    <Cpu className="w-7 h-7 text-white" />
                   </div>
                 </div>
 
-                <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-5 leading-tight">
+                <h2 className="text-3xl md:text-[2.75rem] font-extrabold tracking-tight mb-5 leading-[1.15]" style={{ color: '#f0f9ff' }}>
                   Ready to Build Your<br className="hidden md:block" /> Smart City?
                 </h2>
-                <p className="text-emerald-100/50 text-sm md:text-base mb-12 max-w-lg mx-auto leading-relaxed">
+                <p className="text-sm md:text-base mb-12 max-w-md mx-auto leading-relaxed" style={{ color: 'rgba(148,163,184,0.8)' }}>
                   Let's discuss how AI can transform your city's infrastructure — from traffic to energy to public safety.
                 </p>
 
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <Link
                     to="/contact"
-                    className="cta-magnetic-btn group relative inline-flex items-center gap-3 bg-gradient-to-r from-[#059669] to-teal-400 text-white font-bold text-sm px-10 py-4.5 rounded-2xl overflow-hidden transition-all duration-500"
+                    className="group relative inline-flex items-center gap-2.5 bg-gradient-to-r from-sky-500 to-blue-600 text-white font-semibold text-sm px-8 py-3.5 rounded-xl overflow-hidden transition-all duration-500 hover:shadow-[0_8px_30px_rgba(56,189,248,0.35)] hover:-translate-y-0.5"
                   >
-                    <span className="absolute inset-0 bg-gradient-to-r from-teal-400 to-[#059669] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{ background: 'radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,0.25) 0%, transparent 60%)' }} />
-                    <span className="relative z-10 flex items-center gap-2.5">
+                    <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-sky-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <span className="relative z-10 flex items-center gap-2">
                       <Zap className="w-4 h-4" />
                       Contact Us
-                      <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                      <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                     </span>
-                    <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-white/50 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
                   </Link>
 
                   <Link
                     to="/"
-                    className="cta-magnetic-btn group relative inline-flex items-center gap-2.5 border border-white/15 text-white/70 font-bold text-sm px-10 py-4.5 rounded-2xl hover:border-white/30 hover:text-white hover:bg-white/[0.04] transition-all duration-500 overflow-hidden"
+                    className="group relative inline-flex items-center gap-2 border border-white/10 text-white/60 font-semibold text-sm px-8 py-3.5 rounded-xl hover:border-white/20 hover:text-white/90 hover:bg-white/[0.03] transition-all duration-500"
                   >
-                    <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{ background: 'radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,0.05) 0%, transparent 60%)' }} />
-                    <span className="relative z-10 flex items-center gap-2.5">
-                      <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
-                      Go Back to Home
-                    </span>
+                    <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-0.5" />
+                    Go Back to Home
                   </Link>
                 </div>
               </div>
