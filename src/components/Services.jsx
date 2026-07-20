@@ -131,8 +131,16 @@ export default function Services() {
 
   return (
     <section id="services" className="relative py-20 md:py-32 overflow-hidden" style={{
-      background: 'linear-gradient(180deg, #ffffff 0%, #f8faff 40%, #f0f4ff 70%, #ffffff 100%)',
+      background: 'linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(248,250,255,0.8) 40%, rgba(240,244,255,0.85) 70%, rgba(255,255,255,0.9) 100%)',
     }}>
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0" style={{
+        backgroundImage: 'url(/services-bg.jpg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        opacity: 0.15,
+      }} />
       {/* Subtle dot pattern */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
         backgroundImage: 'radial-gradient(circle at 1px 1px, #3b82f6 0.5px, transparent 0)',
