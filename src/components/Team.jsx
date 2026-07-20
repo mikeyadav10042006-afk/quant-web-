@@ -1,17 +1,13 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const cardVariants = {
   hidden: { opacity: 0, y: 40 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
 };
-const fallOverVariants = {
-  rest: { rotateX: 0, y: 0, scale: 1, boxShadow: '0 4px 20px -4px rgba(0,0,0,0.06)', borderColor: 'rgba(226, 232, 240, 0.6)', transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
-  hover: { rotateX: 5, y: -8, scale: 1.03, boxShadow: '0 25px 60px -12px rgba(0,153,102,0.18)', borderColor: 'rgba(0,153,102,0.25)', transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
-};
-const interweaveVariants = {
-  rest: { y: 0, scale: 1, boxShadow: '0 4px 20px -4px rgba(0,0,0,0.06)', borderColor: 'rgba(226, 232, 240, 0.6)', transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
-  hover: { y: -8, scale: 1.03, boxShadow: '0 25px 60px -12px rgba(0,153,102,0.18)', borderColor: 'rgba(0,153,102,0.25)', transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
+const cardFlipTransition = {
+  rest: { rotateY: 0, boxShadow: '0 4px 20px -4px rgba(0,0,0,0.06)', borderColor: 'rgba(226, 232, 240, 0.6)', transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } },
+  hover: { rotateY: 720, boxShadow: '0 25px 60px -12px rgba(0,153,102,0.18)', borderColor: 'rgba(0,153,102,0.25)', transition: { duration: 1.4, ease: [0.22, 0.03, 0.26, 1] } }
 };
 const contentVariants = {
   rest: { opacity: 1, scale: 1, x: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
@@ -330,48 +326,36 @@ function TeamCard({ member, index }) {
   const environmentContent = useMemo(() => getEnvironmentContent(member.aiTheme), [member.aiTheme]);
 
   return (
-    <motion.div variants={cardVariants} className="group w-full flex justify-center">
+    <motion.div variants={cardVariants} className="group w-full flex justify-center" style={{ perspective: '1200px' }}>
       <motion.div
-        className="expert-card relative bg-white/80 backdrop-blur-xl rounded-3xl border border-slate-200/60 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] p-5 flex flex-col items-center text-center max-w-[240px] w-full hover:shadow-[0_20px_50px_-10px_rgba(0,153,102,0.15)] hover:border-[#009966]/20 transition-all duration-500"
-        variants={index < 2 ? fallOverVariants : interweaveVariants}
+        className="expert-card relative bg-white/80 backdrop-blur-xl rounded-3xl border border-slate-200/60 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] p-5 flex flex-col items-center text-center max-w-[240px] w-full"
+        variants={cardFlipTransition}
         initial="rest"
         animate={hovered ? 'hover' : 'rest'}
-        style={{ transformStyle: 'preserve-3d', perspective: '1000px' }}
+        style={{ transformStyle: 'preserve-3d' }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
-        {/* Premium Image Container */}
-        <div className="relative w-full aspect-square overflow-hidden rounded-2xl bg-gradient-to-br from-slate-100 to-slate-50 border border-slate-200/50 shadow-inner">
-          <AnimatePresence mode="wait">
-            {!hovered ? (
-              <motion.img
-                key="portrait"
-                src={member.img}
-                alt={member.name}
-                className="absolute inset-0 w-full h-full object-cover"
-                loading="lazy"
-                variants={contentVariants}
-                initial="rest"
-                exit="exit"
-              />
-            ) : (
-              <motion.div
-                key="environment"
-                className={`absolute inset-0 w-full h-full ${getEnvironmentClass(member.aiTheme)}`}
-                variants={environmentVariants}
-                initial="rest"
-                animate="enter"
-              >
-                {environmentContent}
-              </motion.div>
-            )}
-          </AnimatePresence>
-          {/* Subtle gradient overlay on image */}
+        {/* Front Face - Portrait */}
+        <div className="relative w-full aspect-square overflow-hidden rounded-2xl bg-gradient-to-br from-slate-100 to-slate-50 border border-slate-200/50 shadow-inner" style={{ backfaceVisibility: 'hidden' }}>
+          <img
+            src={member.img}
+            alt={member.name}
+            className="absolute inset-0 w-full h-full object-cover"
+            loading="lazy"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none" />
         </div>
 
-        {/* Premium Card Content */}
-        <div className="space-y-2 mt-4">
+        {/* Back Face - Environment */}
+        <div className="absolute inset-0 w-full h-full rounded-3xl overflow-hidden" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
+          <div className={`w-full h-full ${getEnvironmentClass(member.aiTheme)}`}>
+            {environmentContent}
+          </div>
+        </div>
+
+        {/* Card Content - always visible */}
+        <div className="space-y-2 mt-4 relative" style={{ backfaceVisibility: 'hidden' }}>
           <h4 className="font-bold text-[15px] text-[#0A1E4D] leading-snug">{member.name}</h4>
           <p className="text-[11px] font-semibold text-slate-500 tracking-wider uppercase">{member.title}</p>
           <span className="inline-flex items-center px-3 py-1 text-[10px] font-semibold rounded-full bg-gradient-to-r from-[#009966]/10 to-emerald-50 text-[#009966] border border-[#009966]/15 shadow-sm">
