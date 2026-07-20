@@ -472,17 +472,16 @@ export default function Team() {
 
   return (
     <section id="team" className="relative py-14 md:py-24 overflow-hidden">
-      <div className="absolute inset-0 bg-white" />
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-50 via-white to-slate-50" />
       <div className="absolute inset-0" style={{
         backgroundImage: `
-          linear-gradient(135deg, #e2e8f0 1px, transparent 1px),
-          linear-gradient(225deg, #e2e8f0 1px, transparent 1px)
+          linear-gradient(135deg, #94a3b8 1px, transparent 1px),
+          linear-gradient(225deg, #94a3b8 1px, transparent 1px)
         `,
-        backgroundSize: '40px 40px',
-        opacity: 0.18
+        backgroundSize: '36px 36px',
+        opacity: 0.3
       }} />
-      <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-transparent to-white/80" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-teal-200/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-teal-200/12 rounded-full blur-[100px] pointer-events-none" />
       <div className="relative z-10 max-w-7xl mx-auto px-6">
 
         {/* ── TOP: Text + Spline Model ──────────────────────────────── */}
