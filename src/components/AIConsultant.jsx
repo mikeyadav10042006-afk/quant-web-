@@ -1,7 +1,41 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, Bot, User, HelpCircle, Loader2 } from 'lucide-react';
 import api from '../api';
+
+const MemoizedMessages = React.memo(function MemoizedMessages({ messages }) {
+  return messages.map((msg, index) => (
+    <div
+      key={index}
+      className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+    >
+      <div
+        className={`flex items-start space-x-2 max-w-[85%] ${
+          msg.sender === 'user' ? 'flex-row-reverse space-x-reverse' : 'flex-row'
+        }`}
+      >
+        <div
+          className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
+            msg.sender === 'user'
+              ? 'bg-slate-900 text-white'
+              : 'bg-teal-100 text-teal-700'
+          }`}
+        >
+          {msg.sender === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
+        </div>
+        <div
+          className={`p-3.5 rounded-2xl text-sm font-medium whitespace-pre-line leading-relaxed ${
+            msg.sender === 'user'
+              ? 'bg-slate-900 text-white rounded-tr-none'
+              : 'bg-white border border-slate-100 shadow-sm text-slate-700 rounded-tl-none'
+          }`}
+        >
+          {msg.text}
+        </div>
+      </div>
+    </div>
+  ));
+});
 
 export default function AIConsultant({ isOpen, onClose }) {
   const [messages, setMessages] = useState([
@@ -28,10 +62,17 @@ export default function AIConsultant({ isOpen, onClose }) {
     'What features are in the Healthcare AI module?'
   ];
 
-  // Scroll to bottom when messages list changes
+  // Debounced scroll to bottom — avoids lag during rapid renders
+  const scrollToBottom = useCallback(() => {
+    requestAnimationFrame(() => {
+      chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    });
+  }, []);
+
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, loading]);
+    const timer = setTimeout(scrollToBottom, 80);
+    return () => clearTimeout(timer);
+  }, [messages, loading, scrollToBottom]);
 
   const handleSend = async (textToSend) => {
     const text = textToSend || input;
@@ -109,37 +150,7 @@ export default function AIConsultant({ isOpen, onClose }) {
 
             {/* Messages Body */}
             <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-slate-50/50 no-scrollbar">
-              {messages.map((msg, index) => (
-                <div
-                  key={index}
-                  className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div
-                    className={`flex items-start space-x-2 max-w-[85%] ${
-                      msg.sender === 'user' ? 'flex-row-reverse space-x-reverse' : 'flex-row'
-                    }`}
-                  >
-                    <div
-                      className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
-                        msg.sender === 'user'
-                          ? 'bg-slate-900 text-white'
-                          : 'bg-teal-100 text-teal-700'
-                      }`}
-                    >
-                      {msg.sender === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
-                    </div>
-                    <div
-                      className={`p-3.5 rounded-2xl text-sm font-medium whitespace-pre-line leading-relaxed ${
-                        msg.sender === 'user'
-                          ? 'bg-slate-900 text-white rounded-tr-none'
-                          : 'bg-white border border-slate-100 shadow-sm text-slate-700 rounded-tl-none'
-                      }`}
-                    >
-                      {msg.text}
-                    </div>
-                  </div>
-                </div>
-              ))}
+              <MemoizedMessages messages={messages} />
 
               {loading && (
                 <div className="flex justify-start">
