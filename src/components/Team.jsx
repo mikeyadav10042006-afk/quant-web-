@@ -471,16 +471,13 @@ export default function Team() {
   };
 
   return (
-    <section id="team" className="relative py-14 md:py-24 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-50 via-white to-slate-50" />
-      <div className="absolute inset-0" style={{
-        backgroundImage: `
-          linear-gradient(135deg, #94a3b8 1px, transparent 1px),
-          linear-gradient(225deg, #94a3b8 1px, transparent 1px)
-        `,
-        backgroundSize: '36px 36px',
-        opacity: 0.3
-      }} />
+    <section id="team" className="relative py-14 md:py-24 overflow-hidden" style={{
+      background: `
+        linear-gradient(to bottom, #f8fafc, #ffffff, #f8fafc),
+        repeating-linear-gradient(135deg, transparent, transparent 17px, #cbd5e1 17px, #cbd5e1 18px),
+        repeating-linear-gradient(225deg, transparent, transparent 17px, #cbd5e1 17px, #cbd5e1 18px)
+      `
+    }}>
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-teal-200/12 rounded-full blur-[100px] pointer-events-none" />
       <div className="relative z-10 max-w-7xl mx-auto px-6">
 
