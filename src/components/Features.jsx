@@ -33,7 +33,7 @@ export default function Features() {
   const currentTab = benefits.find(b => b.id === activeTab);
 
   return (
-    <section id="features" className="relative overflow-hidden py-12 md:py-24 mt-6 md:mt-12">
+    <section id="features" className="relative overflow-hidden py-12 md:py-24">
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: "url('/section-bg.jpg')" }}
