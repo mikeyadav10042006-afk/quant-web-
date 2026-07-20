@@ -1121,3 +1121,10 @@ spline-viewer::part(canvas) {
   .phone-pedestal { width: 160px; height: 26px; }
   .phone-mockup-side .phone-pedestal { width: 160px; height: 26px; }
 }
+
+.team-section-bg {
+  background-color: #f1f5f9;
+  background-image:
+    repeating-linear-gradient(45deg, #94a3b8 0px, #94a3b8 2px, transparent 2px, transparent 30px),
+    repeating-linear-gradient(-45deg, #94a3b8 0px, #94a3b8 2px, transparent 2px, transparent 30px);
+}

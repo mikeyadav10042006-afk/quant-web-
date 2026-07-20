@@ -471,13 +471,7 @@ export default function Team() {
   };
 
   return (
-    <section id="team" className="relative py-14 md:py-24 overflow-hidden" style={{
-      background: `
-        linear-gradient(to bottom, #f8fafc, #ffffff, #f8fafc),
-        repeating-linear-gradient(135deg, transparent, transparent 17px, #cbd5e1 17px, #cbd5e1 18px),
-        repeating-linear-gradient(225deg, transparent, transparent 17px, #cbd5e1 17px, #cbd5e1 18px)
-      `
-    }}>
+    <section id="team" className="relative py-14 md:py-24 overflow-hidden" style={{ backgroundColor: '#f1f5f9', backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'40\' height=\'40\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 0h40v40H0z\' fill=\'none\'/%3E%3Cpath d=\'M0 20L20 0M20 40L40 20\' stroke=\'%23cbd5e1\' stroke-width=\'1\' fill=\'none\'/%3E%3C/svg%3E")' }}>
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-teal-200/12 rounded-full blur-[100px] pointer-events-none" />
       <div className="relative z-10 max-w-7xl mx-auto px-6">
 
