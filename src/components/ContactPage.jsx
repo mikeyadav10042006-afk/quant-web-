@@ -266,7 +266,7 @@ export default function ContactPage() {
                   {
                     icon: <MapPin className="w-5 h-5" />,
                     label: 'Find the Office',
-                    value: 'Tower B, 12th Floor, Spaze iT Park, Sector 49, Sohna Road, Gurugram, Haryana 122018',
+                    value: '411, Vipul Trade Centre, Gurugram, Haryana, 122018, India',
                     isAddress: true,
                   },
                 ].map((item, i) => (
