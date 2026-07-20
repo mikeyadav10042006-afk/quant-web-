@@ -811,6 +811,29 @@ spline-viewer::part(canvas) {
 }
 
 /* ── Liquid Water Fill — realistic rising water ── */
+.phone-bg-image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.05;
+  z-index: 0;
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.group:hover .phone-bg-image {
+  opacity: 0.2;
+}
+.phone-bg-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+.group:hover .phone-bg-overlay {
+  opacity: 1;
+}
 .liquid-fill {
   position: absolute;
   bottom: 0;
@@ -891,15 +914,44 @@ spline-viewer::part(canvas) {
   100% { transform: translateY(-240px) scale(0.2); opacity: 0; }
 }
 
-/* ── Phone hover — 6px lift ── */
+/* ── Phone hover — premium glow ── */
 .phone-mockup-center:hover {
-  transform: translateY(-6px);
-  filter: drop-shadow(0 30px 60px rgba(59, 130, 246, 0.2));
+  transform: translateY(-8px);
+  filter: drop-shadow(0 30px 60px rgba(59, 130, 246, 0.25)) drop-shadow(0 0 20px rgba(59, 130, 246, 0.1));
 }
 .phone-mockup-side:hover {
-  transform: translateY(-6px) scale(1.03);
+  transform: translateY(-8px) scale(1.03);
   opacity: 1;
-  filter: drop-shadow(0 20px 45px rgba(59, 130, 246, 0.18));
+  filter: drop-shadow(0 20px 45px rgba(59, 130, 246, 0.22)) drop-shadow(0 0 15px rgba(59, 130, 246, 0.08));
+}
+/* Premium screen shimmer on hover */
+.phone-mockup-center .phone-screen::after,
+.phone-mockup-side .phone-screen::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255,255,255,0.12) 45%,
+    rgba(255,255,255,0.25) 50%,
+    rgba(255,255,255,0.12) 55%,
+    transparent 60%
+  );
+  z-index: 7;
+  pointer-events: none;
+  transform: translateX(0);
+  transition: none;
+}
+.group:hover .phone-screen::after {
+  animation: phoneShimmer 0.8s ease-out forwards;
+}
+@keyframes phoneShimmer {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(450%); }
 }
 
 /* ── Reduced motion ── */
@@ -909,6 +961,9 @@ spline-viewer::part(canvas) {
   .liquid-particle { animation: none; opacity: 0; }
   .phone-mockup-center:hover,
   .phone-mockup-side:hover { transform: none; }
+  .group:hover .phone-bg-image { opacity: 0.05; }
+  .group:hover .phone-bg-overlay { opacity: 0; }
+  .group:hover .phone-screen::after { animation: none; }
 }
 
 /* ── Screen — SIDE ── */
@@ -1000,6 +1055,15 @@ spline-viewer::part(canvas) {
     0 0 50px rgba(6,182,212,0.1),
     0 0 80px rgba(59,130,246,0.05),
     inset 0 0 20px rgba(59,130,246,0.06);
+  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.group:hover .phone-pedestal-ring {
+  border-color: rgba(59,130,246,0.4);
+  box-shadow:
+    0 0 30px rgba(59,130,246,0.3),
+    0 0 60px rgba(6,182,212,0.15),
+    0 0 100px rgba(59,130,246,0.08),
+    inset 0 0 25px rgba(59,130,246,0.1);
 }
 /* Inner ring — stacked depth */
 .phone-pedestal-ring::before {
@@ -1034,6 +1098,13 @@ spline-viewer::part(canvas) {
   border-radius: 50%;
   background: radial-gradient(ellipse, rgba(59,130,246,0.25) 0%, rgba(6,182,212,0.12) 35%, transparent 70%);
   filter: blur(10px);
+  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.group:hover .phone-pedestal-glow {
+  width: 180%;
+  height: 36px;
+  background: radial-gradient(ellipse, rgba(59,130,246,0.4) 0%, rgba(6,182,212,0.2) 35%, transparent 70%);
+  filter: blur(14px);
 }
 /* Reflective floor line */
 .phone-pedestal-glow::before {

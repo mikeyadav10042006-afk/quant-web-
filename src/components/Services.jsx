@@ -13,6 +13,7 @@ export default function Services() {
       screenBg: 'linear-gradient(180deg, #eef4ff 0%, #e0ecff 100%)',
       iconBg: 'rgba(59,130,246,0.12)',
       buttonBg: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+      phoneBgImage: '/phone-bg/gtm.jpg',
       liquid: { body: 'rgba(59,130,246,0.18)', wave1: '#3b82f6', wave2: '#60a5fa', glow: '#3b82f6', particle: '#93c5fd' },
     },
     {
@@ -24,6 +25,7 @@ export default function Services() {
       screenBg: 'linear-gradient(180deg, #ecfeff 0%, #e0f7fa 100%)',
       iconBg: 'rgba(6,182,212,0.12)',
       buttonBg: 'linear-gradient(135deg, #06b6d4, #0891b2)',
+      phoneBgImage: '/phone-bg/healthcare.jpg',
       liquid: { body: 'rgba(6,182,212,0.18)', wave1: '#06b6d4', wave2: '#22d3ee', glow: '#06b6d4', particle: '#67e8f9' },
     },
     {
@@ -35,6 +37,7 @@ export default function Services() {
       screenBg: 'linear-gradient(180deg, #eef2ff 0%, #e0e7ff 100%)',
       iconBg: 'rgba(99,102,241,0.12)',
       buttonBg: 'linear-gradient(135deg, #6366f1, #4f46e5)',
+      phoneBgImage: '/phone-bg/smartcity.jpg',
       liquid: { body: 'rgba(99,102,241,0.18)', wave1: '#6366f1', wave2: '#818cf8', glow: '#6366f1', particle: '#a5b4fc' },
     }
   ];
@@ -57,6 +60,9 @@ export default function Services() {
             <div className="phone-power-btn" />
             <div className="phone-notch" />
             <div className="phone-screen" style={{ background: service.screenBg }}>
+              {/* Background Image */}
+              <div className="phone-bg-image" style={{ backgroundImage: `url(${service.phoneBgImage})` }} />
+              <div className="phone-bg-overlay" />
               {/* Liquid Energy Fill — per-phone color */}
               <div className="liquid-fill">
                 <div className="liquid-body" style={{ background: `linear-gradient(180deg, ${service.liquid.body.replace('0.18','0.04')} 0%, ${service.liquid.body} 100%)` }} />
