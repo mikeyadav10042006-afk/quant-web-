@@ -63,33 +63,22 @@ export default function Services() {
               {/* Background Image */}
               <div className="phone-bg-image" style={{ backgroundImage: `url(${service.phoneBgImage})` }} />
               <div className="phone-bg-overlay" />
-              {/* Liquid Energy Fill — per-phone color */}
-              <div className="liquid-fill">
-                <div className="liquid-body" style={{ background: `linear-gradient(180deg, ${service.liquid.body.replace('0.18','0.04')} 0%, ${service.liquid.body} 100%)` }} />
-                <div className="liquid-glow" style={{ background: `linear-gradient(180deg, ${service.liquid.glow}55 0%, ${service.liquid.glow}22 40%, transparent 100%)` }} />
-                <svg className="liquid-wave" viewBox="0 0 600 60" preserveAspectRatio="none">
-                  <defs>
-                    <linearGradient id={`wg${index}`} x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor={service.liquid.wave1} stopOpacity="0.7" />
-                      <stop offset="100%" stopColor={service.liquid.wave2} stopOpacity="0.5" />
-                    </linearGradient>
-                  </defs>
-                  <path d="M0,25 C80,8 160,42 240,25 C320,8 400,42 480,25 C560,8 600,18 600,25 L600,60 L0,60Z" fill={`url(#wg${index})`} />
-                </svg>
-                <svg className="liquid-wave liquid-wave-2" viewBox="0 0 600 60" preserveAspectRatio="none">
-                  <path d="M0,30 C100,12 160,48 260,30 C360,12 420,48 520,30 C580,18 600,22 600,30 L600,60 L0,60Z" fill={service.liquid.wave2} fillOpacity="0.3" />
-                </svg>
-                <div className="liquid-particles">
-                  {[...Array(10)].map((_, i) => (
-                    <span key={i} className="liquid-particle" style={{
-                      left: `${8 + (i * 9)}%`,
-                      animationDelay: `${i * 0.25}s`,
-                      animationDuration: `${2.2 + (i % 4) * 0.5}s`,
-                      background: service.liquid.particle,
-                      boxShadow: `0 0 6px ${service.liquid.glow}99, 0 0 12px ${service.liquid.glow}44`,
-                    }} />
-                  ))}
-                </div>
+              {/* Premium Hover Reveal — frosted glass + floating particles */}
+              <div className="phone-reveal-frost" />
+              <div className="phone-reveal-gradient" style={{ background: `linear-gradient(0deg, ${service.liquid.glow}28 0%, ${service.liquid.glow}0a 40%, transparent 70%)` }} />
+              <div className="phone-reveal-particles">
+                {[...Array(14)].map((_, i) => (
+                  <span key={i} className="phone-particle" style={{
+                    left: `${5 + (i * 7)}%`,
+                    top: `${15 + ((i * 37) % 65)}%`,
+                    animationDelay: `${i * 0.3}s`,
+                    animationDuration: `${3 + (i % 5) * 0.6}s`,
+                    width: `${2 + (i % 3)}px`,
+                    height: `${2 + (i % 3)}px`,
+                    background: service.liquid.particle,
+                    boxShadow: `0 0 6px ${service.liquid.glow}88, 0 0 14px ${service.liquid.glow}44`,
+                  }} />
+                ))}
               </div>
 
               <div className="phone-status-bar">
