@@ -133,17 +133,17 @@ export default function Services() {
     <section id="services" className="relative py-20 md:py-32 overflow-hidden" style={{
       background: 'linear-gradient(180deg, #f5f0eb 0%, #ede6df 30%, #f0ebe5 60%, #f5f0eb 100%)',
     }}>
-      {/* Background Image */}
+      {/* Background Image — purple tone visible */}
       <div className="absolute inset-0 z-0" style={{
         backgroundImage: 'url(/services-bg.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        opacity: 0.35,
+        opacity: 0.7,
       }} />
-      {/* Warm tint overlay */}
+      {/* Light tint overlay — keeps text readable without killing the purple */}
       <div className="absolute inset-0 z-0 pointer-events-none" style={{
-        background: 'linear-gradient(180deg, rgba(245,240,235,0.6) 0%, rgba(237,230,223,0.4) 50%, rgba(245,240,235,0.65) 100%)',
+        background: 'linear-gradient(180deg, rgba(245,240,235,0.3) 0%, rgba(255,255,255,0.15) 50%, rgba(245,240,235,0.35) 100%)',
       }} />
       {/* Subtle dot pattern */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
