@@ -158,7 +158,7 @@ export default function Features() {
                 <div className="bg-slate-800/50 p-3 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs gap-1">
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 rounded-full bg-violet-300 animate-ping" />
-                    <span className="text-slate-300 font-medium">Gemini model clinical summary ready</span>
+                    <span className="text-slate-300 font-medium">QuantoBot AI clinical summary ready</span>
                   </div>
                   <span className="text-slate-500 font-semibold font-mono">0.08s</span>
                 </div>
