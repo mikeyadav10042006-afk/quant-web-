@@ -326,36 +326,41 @@ function TeamCard({ member, index }) {
   const environmentContent = useMemo(() => getEnvironmentContent(member.aiTheme), [member.aiTheme]);
 
   return (
-    <motion.div variants={cardVariants} className="group w-full flex justify-center" style={{ perspective: '1200px' }}>
+    <motion.div variants={cardVariants} className="group w-full flex justify-center">
       <motion.div
-        className="expert-card relative bg-white/80 backdrop-blur-xl rounded-3xl border border-slate-200/60 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] p-5 flex flex-col items-center text-center max-w-[240px] w-full"
-        variants={cardFlipTransition}
-        initial="rest"
-        animate={hovered ? 'hover' : 'rest'}
+        className="expert-card relative bg-white/80 backdrop-blur-xl rounded-3xl border border-slate-200/60 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] p-5 flex flex-col items-center text-center max-w-[240px] w-full hover:shadow-[0_25px_60px_-12px_rgba(0,153,102,0.18)] hover:border-[#009966]/25 transition-shadow duration-500"
         style={{ transformStyle: 'preserve-3d' }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
-        {/* Front Face - Portrait */}
-        <div className="relative w-full aspect-square overflow-hidden rounded-2xl bg-gradient-to-br from-slate-100 to-slate-50 border border-slate-200/50 shadow-inner" style={{ backfaceVisibility: 'hidden' }}>
-          <img
-            src={member.img}
-            alt={member.name}
-            className="absolute inset-0 w-full h-full object-cover"
-            loading="lazy"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none" />
+        {/* Flip Image Container */}
+        <div className="relative w-full aspect-square overflow-hidden rounded-2xl" style={{ perspective: '800px' }}>
+          <motion.div
+            className="w-full h-full relative"
+            style={{ transformStyle: 'preserve-3d' }}
+            animate={{ rotateY: hovered ? 720 : 0 }}
+            transition={{ duration: 1.4, ease: [0.22, 0.03, 0.26, 1] }}
+          >
+            {/* Front - Portrait */}
+            <div className="absolute inset-0 rounded-2xl overflow-hidden border border-slate-200/50 shadow-inner" style={{ backfaceVisibility: 'hidden' }}>
+              <img
+                src={member.img}
+                alt={member.name}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none" />
+            </div>
+
+            {/* Back - Environment */}
+            <div className={`absolute inset-0 rounded-2xl overflow-hidden border border-slate-200/50 shadow-inner ${getEnvironmentClass(member.aiTheme)}`} style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
+              {environmentContent}
+            </div>
+          </motion.div>
         </div>
 
-        {/* Back Face - Environment */}
-        <div className="absolute inset-0 w-full h-full rounded-3xl overflow-hidden" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
-          <div className={`w-full h-full ${getEnvironmentClass(member.aiTheme)}`}>
-            {environmentContent}
-          </div>
-        </div>
-
-        {/* Card Content - always visible */}
-        <div className="space-y-2 mt-4 relative" style={{ backfaceVisibility: 'hidden' }}>
+        {/* Card Content - stays in place */}
+        <div className="space-y-2 mt-4">
           <h4 className="font-bold text-[15px] text-[#0A1E4D] leading-snug">{member.name}</h4>
           <p className="text-[11px] font-semibold text-slate-500 tracking-wider uppercase">{member.title}</p>
           <span className="inline-flex items-center px-3 py-1 text-[10px] font-semibold rounded-full bg-gradient-to-r from-[#009966]/10 to-emerald-50 text-[#009966] border border-[#009966]/15 shadow-sm">
