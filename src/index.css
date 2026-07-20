@@ -894,11 +894,11 @@ spline-viewer::part(canvas) {
 
 /* ── Phone hover — premium glow ── */
 .phone-mockup-center:hover {
-  transform: translateY(-8px);
+  transform: translateY(-12px) rotate(-1deg);
   filter: drop-shadow(0 30px 60px rgba(59, 130, 246, 0.25)) drop-shadow(0 0 20px rgba(59, 130, 246, 0.1));
 }
 .phone-mockup-side:hover {
-  transform: translateY(-8px) scale(1.03);
+  transform: translateY(-12px) scale(1.03) rotate(1deg);
   opacity: 1;
   filter: drop-shadow(0 20px 45px rgba(59, 130, 246, 0.22)) drop-shadow(0 0 15px rgba(59, 130, 246, 0.08));
 }
