@@ -47,14 +47,26 @@ export default function Navbar({ onOpenChat }) {
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <div className="w-10 h-10 rounded-xl bg-[#00A878] flex items-center justify-center text-white font-bold" style={{ filter: 'drop-shadow(0 0 12px rgba(0,168,120,0.15))' }}>
-                Q
-              </div>
+          <div className="flex items-center gap-2.5 cursor-pointer group" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            {/* Atom Icon */}
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0 group-hover:scale-110 transition-transform duration-300">
+              <circle cx="18" cy="18" r="4" fill="url(#logoGrad)" />
+              <ellipse cx="18" cy="18" rx="15" ry="6" stroke="url(#logoGrad)" strokeWidth="1.5" fill="none" opacity="0.6" />
+              <ellipse cx="18" cy="18" rx="15" ry="6" stroke="url(#logoGrad)" strokeWidth="1.5" fill="none" opacity="0.6" transform="rotate(60 18 18)" />
+              <ellipse cx="18" cy="18" rx="15" ry="6" stroke="url(#logoGrad)" strokeWidth="1.5" fill="none" opacity="0.6" transform="rotate(120 18 18)" />
+              <circle cx="18" cy="18" r="1.5" fill="#00A878" />
+              <defs>
+                <linearGradient id="logoGrad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#00A878" />
+                  <stop offset="1" stopColor="#06b6d4" />
+                </linearGradient>
+              </defs>
+            </svg>
+            {/* Text */}
             <div className="flex items-center">
-                <span className="text-2xl font-extrabold tracking-tight text-[#111827]">QUAN</span>
-                <span className="text-2xl font-medium tracking-tight text-[#00A878]">TIONIC</span>
-              </div>
+              <span className="text-[22px] font-extrabold tracking-tight text-[#111827]">QUAN</span>
+              <span className="text-[22px] font-extrabold tracking-tight bg-gradient-to-r from-[#00A878] to-cyan-500 bg-clip-text text-transparent">TIONIC</span>
+            </div>
           </div>
 
           {/* Desktop Nav Links */}
