@@ -44,22 +44,14 @@ export default function Values() {
               </p>
             </div>
 
-            {/* Code Typing GIF */}
+            {/* Code Typing GIF — blended into background */}
             <div className="w-full flex justify-center lg:justify-start pt-4">
-              <div className="w-full max-w-[420px] aspect-square rounded-3xl overflow-hidden relative" style={{
-                background: 'linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%)',
-                boxShadow: '0 20px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,153,102,0.15)',
-              }}>
+              <div className="w-full max-w-[420px] aspect-square relative" style={{ maskImage: 'radial-gradient(ellipse 85% 85% at 50% 50%, black 40%, transparent 75%)', WebkitMaskImage: 'radial-gradient(ellipse 85% 85% at 50% 50%, black 40%, transparent 75%)' }}>
                 <img
                   src="/code-typing.gif"
                   alt="Code Typing Animation"
                   className="w-full h-full object-cover"
-                  style={{ opacity: 0.9 }}
                 />
-                {/* Subtle green glow at edges */}
-                <div className="absolute inset-0 pointer-events-none" style={{
-                  background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,153,102,0.08) 100%)',
-                }} />
               </div>
             </div>
           </div>
