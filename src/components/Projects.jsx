@@ -92,12 +92,12 @@ const cardVariants = {
 // ─── COMPONENT ────────────────────────────────────────────────────────────────
 export default function Projects() {
   return (
-    <section id="projects" className="relative overflow-hidden py-14 md:py-24 border-b border-slate-100">
+    <section id="projects" className="relative overflow-hidden py-14 md:py-24">
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-[0.15]"
+        className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: "url('/section-bg.jpg')" }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-50/80 via-slate-50/60 to-slate-50/90" />
+      <div className="absolute inset-0 bg-white/70" />
       <div className="relative z-10 max-w-7xl mx-auto px-6">
 
         {/* Section header */}
