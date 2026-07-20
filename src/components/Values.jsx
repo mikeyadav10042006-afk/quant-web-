@@ -1,24 +1,7 @@
-import { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Shield, Cpu, Users, BarChart } from 'lucide-react';
 
 export default function Values() {
-  const iframeWrapRef = useRef(null);
-  const [iframeSrc, setIframeSrc] = useState('');
-
-  useEffect(() => {
-    const el = iframeWrapRef.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) {
-        setIframeSrc('https://my.spline.design/stackableglass-T3YIQmTd4Toc51Yf9rDzwfVq-DQ2/');
-        obs.disconnect();
-      }
-    }, { rootMargin: '400px' });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-
   const values = [
     {
       icon: <Shield className="w-5 h-5" />,
@@ -61,27 +44,22 @@ export default function Values() {
               </p>
             </div>
 
-            {/* Spline 3D Stackable Glass Model */}
+            {/* Code Typing GIF */}
             <div className="w-full flex justify-center lg:justify-start pt-4">
-              <div ref={iframeWrapRef} className="w-full max-w-[420px] aspect-square rounded-3xl overflow-hidden bg-transparent relative" style={{ contain: 'layout style paint' }}>
-                {iframeSrc && (
-                <iframe
-                  src={iframeSrc}
-                  allow="autoplay"
-                  title="Stackable Glass 3D"
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '110%',
-                    height: '110%',
-                    margin: '-5% -5%',
-                    border: 'none',
-                    background: 'transparent',
-                    objectFit: 'cover',
-                  }}
+              <div className="w-full max-w-[420px] aspect-square rounded-3xl overflow-hidden relative" style={{
+                background: 'linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%)',
+                boxShadow: '0 20px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,153,102,0.15)',
+              }}>
+                <img
+                  src="/code-typing.gif"
+                  alt="Code Typing Animation"
+                  className="w-full h-full object-cover"
+                  style={{ opacity: 0.9 }}
                 />
-                )}
+                {/* Subtle green glow at edges */}
+                <div className="absolute inset-0 pointer-events-none" style={{
+                  background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,153,102,0.08) 100%)',
+                }} />
               </div>
             </div>
           </div>
