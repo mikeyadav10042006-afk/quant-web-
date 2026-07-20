@@ -26,7 +26,9 @@ export default function Values() {
   ];
 
   return (
-    <section id="values" className="relative py-14 md:py-24">
+    <section id="values" className="relative py-14 md:py-24 overflow-hidden" style={{ backgroundColor: '#f8fafc', backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'40\' height=\'40\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 0h40v40H0z\' fill=\'none\'/%3E%3Cpath d=\'M0 20L20 0M20 40L40 20\' stroke=\'%23d1d5db\' stroke-width=\'0.8\' fill=\'none\'/%3E%3C/svg%3E")' }}>
+      <div className="absolute top-1/3 left-0 w-[400px] h-[400px] bg-[#009966]/8 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-[350px] h-[350px] bg-emerald-200/10 rounded-full blur-[100px] pointer-events-none" />
       <div className="relative z-10 max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
           
