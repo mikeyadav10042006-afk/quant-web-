@@ -117,84 +117,60 @@ export default function ContactPage() {
         </div>
       </nav>
 
-      {/* ── Hero: 2-Column — 3D Model + Copy ──────────────────────────── */}
-      <section className="pt-28 pb-20 md:pt-32 md:pb-28 relative">
-        <MeshBackground />
+      {/* ── Hero: Background Image + Copy ──────────────────────────── */}
+      <section className="pt-28 pb-20 md:pt-32 md:pb-28 relative overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0" style={{
+          backgroundImage: 'url(/contact-hero-bg.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }} />
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 z-0" style={{
+          background: 'linear-gradient(135deg, rgba(15,41,66,0.88) 0%, rgba(5,150,105,0.75) 50%, rgba(4,120,87,0.85) 100%)',
+        }} />
+        {/* Subtle pattern */}
+        <div className="absolute inset-0 z-0 opacity-[0.04] pointer-events-none" style={{
+          backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.5) 0.5px, transparent 0)',
+          backgroundSize: '32px 32px',
+        }} />
 
-        <div className="max-w-7xl mx-auto px-6 relative">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="max-w-2xl">
 
-            {/* Left – 3D Spline Model */}
+            {/* Badge */}
             <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7, delay: 0.1, ease: 'easeOut' }}
-              className="relative order-2 lg:order-1"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
             >
-              {/* Glow behind model */}
-              <div className="absolute -inset-6 bg-gradient-to-br from-[#059669]/[0.12] to-[#047857]/[0.06] rounded-[2.5rem] blur-3xl opacity-60" />
-
-              <div className="relative rounded-[2rem] border border-slate-200/50 bg-white/40 backdrop-blur-sm shadow-2xl shadow-[#059669]/[0.08]">
-                {/* Top bar accent */}
-                <div className="flex items-center gap-1.5 px-5 py-3 bg-white/60 backdrop-blur-sm border-b border-slate-100 rounded-t-[2rem]">
-                  <div className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-amber-400/70" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-400/70" />
-                  <span className="ml-2 text-[10px] font-mono text-slate-400 tracking-wide">quantionic-3d://scene</span>
-                </div>
-
-                <iframe
-                  src="https://my.spline.design/connectingcard-zEtMCrRfbDIKth5h59C00buS/"
-                  width="100%"
-                  height="520"
-                  allow="autoplay"
-                  loading="eager"
-                  title="Spline 3D Model"
-                  className="w-full rounded-b-[2rem] block"
-                  style={{ border: 'none', background: 'transparent' }}
-                />
-              </div>
+              <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-xs font-bold uppercase tracking-widest px-5 py-2.5 rounded-full">
+                <Sparkles className="w-3.5 h-3.5" />
+                Get In Touch
+              </span>
             </motion.div>
 
-            {/* Right – Premium Copy */}
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7, delay: 0.2, ease: 'easeOut' }}
-              className="space-y-8 order-1 lg:order-2 lg:pl-4"
+            {/* Heading */}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl font-extrabold tracking-tight text-white font-sans leading-[1.1] mt-6"
             >
-              {/* Badge */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, delay: 0.3 }}
-              >
-                <span className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-[#059669]/15 text-[#059669] text-xs font-bold uppercase tracking-widest px-5 py-2.5 rounded-full shadow-sm">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  Get In Touch
-                </span>
-              </motion.div>
+              Let's{' '}
+              <span className="bg-gradient-to-r from-emerald-300 to-teal-200 bg-clip-text text-transparent">
+                Connect
+              </span>
+            </motion.h1>
 
-              {/* Heading */}
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.35 }}
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl font-extrabold tracking-tight text-[#0f2942] font-sans leading-[1.1]"
-              >
-                Let's{' '}
-                <span className="bg-gradient-to-r from-[#059669] to-[#047857] bg-clip-text text-transparent">
-                  Connect
-                </span>
-              </motion.h1>
-
-              {/* Description */}
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="text-slate-500 leading-relaxed text-sm md:text-base max-w-lg"
-              >
+            {/* Description */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="text-white/60 leading-relaxed text-sm md:text-base max-w-lg mt-5"
+            >
                 Please fill the form below if you are an Enterprise or Government agency looking for their Digital Transformation. Those interested in careers please email your CV to{' '}
                 <span className="text-[#059669] font-semibold">hr@quantionic.com</span>
               </motion.p>
@@ -213,14 +189,13 @@ export default function ContactPage() {
                 ].map((item) => (
                   <div
                     key={item.label}
-                    className="flex items-center gap-2 bg-white/70 backdrop-blur-sm border border-slate-100 text-slate-500 text-xs font-semibold px-4 py-2.5 rounded-xl shadow-sm hover:shadow-md hover:border-[#059669]/20 hover:text-[#059669] transition-all duration-300"
+                    className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/15 text-white/70 text-xs font-semibold px-4 py-2.5 rounded-xl hover:bg-white/15 hover:text-white transition-all duration-300"
                   >
-                    <span className="text-[#059669]">{item.icon}</span>
+                    <span className="text-emerald-300">{item.icon}</span>
                     {item.label}
                   </div>
                 ))}
               </motion.div>
-            </motion.div>
 
           </div>
         </div>
