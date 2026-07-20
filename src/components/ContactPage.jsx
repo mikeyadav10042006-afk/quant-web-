@@ -268,6 +268,7 @@ export default function ContactPage() {
                     label: 'Find the Office',
                     value: '411, Vipul Trade Centre, Gurugram, Haryana, 122018, India',
                     isAddress: true,
+                    link: 'https://maps.app.goo.gl/3BYbCXvbE1PrvGUK6',
                   },
                 ].map((item, i) => (
                   <motion.div
@@ -288,7 +289,7 @@ export default function ContactPage() {
                       <div className="min-w-0">
                         <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">{item.label}</p>
                         {item.isAddress ? (
-                          <p className="text-sm font-semibold text-[#0f2942] leading-relaxed">{item.value}</p>
+                          <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-[#0f2942] leading-relaxed hover:text-[#059669] transition-colors duration-300 underline underline-offset-2 decoration-[#059669]/30 hover:decoration-[#059669]">{item.value}</a>
                         ) : (
                           <p className="text-lg font-bold text-[#0f2942]">{item.value}</p>
                         )}
