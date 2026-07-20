@@ -213,7 +213,7 @@ export default function LogoMarquee() {
         </div>
 
         {/* ── DYNAMIC ISLAND STYLE PILL ── */}
-        <div className="relative" style={{ filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.08)) drop-shadow(0 8px 16px rgba(0,0,0,0.05))', zIndex: 10 }}>
+        <div className="relative" style={{ filter: 'drop-shadow(0 25px 50px rgba(0,0,0,0.1)) drop-shadow(0 10px 20px rgba(0,0,0,0.06))', zIndex: 10 }}>
           
           {/* Main Pill Container — Transparent Glass Dynamic Island */}
           <div className="relative rounded-[9999px] overflow-hidden"
@@ -229,7 +229,7 @@ export default function LogoMarquee() {
                 inset 0 -1px 0 rgba(0,0,0,0.02),
                 0 0 0 1px rgba(255,255,255,0.3)
               `.replace(/\s+/g, ' '),
-              minHeight: '90px',
+              minHeight: '110px',
             }}
           >
             {/* Inner ambient edge glow */}
@@ -238,7 +238,7 @@ export default function LogoMarquee() {
             <div className="absolute top-0 left-4 right-4 h-[1px] bg-gradient-to-r from-transparent via-white/70 to-transparent pointer-events-none" />
             
             {/* ── Marquee ── */}
-            <div className="relative group/marquee px-5 md:px-8 py-3">
+            <div className="relative group/marquee px-6 md:px-10 py-5">
               {/* Left fade */}
               <div className="pointer-events-none absolute inset-y-0 left-0 w-14 md:w-20 bg-gradient-to-r from-white/60 via-white/30 to-transparent z-10" />
               {/* Right fade */}
