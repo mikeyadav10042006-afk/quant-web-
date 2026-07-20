@@ -338,7 +338,7 @@ function TeamCard({ member, index }) {
           <motion.div
             className="w-full h-full relative"
             style={{ transformStyle: 'preserve-3d' }}
-            animate={{ rotateY: hovered ? 720 : 0 }}
+            animate={{ rotateY: hovered ? 900 : 0 }}
             transition={{ duration: 1.4, ease: [0.22, 0.03, 0.26, 1] }}
           >
             {/* Front - Portrait */}
