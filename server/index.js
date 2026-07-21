@@ -107,7 +107,7 @@ function rateLimit({ windowMs = 60000, max = 10 } = {}) {
 }
 
 // Cleanup old entries every 5 minutes
-setInterval(() => {
+const rateLimitCleanup = setInterval(() => {
   const now = Date.now();
   for (const [key, entry] of rateLimitStore) {
     if (now > entry.resetAt) rateLimitStore.delete(key);
@@ -569,7 +569,7 @@ app.post('/api/chat', async (req, res) => {
       const data = await apiRes.json();
       const text = data.choices?.[0]?.message?.content;
       if (text) return res.json({ reply: text });
-      console.error('Groq response missing text:', JSON.stringify(data).slice(0, 500));
+      console.error('Groq response missing text');
     } catch (err) {
       console.error('Groq API call failed:', err);
     }
@@ -596,3 +596,10 @@ app.listen(PORT, () => {
   console.log(`AI configured: ${isGenAIConfigured}, Model: ${isGenAIConfigured ? GROQ_MODEL : 'fallback'}`);
   seedDefaultAdmin().catch((err) => console.error('Admin seed failed:', err));
 });
+
+const gracefulShutdown = () => {
+  clearInterval(rateLimitCleanup);
+  process.exit(0);
+};
+process.on('SIGTERM', gracefulShutdown);
+process.on('SIGINT', gracefulShutdown);
