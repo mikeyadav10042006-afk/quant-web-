@@ -313,7 +313,6 @@ const verifyRecaptcha = async (token) => {
       body: `secret=${encodeURIComponent(RECAPTCHA_SECRET)}&response=${encodeURIComponent(token)}`,
     });
     const data = await resp.json();
-    console.log(`reCAPTCHA verify: score=${data.score}, success=${data.success}`);
     return data.success && data.score >= 0.5;
   } catch (err) {
     console.error('reCAPTCHA verification failed:', err);

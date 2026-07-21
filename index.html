@@ -11,6 +11,13 @@
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://quant-web-theta.vercel.app" />
 
+    <!-- Preconnect for Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Preload LCP images -->
+    <link rel="preload" as="image" href="/hero-bg.jpg" fetchpriority="high" />
+
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://quant-web-theta.vercel.app" />
@@ -32,8 +39,11 @@
       gtag('config', 'G-LFXW93B8GW');
     </script>
 
+    <!-- Fonts (non-render-blocking with display=swap) -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&family=Great+Vibes&display=swap" />
+
     <!-- reCAPTCHA -->
-    <script src="https://www.google.com/recaptcha/api.js?render=6LfcclUtAAAAAM9ISGQsZpRIqYxHxph3_6jEHAcu"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LfcclUtAAAAAM9ISGQsZpRIqYxHxph3_6jEHAcu" defer></script>
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">

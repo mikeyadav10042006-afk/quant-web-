@@ -1,22 +1,9 @@
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useRef, useEffect, useMemo, memo } from 'react';
 import { motion } from 'framer-motion';
 
 const cardVariants = {
   hidden: { opacity: 0, y: 40 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-};
-const cardFlipTransition = {
-  rest: { rotateY: 0, boxShadow: '0 4px 20px -4px rgba(0,0,0,0.06)', borderColor: 'rgba(226, 232, 240, 0.6)', transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } },
-  hover: { rotateY: 720, boxShadow: '0 25px 60px -12px rgba(0,153,102,0.18)', borderColor: 'rgba(0,153,102,0.25)', transition: { duration: 1.4, ease: [0.22, 0.03, 0.26, 1] } }
-};
-const contentVariants = {
-  rest: { opacity: 1, scale: 1, x: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
-  exit: { opacity: 0, scale: 0.95, x: -20, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } },
-  enter: { opacity: 1, scale: 1, x: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.2 } }
-};
-const environmentVariants = {
-  rest: { opacity: 0, scale: 1.1, x: 20, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
-  enter: { opacity: 1, scale: 1, x: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.2 } }
 };
 
 function getEnvironmentClass(theme) {
@@ -321,7 +308,7 @@ function getEnvironmentContent(theme) {
   return environments[theme] || environments['ai-command-center'];
 }
 
-function TeamCard({ member, index }) {
+const TeamCard = memo(function TeamCard({ member, index }) {
   const [hovered, setHovered] = useState(false);
   const environmentContent = useMemo(() => getEnvironmentContent(member.aiTheme), [member.aiTheme]);
 
@@ -346,6 +333,7 @@ function TeamCard({ member, index }) {
               <img
                 src={member.img}
                 alt={member.name}
+                width="240" height="240" decoding="async"
                 className="w-full h-full object-cover"
                 loading="lazy"
               />
@@ -373,7 +361,79 @@ function TeamCard({ member, index }) {
       </motion.div>
     </motion.div>
   );
-}
+});
+
+const features = [
+  {
+    icon: '🧠',
+    title: 'AI & Machine Learning Experts',
+    description: 'Designing intelligent models that power tomorrow\u2019s solutions.'
+  },
+  {
+    icon: '☁️',
+    title: 'Cloud & Infrastructure Specialists',
+    description: 'Building secure, scalable architectures for enterprise workloads.'
+  },
+  {
+    icon: '🚀',
+    title: 'Innovation\u2011Driven Engineering',
+    description: 'Turning bold ideas into production\u2011ready AI products.'
+  }
+];
+
+const members = [
+  {
+    name: 'Arun Kumar',
+    title: 'Senior AI Architect',
+    img: '/assets/team/expert1.webp',
+    badge: '🧠 AI Strategy',
+    aiTheme: 'ai-command-center'
+  },
+  {
+    name: 'Priya Singh',
+    title: 'AI Research Engineer',
+    img: '/assets/team/expert2.webp',
+    badge: '🤖 Machine Learning',
+    aiTheme: 'cyber-security'
+  },
+  {
+    name: 'Rahul Mehta',
+    title: 'Product Strategy Lead',
+    img: '/assets/team/expert3.webp',
+    badge: '☁️ Cloud Architecture',
+    aiTheme: 'cloud-infrastructure'
+  },
+  {
+    name: 'Anjali Patel',
+    title: 'Cloud Integration Specialist',
+    img: '/assets/team/expert4.webp',
+    badge: '🔒 AI Security',
+    aiTheme: 'innovation-lab'
+  }
+];
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.1
+    }
+  }
+};
+
+const leftVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.16, 1, 0.3, 1]
+    }
+  }
+};
 
 export default function Team() {
   const splineWrapRef = useRef(null);
@@ -391,78 +451,6 @@ export default function Team() {
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
-
-  const features = [
-    {
-      icon: '🧠',
-      title: 'AI & Machine Learning Experts',
-      description: 'Designing intelligent models that power tomorrow\u2019s solutions.'
-    },
-    {
-      icon: '☁️',
-      title: 'Cloud & Infrastructure Specialists',
-      description: 'Building secure, scalable architectures for enterprise workloads.'
-    },
-    {
-      icon: '🚀',
-      title: 'Innovation\u2011Driven Engineering',
-      description: 'Turning bold ideas into production\u2011ready AI products.'
-    }
-  ];
-
-  const members = [
-    {
-      name: 'Arun Kumar',
-      title: 'Senior AI Architect',
-      img: '/assets/team/expert1.jpg',
-      badge: '🧠 AI Strategy',
-      aiTheme: 'ai-command-center'
-    },
-    {
-      name: 'Priya Singh',
-      title: 'AI Research Engineer',
-      img: '/assets/team/expert2.jpg',
-      badge: '🤖 Machine Learning',
-      aiTheme: 'cyber-security'
-    },
-    {
-      name: 'Rahul Mehta',
-      title: 'Product Strategy Lead',
-      img: '/assets/team/expert3.jpg',
-      badge: '☁️ Cloud Architecture',
-      aiTheme: 'cloud-infrastructure'
-    },
-    {
-      name: 'Anjali Patel',
-      title: 'Cloud Integration Specialist',
-      img: '/assets/team/expert4.jpg',
-      badge: '🔒 AI Security',
-      aiTheme: 'innovation-lab'
-    }
-  ];
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.1
-      }
-    }
-  };
-
-  const leftVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: [0.16, 1, 0.3, 1]
-      }
-    }
-  };
 
   return (
     <section id="team" className="relative py-14 md:py-24 overflow-hidden" style={{ backgroundColor: '#f1f5f9', backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'40\' height=\'40\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 0h40v40H0z\' fill=\'none\'/%3E%3Cpath d=\'M0 20L20 0M20 40L40 20\' stroke=\'%23cbd5e1\' stroke-width=\'1\' fill=\'none\'/%3E%3C/svg%3E")' }}>

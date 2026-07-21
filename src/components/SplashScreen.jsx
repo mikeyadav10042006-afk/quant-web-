@@ -1,63 +1,97 @@
 import { useEffect, useRef, useCallback } from 'react';
 import gsap from 'gsap';
 
+const PARTICLE_COUNT = 18;
+const PARTICLE_COLORS = ['#00A878', '#06b6d4', '#009966', '#0891b2'];
+
+function SplashParticle({ color, delay, x, y, size, animDuration }) {
+  return (
+    <div
+      className="absolute rounded-full pointer-events-none"
+      style={{
+        width: size,
+        height: size,
+        background: color,
+        left: `${x}%`,
+        top: `${y}%`,
+        opacity: 0,
+        boxShadow: `0 0 6px ${color}`,
+        animation: `particleDrift ${animDuration}s ${delay}s ease-out infinite`,
+      }}
+    />
+  );
+}
+
 export default function SplashScreen({ onComplete }) {
   const rootRef = useRef(null);
   const textRef = useRef(null);
-  const cursorRef = useRef(null);
   const lineRef = useRef(null);
   const taglineRef = useRef(null);
   const iconRef = useRef(null);
+  const ringsRef = useRef([]);
+  const burstRef = useRef(null);
+
+  const particles = useRef(
+    Array.from({ length: PARTICLE_COUNT }, () => ({
+      color: PARTICLE_COLORS[Math.floor(Math.random() * PARTICLE_COLORS.length)],
+      delay: Math.random() * 2,
+      x: 15 + Math.random() * 70,
+      y: 20 + Math.random() * 60,
+      size: 4 + Math.random() * 4,
+      animDuration: 4 + Math.random() * 3,
+    }))
+  ).current;
 
   const buildScene = useCallback(() => {
     const root = rootRef.current;
     if (!root) return;
-    const text = textRef.current;
-    const cursor = cursorRef.current;
-    const chars = text?.querySelectorAll('.tc');
 
-    gsap.set(iconRef.current, { opacity: 0, scale: 0.5, rotate: -180 });
-    gsap.set(chars, { opacity: 0, y: 8, filter: 'blur(4px)' });
-    gsap.set(cursor, { opacity: 0 });
-    gsap.set(lineRef.current, { scaleX: 0, transformOrigin: 'left' });
-    gsap.set(taglineRef.current, { opacity: 0, y: 6 });
-
-    const blink = gsap.to(cursor, {
-      opacity: 0, duration: 0.35, repeat: -1, yoyo: true,
-      ease: 'steps(1)', paused: true,
+    gsap.set(iconRef.current, { opacity: 0, scale: 0.2, rotate: -120 });
+    gsap.set(textRef.current, { opacity: 0, scale: 0.85, y: 12, filter: 'blur(12px)' });
+    gsap.set(lineRef.current, { scaleX: 0, transformOrigin: 'center' });
+    gsap.set(taglineRef.current, { opacity: 0, y: 10 });
+    gsap.set(burstRef.current, { opacity: 0, scale: 0.3 });
+    ringsRef.current.forEach(r => {
+      if (r) gsap.set(r, { opacity: 0, scale: 0.5 });
     });
 
     const tl = gsap.timeline({
       onComplete: () => {
-        blink.kill();
-        gsap.to(cursor, { opacity: 0 });
         gsap.to(root, {
-          opacity: 0, duration: 0.7, ease: 'power2.inOut', onComplete,
+          opacity: 0, duration: 0.8, ease: 'power2.inOut', onComplete,
         });
       },
     });
 
-    tl
-      .to(iconRef.current, { opacity: 1, scale: 1, rotate: 0, duration: 0.8, ease: 'back.out(1.7)' })
-      .call(() => blink.play())
-      .to(cursor, { opacity: 1, duration: 0.1 }, '-=0.3')
-      .to(chars, {
-        opacity: 1, y: 0, filter: 'blur(0px)',
-        stagger: 0.1,
-        duration: 0.3,
-        ease: 'power2.out',
-      }, '-=0.4')
-      .to(lineRef.current, {
-        scaleX: 1,
-        duration: 1.2,
-        ease: 'power2.inOut',
-      }, '<')
-      .call(() => blink.pause())
-      .to(cursor, { opacity: 0, duration: 0.3 })
-      .to(taglineRef.current, { opacity: 0.5, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.1')
-      .to({}, { duration: 0.8 });
+    // Phase 1: Icon scales in with bounce
+    tl.to(iconRef.current, {
+      opacity: 1, scale: 1, rotate: 0, duration: 1.2, ease: 'elastic.out(1, 0.6)',
+    })
+    // Phase 2: Orbital rings pulse outward one by one
+    .to(ringsRef.current, {
+      opacity: 1, scale: 1.6, duration: 0.9, ease: 'power2.out',
+      stagger: 0.2,
+    }, '-=0.5')
+    .to(ringsRef.current, {
+      opacity: 0, scale: 2.2, duration: 0.8, ease: 'power2.in',
+      stagger: 0.2,
+    }, '-=0.4')
+    // Phase 3: Burst glow behind icon
+    .to(burstRef.current, { opacity: 0.8, scale: 1.5, duration: 0.5, ease: 'power2.out' }, '-=0.7')
+    .to(burstRef.current, { opacity: 0, scale: 2.5, duration: 0.7, ease: 'power2.in' }, '-=0.4')
+    // Phase 4: Text appears — blur to sharp + scale up + glow
+    .to(textRef.current, {
+      opacity: 1, scale: 1, y: 0, filter: 'blur(0px)',
+      duration: 1, ease: 'power3.out',
+    }, '-=0.5')
+    // Phase 5: Gradient line expands from center
+    .to(lineRef.current, { scaleX: 1, duration: 1.1, ease: 'power2.inOut' }, '-=0.4')
+    // Phase 6: Tagline
+    .to(taglineRef.current, { opacity: 0.5, y: 0, duration: 0.7, ease: 'power2.out' }, '-=0.3')
+    // Hold
+    .to({}, { duration: 0.9 });
 
-    return () => { tl.kill(); blink.kill(); };
+    return () => { tl.kill(); };
   }, [onComplete]);
 
   useEffect(() => {
@@ -68,13 +102,48 @@ export default function SplashScreen({ onComplete }) {
   return (
     <div
       ref={rootRef}
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center"
+      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden"
       style={{
-        background: 'linear-gradient(160deg, #050508 0%, #071a14 35%, #0a1f1a 60%, #050d0a 100%)',
+        background: 'radial-gradient(ellipse 80% 60% at 50% 45%, #0a2e1f 0%, #061a12 40%, #030d09 70%, #010504 100%)',
       }}
     >
+      {/* Floating particles */}
+      {particles.map((p, i) => (
+        <SplashParticle key={i} {...p} />
+      ))}
+
+      {/* Orbital rings */}
+      {[0, 1, 2].map(i => (
+        <div
+          key={i}
+          ref={el => { ringsRef.current[i] = el; }}
+          className="absolute rounded-full pointer-events-none"
+          style={{
+            width: 120 + i * 40,
+            height: 120 + i * 40,
+            border: `1px solid rgba(0,168,120,${0.4 - i * 0.08})`,
+            boxShadow: `0 0 30px rgba(0,168,120,${0.15 - i * 0.03}), inset 0 0 15px rgba(6,182,212,${0.08 - i * 0.02})`,
+            opacity: 0,
+            transform: 'scale(0.5)',
+          }}
+        />
+      ))}
+
+      {/* Burst glow */}
+      <div
+        ref={burstRef}
+        className="absolute rounded-full pointer-events-none"
+        style={{
+          width: 200,
+          height: 200,
+          background: 'radial-gradient(circle, rgba(0,168,120,0.5) 0%, rgba(6,182,212,0.25) 35%, rgba(0,153,102,0.1) 55%, transparent 70%)',
+          opacity: 0,
+          transform: 'scale(0.3)',
+        }}
+      />
+
       {/* Atom Icon */}
-      <div ref={iconRef} className="mb-6 sm:mb-8">
+      <div ref={iconRef} className="relative z-10 mb-6 sm:mb-8" style={{ opacity: 0, transform: 'scale(0.2) rotate(-120deg)' }}>
         <svg width="56" height="56" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="18" cy="18" r="4" fill="url(#splashGrad)" />
           <ellipse cx="18" cy="18" rx="15" ry="6" stroke="url(#splashGrad)" strokeWidth="1.2" fill="none" opacity="0.5" />
@@ -88,48 +157,39 @@ export default function SplashScreen({ onComplete }) {
             </linearGradient>
           </defs>
         </svg>
+        <div className="absolute inset-0 rounded-full blur-2xl opacity-50" style={{ background: 'radial-gradient(circle, #00A878, transparent)' }} />
       </div>
 
-      {/* QUANTIONIC typewriter */}
-      <div ref={textRef} className="flex items-baseline">
-        <span className="text-[38px] sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-wider select-none" style={{
-          color: '#ffffff',
-        }}>
-          {'QUANTIONIC'.split('').map((ch, i) => (
-            <span key={i} className="tc inline-block" style={{
-              opacity: 0,
-              background: i >= 5
-                ? 'linear-gradient(135deg, #00A878, #06b6d4)'
-                : 'linear-gradient(180deg, #f0f4f8, #cbd5e1)',
-              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-            }}>{ch}</span>
-          ))}
+      {/* QUANTIONIC text */}
+      <div ref={textRef} className="relative z-10" style={{ opacity: 0, transform: 'scale(0.85) translateY(12px)', filter: 'blur(12px)' }}>
+        <span className="text-[38px] sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-wider select-none">
+          <span style={{
+            background: 'linear-gradient(180deg, #f0f4f8, #cbd5e1)',
+            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+          }}>QUAN</span>
+          <span style={{
+            background: 'linear-gradient(135deg, #00A878, #06b6d4)',
+            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+          }}>TIONIC</span>
         </span>
-        <span
-          ref={cursorRef}
-          className="inline-block w-[2px] h-8 sm:h-10 md:h-12 lg:h-14 ml-0.5 rounded-full"
-          style={{
-            background: 'linear-gradient(180deg, #00A878, #06b6d4)',
-            boxShadow: '0 0 8px rgba(0,168,120,0.4)',
-          }}
-        />
       </div>
 
-      {/* Loading line */}
-      <div className="mt-4 sm:mt-5 w-40 sm:w-52 md:w-60 h-[1.5px] rounded-full overflow-hidden" style={{
-        background: 'rgba(0,168,120,0.1)',
+      {/* Loading line from center */}
+      <div className="mt-6 sm:mt-7 w-40 sm:w-52 md:w-60 h-[1.5px] rounded-full overflow-hidden relative z-10" style={{
+        background: 'rgba(0,168,120,0.08)',
       }}>
-        <div ref={lineRef} className="h-full rounded-full" style={{
-          background: 'linear-gradient(90deg, rgba(0,168,120,0.2), #00A878, #06b6d4, #00A878, rgba(0,168,120,0.2))',
-          boxShadow: '0 0 6px rgba(0,168,120,0.4), 0 0 12px rgba(6,182,212,0.15)',
+        <div ref={lineRef} className="absolute inset-0 rounded-full" style={{
+          background: 'linear-gradient(90deg, transparent, #00A878, #06b6d4, #00A878, transparent)',
+          boxShadow: '0 0 12px rgba(0,168,120,0.4), 0 0 24px rgba(6,182,212,0.15)',
+          transform: 'scaleX(0)',
         }} />
       </div>
 
       {/* Tagline */}
       <p
         ref={taglineRef}
-        className="mt-5 sm:mt-6 text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.28em] font-medium"
-        style={{ color: 'rgba(255,255,255,0.3)' }}
+        className="mt-5 sm:mt-6 text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.28em] font-medium relative z-10"
+        style={{ color: 'rgba(255,255,255,0.3)', opacity: 0, transform: 'translateY(10px)' }}
       >
         BRINGING AI TO REAL WORLD
       </p>

@@ -183,9 +183,9 @@ export default function Projects() {
                   <img
                     src={project.backImg}
                     alt={project.backImgAlt}
+                    width="800" height="350" decoding="async"
                     className="w-full h-full object-cover"
                     loading="lazy"
-                    decoding="async"
                   />
 
                   {/* Gradient overlay for readability */}

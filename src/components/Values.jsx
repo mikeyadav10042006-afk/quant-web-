@@ -1,30 +1,30 @@
 import { motion } from 'framer-motion';
 import { Shield, Cpu, Users, BarChart } from 'lucide-react';
 
-export default function Values() {
-  const values = [
-    {
-      icon: <Shield className="w-5 h-5" />,
-      title: 'Absolute Trust & Security',
-      desc: 'We build everything with top-tier security standards, making sure your business data remains 100% safe and private.'
-    },
-    {
-      icon: <Cpu className="w-5 h-5" />,
-      title: 'Future-Ready Technology',
-      desc: 'We constantly update and use the latest AI advancements so your platform always stays one step ahead of competitors.'
-    },
-    {
-      icon: <Users className="w-5 h-5" />,
-      title: 'True Team Partnership',
-      desc: 'We work closely with your internal team as extensions of your business to match your exact speed and launch timelines.'
-    },
-    {
-      icon: <BarChart className="w-5 h-5" />,
-      title: 'Result-Driven Solutions',
-      desc: 'We focus strictly on building software features that bring real commercial growth, eliminating unnecessary technical fluff.'
-    }
-  ];
+const values = [
+  {
+    icon: <Shield className="w-5 h-5" />,
+    title: 'Absolute Trust & Security',
+    desc: 'We build everything with top-tier security standards, making sure your business data remains 100% safe and private.'
+  },
+  {
+    icon: <Cpu className="w-5 h-5" />,
+    title: 'Future-Ready Technology',
+    desc: 'We constantly update and use the latest AI advancements so your platform always stays one step ahead of competitors.'
+  },
+  {
+    icon: <Users className="w-5 h-5" />,
+    title: 'True Team Partnership',
+    desc: 'We work closely with your internal team as extensions of your business to match your exact speed and launch timelines.'
+  },
+  {
+    icon: <BarChart className="w-5 h-5" />,
+    title: 'Result-Driven Solutions',
+    desc: 'We focus strictly on building software features that bring real commercial growth, eliminating unnecessary technical fluff.'
+  }
+];
 
+export default function Values() {
   return (
     <section id="values" className="relative py-14 md:py-24">
       <div className="relative z-10 max-w-7xl mx-auto px-6">
@@ -44,12 +44,15 @@ export default function Values() {
               </p>
             </div>
 
-            {/* Code Typing GIF — blended into background */}
+            {/* Code Typing Animation — blended into background */}
             <div className="w-full flex justify-center lg:justify-start pt-4">
               <div className="w-full max-w-[420px] aspect-square relative" style={{ maskImage: 'radial-gradient(ellipse 85% 85% at 50% 50%, black 40%, transparent 75%)', WebkitMaskImage: 'radial-gradient(ellipse 85% 85% at 50% 50%, black 40%, transparent 75%)' }}>
-                <img
-                  src="/code-typing.gif"
-                  alt="Code Typing Animation"
+                <video
+                  src="/code-typing.webm"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
                   className="w-full h-full object-cover"
                 />
               </div>

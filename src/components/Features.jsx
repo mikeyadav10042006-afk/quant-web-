@@ -1,36 +1,36 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Activity, CheckCircle } from 'lucide-react';
+
+const benefits = [
+  {
+    id: 'clinical',
+    title: 'Clinical Operations',
+    tagline: 'Streamline Patient Care & Smart Automated Records',
+    points: [
+      '100% Secure & HIPAA-compliant data management',
+      'Instant access to digital medical history and patient records',
+      'AI-generated clinical summaries to save doctors\' time',
+      'Smart appointment scheduling to minimize patient waiting time'
+    ]
+  },
+  {
+    id: 'financial',
+    title: 'Financial Analysis',
+    tagline: 'Optimize revenue cycles and billing processes',
+    points: [
+      'AI-driven claims denial prediction and resolution',
+      'Automated medical coding audits with high accuracy',
+      'Real-time cost efficiency analysis across departments',
+      'Predictive budgeting models for clinical supplies'
+    ]
+  }
+];
 
 export default function Features() {
   const [activeTab, setActiveTab] = useState('clinical');
 
-  const benefits = [
-    {
-      id: 'clinical',
-      title: 'Clinical Operations',
-      tagline: 'Streamline Patient Care & Smart Automated Records',
-      points: [
-        '100% Secure & HIPAA-compliant data management',
-        'Instant access to digital medical history and patient records',
-        'AI-generated clinical summaries to save doctors\' time',
-        'Smart appointment scheduling to minimize patient waiting time'
-      ]
-    },
-    {
-      id: 'financial',
-      title: 'Financial Analysis',
-      tagline: 'Optimize revenue cycles and billing processes',
-      points: [
-        'AI-driven claims denial prediction and resolution',
-        'Automated medical coding audits with high accuracy',
-        'Real-time cost efficiency analysis across departments',
-        'Predictive budgeting models for clinical supplies'
-      ]
-    }
-  ];
-
-  const currentTab = benefits.find(b => b.id === activeTab);
+  const currentTab = useMemo(() => benefits.find(b => b.id === activeTab), [activeTab]);
 
   return (
     <section id="features" className="relative py-12 md:py-24">

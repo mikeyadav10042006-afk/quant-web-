@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, Bot, User, HelpCircle, Loader2 } from 'lucide-react';
 import api from '../api';
@@ -37,6 +37,13 @@ const MemoizedMessages = React.memo(function MemoizedMessages({ messages }) {
   ));
 });
 
+const suggestedQuestions = [
+  'What services does Quantionic provide?',
+  'Explain the AI & Blockchain integrations',
+  'How do I schedule a technical consultation?',
+  'What features are in the Healthcare AI module?'
+];
+
 export default function AIConsultant({ isOpen, onClose }) {
   const [messages, setMessages] = useState([
     {
@@ -55,13 +62,6 @@ export default function AIConsultant({ isOpen, onClose }) {
     };
   }, []);
 
-  const suggestedQuestions = [
-    'What services does Quantionic provide?',
-    'Explain the AI & Blockchain integrations',
-    'How do I schedule a technical consultation?',
-    'What features are in the Healthcare AI module?'
-  ];
-
   // Debounced scroll to bottom — avoids lag during rapid renders
   const scrollToBottom = useCallback(() => {
     requestAnimationFrame(() => {
@@ -74,7 +74,7 @@ export default function AIConsultant({ isOpen, onClose }) {
     return () => clearTimeout(timer);
   }, [messages, loading, scrollToBottom]);
 
-  const handleSend = async (textToSend) => {
+  const handleSend = useCallback(async (textToSend) => {
     const text = textToSend || input;
     if (!text.trim()) return;
 
@@ -110,7 +110,7 @@ export default function AIConsultant({ isOpen, onClose }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [input]);
 
   return (
     <AnimatePresence>
@@ -136,12 +136,13 @@ export default function AIConsultant({ isOpen, onClose }) {
                   <h3 className="font-bold text-sm">Quantobot</h3>
                   <div className="flex items-center space-x-1">
                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="text-[10px] text-slate-400 font-semibold uppercase">Powered by Gemini AI</span>
+                    <span className="text-[10px] text-slate-400 font-semibold uppercase">Powered by Quantionic AI</span>
                   </div>
                 </div>
               </div>
               <button
                 onClick={onClose}
+                aria-label="Close AI chat"
                 className="p-2.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors"
               >
                 <X className="w-5 h-5" />
@@ -203,6 +204,7 @@ export default function AIConsultant({ isOpen, onClose }) {
               <button
                 type="submit"
                 disabled={loading || !input.trim()}
+                aria-label="Send message"
                 className="bg-slate-900 hover:bg-teal-600 text-white p-3.5 rounded-xl transition-all duration-200 disabled:bg-slate-100 disabled:text-slate-400 shadow-sm"
               >
                 <Send className="w-4 h-4" />

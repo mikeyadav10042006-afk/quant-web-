@@ -13,6 +13,9 @@ export default function AdminDashboard({ isOpen, onClose, onLogout, authToken })
   // Create Admin state
   const [showCreateAdmin, setShowCreateAdmin] = useState(false);
   const [newAdmin, setNewAdmin] = useState({ name: '', email: '', password: '' });
+  const handleAdminChange = useCallback((field, value) => {
+    setNewAdmin((prev) => ({ ...prev, [field]: value }));
+  }, []);
   const [createLoading, setCreateLoading] = useState(false);
   const [createMsg, setCreateMsg] = useState({ type: '', text: '' });
 
@@ -74,7 +77,7 @@ export default function AdminDashboard({ isOpen, onClose, onLogout, authToken })
     }
   }, [authToken, onLogout]);
 
-  const handleCreateAdmin = async (e) => {
+  const handleCreateAdmin = useCallback(async (e) => {
     e.preventDefault();
     setCreateLoading(true);
     setCreateMsg({ type: '', text: '' });
@@ -88,7 +91,7 @@ export default function AdminDashboard({ isOpen, onClose, onLogout, authToken })
     } finally {
       setCreateLoading(false);
     }
-  };
+  }, [newAdmin, authToken]);
 
   useEffect(() => {
     if (isOpen) {
@@ -146,6 +149,7 @@ export default function AdminDashboard({ isOpen, onClose, onLogout, authToken })
                 </button>
                 <button
                   onClick={onClose}
+                  aria-label="Close admin dashboard"
                   className="p-2 text-slate-400 hover:text-white rounded-xl hover:bg-slate-900 border border-slate-800 transition-colors"
                 >
                   <X className="w-5 h-5" />
@@ -177,7 +181,7 @@ export default function AdminDashboard({ isOpen, onClose, onLogout, authToken })
                         type="text"
                         required
                         value={newAdmin.name}
-                        onChange={(e) => setNewAdmin({ ...newAdmin, name: e.target.value })}
+                        onChange={(e) => handleAdminChange('name', e.target.value)}
                         placeholder="Full name"
                         className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500"
                       />
@@ -188,7 +192,7 @@ export default function AdminDashboard({ isOpen, onClose, onLogout, authToken })
                         type="email"
                         required
                         value={newAdmin.email}
-                        onChange={(e) => setNewAdmin({ ...newAdmin, email: e.target.value })}
+                        onChange={(e) => handleAdminChange('email', e.target.value)}
                         placeholder="admin@example.com"
                         className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500"
                       />
@@ -200,7 +204,7 @@ export default function AdminDashboard({ isOpen, onClose, onLogout, authToken })
                         required
                         minLength={8}
                         value={newAdmin.password}
-                        onChange={(e) => setNewAdmin({ ...newAdmin, password: e.target.value })}
+                        onChange={(e) => handleAdminChange('password', e.target.value)}
                         placeholder="Min 8 characters"
                         className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500"
                       />

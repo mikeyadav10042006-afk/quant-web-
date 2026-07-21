@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Lock, Mail, AlertCircle, Loader2 } from 'lucide-react';
 import api from '../api';
@@ -36,12 +36,12 @@ export default function LoginModal({ isOpen, onClose, onSuccess }) {
     }
   };
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setEmail('');
     setPassword('');
     setError('');
     onClose();
-  };
+  }, [onClose]);
 
   return (
     <AnimatePresence>
@@ -59,6 +59,7 @@ export default function LoginModal({ isOpen, onClose, onSuccess }) {
             <div className="bg-slate-950 text-white p-6 text-center relative">
               <button
                 onClick={handleClose}
+                aria-label="Close login modal"
                 className="absolute top-4 right-4 p-2.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-900 transition-colors"
               >
                 <X className="w-4 h-4" />
@@ -114,6 +115,7 @@ export default function LoginModal({ isOpen, onClose, onSuccess }) {
               <button
                 type="submit"
                 disabled={loading}
+                aria-label="Sign in"
                 className="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 rounded-xl transition-all duration-200 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
               >
                 {loading ? (

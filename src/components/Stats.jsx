@@ -33,6 +33,12 @@ function AnimatedCounter({ target, suffix = '', trigger }) {
   );
 }
 
+const stats = [
+  { value: 99, suffix: '%+', label: 'Satisfaction Rate', desc: 'Across enterprise solutions', animate: true },
+  { value: 180, suffix: '+', label: 'Projects Completed', desc: 'Delivered with precision', animate: true },
+  { value: 24, suffix: '/7', label: 'AI Monitoring', desc: 'Secure agent operations', animate: false },
+];
+
 export default function Stats() {
   const sectionRef = useRef(null);
   const [inView, setInView] = useState(false);
@@ -52,12 +58,6 @@ export default function Stats() {
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
-
-  const stats = [
-    { value: 99, suffix: '%+', label: 'Satisfaction Rate', desc: 'Across enterprise solutions', animate: true },
-    { value: 180, suffix: '+', label: 'Projects Completed', desc: 'Delivered with precision', animate: true },
-    { value: 24, suffix: '/7', label: 'AI Monitoring', desc: 'Secure agent operations', animate: false },
-  ];
 
   return (
     <section ref={sectionRef} className="py-12 md:py-20 bg-slate-50 border-b border-slate-100">
@@ -143,6 +143,7 @@ export default function Stats() {
               <div className="absolute inset-0 backface-hidden rotate-y-180 bg-white border border-gray-100 rounded-2xl flex flex-col items-center justify-center p-6 shadow-sm">
                 <img 
                   src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=300" 
+                  width="128" height="128" loading="lazy" decoding="async"
                   className="w-32 h-32 rounded-full object-cover border-4 border-[#009966] mb-4 shadow-sm" 
                   alt="Dr. Alan Ross AI" 
                 />

@@ -1,11 +1,16 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Send, CheckCircle2, Loader2, Bot, Calendar, ArrowRight } from 'lucide-react';
 import api, { getRecaptchaToken, sendAdminEmail, sendUserEmail } from '../api';
 
+const CURRENT_YEAR = new Date().getFullYear();
+
 export default function Footer({ onOpenChat, onOpenAdmin }) {
   // Booking Form State
   const [bookingData, setBookingData] = useState({ name: '', email: '', enterprise: '', requirements: '' });
+  const handleBookingChange = useCallback((field, value) => {
+    setBookingData((prev) => ({ ...prev, [field]: value }));
+  }, []);
   const [bookingLoading, setBookingLoading] = useState(false);
   const [bookingSuccess, setBookingSuccess] = useState(false);
 
@@ -24,7 +29,7 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
     };
   }, []);
 
-  const handleBookingSubmit = async (e) => {
+  const handleBookingSubmit = useCallback(async (e) => {
     e.preventDefault();
     if (!bookingData.name || !bookingData.email || !bookingData.requirements) return;
 
@@ -51,9 +56,9 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
       setBookingLoading(false);
       bookingTimerRef.current = setTimeout(() => setBookingSuccess(false), 5000);
     }
-  };
+  }, [bookingData]);
 
-  const handleNewsletterSubmit = async (e) => {
+  const handleNewsletterSubmit = useCallback(async (e) => {
     e.preventDefault();
     if (!newsletterEmail) return;
 
@@ -80,7 +85,7 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
       setNewsLoading(false);
       newsTimerRef.current = setTimeout(() => setNewsSuccess(false), 5000);
     }
-  };
+  }, [newsletterEmail]);
 
   return (
     <footer id="contact" className="bg-slate-950 text-white relative pt-24 pb-12 overflow-hidden border-t border-slate-900">
@@ -158,7 +163,7 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
                       required
                       placeholder="e.g. Rahul Sharma"
                       value={bookingData.name}
-                      onChange={(e) => setBookingData({ ...bookingData, name: e.target.value })}
+                      onChange={(e) => handleBookingChange('name', e.target.value)}
                       className="w-full bg-slate-950/80 border border-slate-800 focus:border-teal-500 focus:outline-none rounded-xl px-4 py-3 text-sm text-white"
                     />
                   </div>
@@ -169,7 +174,7 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
                       required
                       placeholder="e.g. rahul@enterprise.com"
                       value={bookingData.email}
-                      onChange={(e) => setBookingData({ ...bookingData, email: e.target.value })}
+                      onChange={(e) => handleBookingChange('email', e.target.value)}
                       className="w-full bg-slate-950/80 border border-slate-800 focus:border-teal-500 focus:outline-none rounded-xl px-4 py-3 text-sm text-white"
                     />
                   </div>
@@ -181,7 +186,7 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
                     type="text"
                     placeholder="e.g. Apex Health Systems"
                     value={bookingData.enterprise}
-                    onChange={(e) => setBookingData({ ...bookingData, enterprise: e.target.value })}
+                    onChange={(e) => handleBookingChange('enterprise', e.target.value)}
                     className="w-full bg-slate-950/80 border border-slate-800 focus:border-teal-500 focus:outline-none rounded-xl px-4 py-3 text-sm text-white"
                   />
                 </div>
@@ -193,7 +198,7 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
                     rows="4"
                     placeholder="What automated flows, Node APIs or database structures do you want to build?"
                     value={bookingData.requirements}
-                    onChange={(e) => setBookingData({ ...bookingData, requirements: e.target.value })}
+                    onChange={(e) => handleBookingChange('requirements', e.target.value)}
                     className="w-full bg-slate-950/80 border border-slate-800 focus:border-teal-500 focus:outline-none rounded-xl px-4 py-3 text-sm text-white resize-none"
                   />
                 </div>
@@ -245,6 +250,7 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
                 <button
                   type="submit"
                   disabled={newsLoading}
+                  aria-label="Subscribe to newsletter"
                   className="bg-teal-600 hover:bg-teal-700 text-white px-5 py-3 rounded-xl transition-colors text-xs font-bold flex items-center space-x-1 shrink-0"
                 >
                   {newsLoading ? (
@@ -264,16 +270,26 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
         {/* LOWER PART: Footer Info & Links */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 rounded-lg bg-teal-600 flex items-center justify-center font-bold text-white text-sm">
-              Q
-            </div>
+            <svg width="28" height="28" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+              <circle cx="18" cy="18" r="4" fill="url(#footerGrad)" />
+              <ellipse cx="18" cy="18" rx="15" ry="6" stroke="url(#footerGrad)" strokeWidth="1.5" fill="none" opacity="0.6" />
+              <ellipse cx="18" cy="18" rx="15" ry="6" stroke="url(#footerGrad)" strokeWidth="1.5" fill="none" opacity="0.6" transform="rotate(60 18 18)" />
+              <ellipse cx="18" cy="18" rx="15" ry="6" stroke="url(#footerGrad)" strokeWidth="1.5" fill="none" opacity="0.6" transform="rotate(120 18 18)" />
+              <circle cx="18" cy="18" r="1.5" fill="#10b981" />
+              <defs>
+                <linearGradient id="footerGrad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#10b981" />
+                  <stop offset="1" stopColor="#06b6d4" />
+                </linearGradient>
+              </defs>
+            </svg>
             <span className="text-lg font-bold tracking-tight text-white font-sans">
               QUANT<span className="text-teal-400">IONIC</span>
             </span>
           </div>
 
           <p className="text-xs text-slate-500 font-medium">
-            © {new Date().getFullYear()} Quantionic Inc. All rights reserved.
+            © {CURRENT_YEAR} Quantionic Inc. All rights reserved.
             {onOpenAdmin && (
               <button onClick={onOpenAdmin} className="ml-2 text-slate-700/30 hover:text-slate-400 transition-colors align-middle" title="Admin">
                 <svg className="w-3.5 h-3.5 inline" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0" /></svg>

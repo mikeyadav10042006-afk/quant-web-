@@ -1,31 +1,42 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Phone, Mail, MapPin, ArrowLeft, Send, MessageSquare, User, Building2, HelpCircle, Sparkles, Clock, Headphones, CheckCircle } from 'lucide-react';
 import api, { getRecaptchaToken, sendAdminEmail, sendUserEmail } from '../api';
 
-function MeshBackground() {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {/* Dot grid pattern */}
-      <svg className="absolute inset-0 w-full h-full opacity-[0.035]">
-        <defs>
-          <pattern id="dots" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
-            <circle cx="1.5" cy="1.5" r="1.5" fill="#059669" />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#dots)" />
-      </svg>
-      {/* Soft gradient orbs */}
-      <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] rounded-full bg-gradient-to-br from-[#059669]/[0.07] to-transparent blur-3xl" />
-      <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-[#047857]/[0.05] to-transparent blur-3xl" />
-      <div className="absolute top-[40%] left-[30%] w-[300px] h-[300px] rounded-full bg-[#059669]/[0.03] blur-3xl" />
-    </div>
-  );
-}
+const CURRENT_YEAR = new Date().getFullYear();
+
+const featureBadges = [
+  { icon: <Clock className="w-4 h-4" />, label: '24h Response' },
+  { icon: <Headphones className="w-4 h-4" />, label: 'Dedicated Support' },
+  { icon: <Sparkles className="w-4 h-4" />, label: 'Enterprise Ready' },
+];
+
+const contactInfo = [
+  {
+    icon: <Phone className="w-5 h-5" />,
+    label: 'Emergency Support? Call Us',
+    value: '+91 98765 43210',
+  },
+  {
+    icon: <Mail className="w-5 h-5" />,
+    label: 'Send Us Mail',
+    value: 'info@quantionic.com',
+  },
+  {
+    icon: <MapPin className="w-5 h-5" />,
+    label: 'Find the Office',
+    value: '411, Vipul Trade Centre, Gurugram, Haryana, 122018, India',
+    isAddress: true,
+    link: 'https://maps.app.goo.gl/3BYbCXvbE1PrvGUK6',
+  },
+];
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({ name: '', email: '', company: '', subject: '', message: '' });
+  const handleChange = useCallback((field, value) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  }, []);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
   const [formError, setFormError] = useState('');
@@ -99,9 +110,19 @@ export default function ContactPage() {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-xl border-b border-slate-200/60">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#00A878] flex items-center justify-center text-white font-bold" style={{ filter: 'drop-shadow(0 0 12px rgba(0,168,120,0.15))' }}>
-              Q
-            </div>
+            <svg width="32" height="32" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+              <circle cx="18" cy="18" r="4" fill="url(#contactLogoGrad)" />
+              <ellipse cx="18" cy="18" rx="15" ry="6" stroke="url(#contactLogoGrad)" strokeWidth="1.5" fill="none" opacity="0.6" />
+              <ellipse cx="18" cy="18" rx="15" ry="6" stroke="url(#contactLogoGrad)" strokeWidth="1.5" fill="none" opacity="0.6" transform="rotate(60 18 18)" />
+              <ellipse cx="18" cy="18" rx="15" ry="6" stroke="url(#contactLogoGrad)" strokeWidth="1.5" fill="none" opacity="0.6" transform="rotate(120 18 18)" />
+              <circle cx="18" cy="18" r="1.5" fill="#00A878" />
+              <defs>
+                <linearGradient id="contactLogoGrad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#00A878" />
+                  <stop offset="1" stopColor="#06b6d4" />
+                </linearGradient>
+              </defs>
+            </svg>
             <div className="flex items-center">
               <span className="text-2xl font-extrabold tracking-tight text-[#111827]">QUAN</span>
               <span className="text-2xl font-medium tracking-tight text-[#00A878]">TIONIC</span>
@@ -182,11 +203,7 @@ export default function ContactPage() {
                 transition={{ duration: 0.5, delay: 0.5 }}
                 className="flex flex-wrap items-center gap-4 pt-2"
               >
-                {[
-                  { icon: <Clock className="w-4 h-4" />, label: '24h Response' },
-                  { icon: <Headphones className="w-4 h-4" />, label: 'Dedicated Support' },
-                  { icon: <Sparkles className="w-4 h-4" />, label: 'Enterprise Ready' },
-                ].map((item) => (
+                {featureBadges.map((item) => (
                   <div
                     key={item.label}
                     className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/15 text-white/70 text-xs font-semibold px-4 py-2.5 rounded-xl hover:bg-white/15 hover:text-white transition-all duration-300"
@@ -227,25 +244,7 @@ export default function ContactPage() {
               </div>
 
               <div className="space-y-4">
-                {[
-                  {
-                    icon: <Phone className="w-5 h-5" />,
-                    label: 'Emergency Support? Call Us',
-                    value: '+91 98765 43210',
-                  },
-                  {
-                    icon: <Mail className="w-5 h-5" />,
-                    label: 'Send Us Mail',
-                    value: 'info@quantionic.com',
-                  },
-                  {
-                    icon: <MapPin className="w-5 h-5" />,
-                    label: 'Find the Office',
-                    value: '411, Vipul Trade Centre, Gurugram, Haryana, 122018, India',
-                    isAddress: true,
-                    link: 'https://maps.app.goo.gl/3BYbCXvbE1PrvGUK6',
-                  },
-                ].map((item, i) => (
+                {contactInfo.map((item, i) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, y: 15 }}
@@ -324,7 +323,7 @@ export default function ContactPage() {
                               type={field.type}
                               placeholder={field.placeholder}
                               value={formData[field.id]}
-                              onChange={(e) => setFormData({ ...formData, [field.id]: e.target.value })}
+                              onChange={(e) => handleChange(field.id, e.target.value)}
                               className="w-full bg-[#f8fafb] border border-slate-200/80 rounded-xl pl-10 pr-4 py-3 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#059669]/15 focus:border-[#059669]/50 focus:bg-white transition-all duration-200"
                             />
                           </div>
@@ -347,7 +346,7 @@ export default function ContactPage() {
                               type={field.type}
                               placeholder={field.placeholder}
                               value={formData[field.id]}
-                              onChange={(e) => setFormData({ ...formData, [field.id]: e.target.value })}
+                              onChange={(e) => handleChange(field.id, e.target.value)}
                               className="w-full bg-[#f8fafb] border border-slate-200/80 rounded-xl pl-10 pr-4 py-3 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#059669]/15 focus:border-[#059669]/50 focus:bg-white transition-all duration-200"
                             />
                           </div>
@@ -363,7 +362,7 @@ export default function ContactPage() {
                         rows={4}
                         placeholder="Tell us about your project or inquiry..."
                         value={formData.message}
-                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                        onChange={(e) => handleChange('message', e.target.value)}
                         className="w-full bg-[#f8fafb] border border-slate-200/80 rounded-xl px-4 py-3 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#059669]/15 focus:border-[#059669]/50 focus:bg-white transition-all duration-200 resize-none"
                       />
                     </div>
@@ -556,10 +555,22 @@ export default function ContactPage() {
         <div className="absolute inset-0 bg-gradient-to-r from-[#0f2942] via-[#132f4c] to-[#0f2942]" />
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 relative">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-[#00A878] flex items-center justify-center text-white text-xs font-bold">Q</div>
+            <svg width="24" height="24" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+              <circle cx="18" cy="18" r="4" fill="url(#contactFooterGrad)" />
+              <ellipse cx="18" cy="18" rx="15" ry="6" stroke="url(#contactFooterGrad)" strokeWidth="1.5" fill="none" opacity="0.6" />
+              <ellipse cx="18" cy="18" rx="15" ry="6" stroke="url(#contactFooterGrad)" strokeWidth="1.5" fill="none" opacity="0.6" transform="rotate(60 18 18)" />
+              <ellipse cx="18" cy="18" rx="15" ry="6" stroke="url(#contactFooterGrad)" strokeWidth="1.5" fill="none" opacity="0.6" transform="rotate(120 18 18)" />
+              <circle cx="18" cy="18" r="1.5" fill="#34d399" />
+              <defs>
+                <linearGradient id="contactFooterGrad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#34d399" />
+                  <stop offset="1" stopColor="#06b6d4" />
+                </linearGradient>
+              </defs>
+            </svg>
             <span className="text-sm font-semibold text-white">Quantionic</span>
           </div>
-          <p className="text-xs text-slate-400">&copy; {new Date().getFullYear()} Quantionic. All rights reserved.</p>
+          <p className="text-xs text-slate-400">&copy; {CURRENT_YEAR} Quantionic. All rights reserved.</p>
         </div>
       </footer>
     </div>

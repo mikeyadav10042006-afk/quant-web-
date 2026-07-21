@@ -8,6 +8,44 @@ import {
 } from 'lucide-react';
 import Footer from './Footer';
 
+const clinicalBgImage = {
+  backgroundImage: 'url(https://thumbs.dreamstime.com/b/futuristic-hospital-corridor-advanced-medical-technology-futuristic-hospital-corridor-advanced-medical-technology-376080883.jpg)',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
+};
+
+const clinicalOverlay = { background: 'linear-gradient(180deg, rgba(224,242,254,0.92) 0%, rgba(240,249,255,0.88) 40%, rgba(224,242,254,0.92) 100%)' };
+
+const clinicalGridPattern = {
+  backgroundImage: 'linear-gradient(rgba(14,116,144,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(14,116,144,0.3) 1px, transparent 1px)',
+  backgroundSize: '60px 60px',
+};
+
+const emergencyPhoneFrame = { background: 'linear-gradient(180deg, #2d3748 0%, #1a202c 50%, #2d3748 100%)' };
+
+const emergencyBorderGlow = {
+  background: 'linear-gradient(180deg, rgba(239,68,68,0.4) 0%, rgba(239,68,68,0.1) 50%, rgba(239,68,68,0.3) 100%)',
+  animation: 'emergencyBorder 1.5s ease-in-out infinite',
+};
+
+const emergencyLedDot = {
+  animation: 'emergencyBlink 0.8s ease-in-out infinite',
+  boxShadow: '0 0 8px rgba(239,68,68,0.8), 0 0 16px rgba(239,68,68,0.4)',
+};
+
+const emergencyScreenFlash = {
+  background: 'radial-gradient(ellipse at top, rgba(239,68,68,0.08) 0%, transparent 60%)',
+  animation: 'screenFlash 2s ease-in-out infinite',
+};
+
+const ctaCardBackground = { background: 'linear-gradient(135deg, #0a1e4d 0%, #0d2847 30%, #0f2d52 60%, #0a1e4d 100%)' };
+
+const ctaDotPattern = {
+  backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.4) 1px, transparent 0)',
+  backgroundSize: '24px 24px',
+};
+
 const securityCards = [
   { num: '01', icon: Shield, title: 'HIPAA & ISO-27001 Compliance', desc: 'Full compliance alignment engineered directly into database schemas and network pipelines for zero-trust healthcare environments.' },
   { num: '02', icon: Lock, title: 'AES-256 Data Encryption', desc: 'Immutable end-to-end encryption covering transport layers and static storage arrays across all clinical data repositories.' },
@@ -81,15 +119,25 @@ export default function HealthcareAI() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#fafbfd] text-slate-600 font-sans flex flex-col overflow-x-hidden">
+    <main className="min-h-screen bg-[#fafbfd] text-slate-600 font-sans flex flex-col overflow-x-hidden">
 
       {/* ── HEADER ── */}
       <header className="sticky top-0 z-50 glass-card border-b border-slate-200/40">
         <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#009966] to-emerald-500 flex items-center justify-center font-bold text-white text-sm shadow-lg shadow-teal-500/20 group-hover:shadow-teal-500/40 transition-shadow duration-500">
-              Q
-            </div>
+            <svg width="32" height="32" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0 group-hover:scale-110 transition-transform duration-300">
+              <circle cx="18" cy="18" r="4" fill="url(#hcLogoGrad)" />
+              <ellipse cx="18" cy="18" rx="15" ry="6" stroke="url(#hcLogoGrad)" strokeWidth="1.5" fill="none" opacity="0.6" />
+              <ellipse cx="18" cy="18" rx="15" ry="6" stroke="url(#hcLogoGrad)" strokeWidth="1.5" fill="none" opacity="0.6" transform="rotate(60 18 18)" />
+              <ellipse cx="18" cy="18" rx="15" ry="6" stroke="url(#hcLogoGrad)" strokeWidth="1.5" fill="none" opacity="0.6" transform="rotate(120 18 18)" />
+              <circle cx="18" cy="18" r="1.5" fill="#009966" />
+              <defs>
+                <linearGradient id="hcLogoGrad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#009966" />
+                  <stop offset="1" stopColor="#06b6d4" />
+                </linearGradient>
+              </defs>
+            </svg>
             <span className="text-lg font-extrabold tracking-tight text-[#0a1e4d]">
               QUANT<span className="text-[#009966]">IONIC</span>
             </span>
@@ -111,6 +159,7 @@ export default function HealthcareAI() {
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6DVsgaIGHK7F2alVyWdZeu0_Kn6i_gSZ-F7YMEkAOUWYaCnqT6KfAZbWI&s=10"
             alt=""
+            width="1920" height="1080" loading="lazy" decoding="async"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-white/60 via-white/85 to-white/95" />
@@ -184,6 +233,7 @@ export default function HealthcareAI() {
                   <img
                     src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80"
                     alt="Medical AI Analytics Dashboard"
+                    width="800" height="500" loading="lazy" decoding="async"
                     className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent" />
@@ -243,6 +293,7 @@ export default function HealthcareAI() {
           <img
             src="https://guardianit.com/wp-content/uploads/how-to-ensure-compliance-with-data-protection-regulations.jpg"
             alt=""
+            width="1920" height="1080" loading="lazy" decoding="async"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-white/65" />
@@ -278,6 +329,7 @@ export default function HealthcareAI() {
                 <img
                   src="https://cdn.prod.website-files.com/621f84dc15b5ed16dc85a18a/66ec801a406c6310591e94aa_download%20(5).webp"
                   alt="HIPAA Compliance"
+                  width="800" height="112" loading="lazy" decoding="async"
                   className="absolute inset-0 w-full h-full object-cover scale-110 group-hover:scale-115 transition-transform duration-700"
                 />
               </div>
@@ -303,6 +355,7 @@ export default function HealthcareAI() {
                 <img
                   src="https://www.atpinc.com/upload/images/2019/06-26/634eabed3ee943089138763bf24b7f03.jpg"
                   alt="AES-256 Encryption"
+                  width="400" height="112" loading="lazy" decoding="async"
                   className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
@@ -328,6 +381,7 @@ export default function HealthcareAI() {
                 <img
                   src="https://bettercloud.b-cdn.net/wp-content/uploads/2021/07/RoleBasedAccessControl_FeatureImage.jpg"
                   alt="Role-Based Access Control"
+                  width="400" height="112" loading="lazy" decoding="async"
                   className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
@@ -353,6 +407,7 @@ export default function HealthcareAI() {
                 <img
                   src="https://fidelissecurity.com/wp-content/uploads/2025/01/Anomaly-Detection-Algorithms.webp"
                   alt="Continuous Audit & Anomaly Detection"
+                  width="800" height="112" loading="lazy" decoding="async"
                   className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
@@ -386,6 +441,7 @@ export default function HealthcareAI() {
               <img
                 src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=800&q=80"
                 alt="HIMS Database Software"
+                width="800" height="440" loading="lazy" decoding="async"
                 className="w-full h-80 lg:h-[440px] object-cover transition-transform duration-700 group-hover:scale-[1.03]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a1e4d]/30 via-[#0a1e4d]/5 to-transparent" />
@@ -496,21 +552,21 @@ export default function HealthcareAI() {
               <div className="emergency-ring absolute w-[300px] h-[560px] rounded-[44px] border border-red-500/10" style={{ animation: 'emergencyPulse 2s ease-out infinite 1.2s' }} />
             </div>
 
-            <div className="phone-vibrate relative w-[280px] h-[560px] rounded-[44px] p-[3px] shadow-2xl shadow-black/40" style={{ background: 'linear-gradient(180deg, #2d3748 0%, #1a202c 50%, #2d3748 100%)' }}>
+            <div className="phone-vibrate relative w-[280px] h-[560px] rounded-[44px] p-[3px] shadow-2xl shadow-black/40" style={emergencyPhoneFrame}>
               {/* Red emergency glow on border */}
-              <div className="absolute -inset-[2px] rounded-[46px] pointer-events-none" style={{ background: 'linear-gradient(180deg, rgba(239,68,68,0.4) 0%, rgba(239,68,68,0.1) 50%, rgba(239,68,68,0.3) 100%)', animation: 'emergencyBorder 1.5s ease-in-out infinite' }} />
+              <div className="absolute -inset-[2px] rounded-[46px] pointer-events-none" style={emergencyBorderGlow} />
               {/* Notch */}
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-7 bg-slate-700 rounded-b-2xl z-20 flex justify-center items-center">
                 <div className="w-12 h-1 bg-slate-600 rounded-full" />
               </div>
               {/* Emergency LED dot */}
               <div className="absolute top-2 right-12 z-30">
-                <div className="w-2 h-2 rounded-full bg-red-500" style={{ animation: 'emergencyBlink 0.8s ease-in-out infinite', boxShadow: '0 0 8px rgba(239,68,68,0.8), 0 0 16px rgba(239,68,68,0.4)' }} />
+                <div className="w-2 h-2 rounded-full bg-red-500" style={emergencyLedDot} />
               </div>
               {/* Screen */}
               <div className="w-full h-full bg-[#0c0f1a] rounded-[42px] overflow-hidden p-5 flex flex-col justify-between border border-slate-600/30 relative">
                 {/* Screen emergency flash overlay */}
-                <div className="absolute inset-0 rounded-[42px] pointer-events-none" style={{ background: 'radial-gradient(ellipse at top, rgba(239,68,68,0.08) 0%, transparent 60%)', animation: 'screenFlash 2s ease-in-out infinite' }} />
+                <div className="absolute inset-0 rounded-[42px] pointer-events-none" style={emergencyScreenFlash} />
                 <div className="space-y-4 pt-8 relative z-10">
                   <span className="inline-flex items-center gap-1.5 text-red-400 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider border" style={{ background: 'rgba(239,68,68,0.15)', borderColor: 'rgba(239,68,68,0.25)', animation: 'emergencyBg 1.5s ease-in-out infinite' }}>
                     <span className="relative flex h-2 w-2">
@@ -576,19 +632,14 @@ export default function HealthcareAI() {
       {/* ── 5. CLINICAL ENGINES ── */}
       <section className="relative py-32 px-6 overflow-hidden">
         {/* Futuristic hospital corridor background — spans both Cancer & Chiropractic rows */}
-        <div className="absolute inset-0 pointer-events-none parallax-bg" style={{
-          backgroundImage: `url(https://thumbs.dreamstime.com/b/futuristic-hospital-corridor-advanced-medical-technology-futuristic-hospital-corridor-advanced-medical-technology-376080883.jpg)`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-        }} />
+        <div className="absolute inset-0 pointer-events-none parallax-bg" style={clinicalBgImage} />
         {/* Light sky blue overlay — clean hospital feel, image still visible */}
-        <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(180deg, rgba(224,242,254,0.92) 0%, rgba(240,249,255,0.88) 40%, rgba(224,242,254,0.92) 100%)' }} />
+        <div className="absolute inset-0 pointer-events-none" style={clinicalOverlay} />
         {/* Soft sky blue accent glows */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-sky-300/[0.12] rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute bottom-0 right-1/4 w-[500px] h-[300px] bg-blue-200/[0.1] rounded-full blur-[100px] pointer-events-none" />
         {/* Subtle grid pattern */}
-        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'linear-gradient(rgba(14,116,144,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(14,116,144,0.3) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
+        <div className="absolute inset-0 opacity-[0.04]" style={clinicalGridPattern} />
         {/* Floating geometric shapes */}
         <div className="absolute top-20 left-10 w-24 h-24 border border-sky-300/30 rounded-[50%_50%_0_0] rotate-45 animate-spin-slow" style={{ animationDuration: '20s' }} />
         <div className="absolute top-40 right-20 w-16 h-16 border-2 border-blue-200/40 rounded-full animate-bounce-slow" style={{ animationDuration: '6s' }} />
@@ -605,6 +656,7 @@ export default function HealthcareAI() {
                 <img
                   src="https://www.dermengine.com/hs-fs/hubfs/Visual%20Search%20on%20DermEngine%20with%20cross-platform%20compatibility%20on%20iMac.png?width=600&name=Visual%20Search%20on%20DermEngine%20with%20cross-platform%20compatibility%20on%20iMac.png"
                   alt="DermEngine AI Visual Search analyzing skin lesions for cancer diagnosis"
+                  width="600" height="384" loading="lazy" decoding="async"
                   className="w-full h-80 lg:h-96 object-cover object-top transition-transform duration-700 group-hover:scale-[1.02]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-sky-900/20 via-transparent to-transparent" />
@@ -735,6 +787,7 @@ export default function HealthcareAI() {
                 <img
                   src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1000&q=80"
                   alt="Chiropractic Recovery AI Platform Dashboard"
+                  width="1000" height="384" loading="lazy" decoding="async"
                   className="w-full h-80 lg:h-96 object-cover transition-transform duration-700 group-hover:scale-[1.02]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-sky-900/20 via-transparent to-transparent" />
@@ -784,9 +837,9 @@ export default function HealthcareAI() {
           {/* Outer glow */}
           <div className="absolute -inset-3 bg-gradient-to-r from-[#009966]/20 via-emerald-400/10 to-[#009966]/20 rounded-[2.8rem] blur-2xl opacity-60 group-hover:opacity-100 group-hover:blur-3xl transition-all duration-700 pointer-events-none" />
           {/* Main card */}
-          <div className="relative rounded-[2rem] overflow-hidden" style={{ background: 'linear-gradient(135deg, #0a1e4d 0%, #0d2847 30%, #0f2d52 60%, #0a1e4d 100%)' }}>
+          <div className="relative rounded-[2rem] overflow-hidden" style={ctaCardBackground}>
             {/* Inner decorative layers */}
-            <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.4) 1px, transparent 0)', backgroundSize: '24px 24px' }} />
+            <div className="absolute inset-0 opacity-[0.03]" style={ctaDotPattern} />
             <div className="absolute top-0 right-0 w-96 h-96 bg-[#009966]/[0.08] rounded-full blur-[100px] pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-72 h-72 bg-emerald-400/[0.05] rounded-full blur-[80px] pointer-events-none" />
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-[#009966]/[0.04] rounded-full blur-[120px] pointer-events-none" />
@@ -828,6 +881,6 @@ export default function HealthcareAI() {
 
       {/* Footer */}
       <Footer onOpenChat={() => {}} />
-    </div>
+    </main>
   );
 }

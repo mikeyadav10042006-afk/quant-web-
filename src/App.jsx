@@ -20,9 +20,20 @@ const SmartCity = lazy(() => import('./components/SmartCity'));
 const SalesforceChecklist = lazy(() => import('./components/SalesforceChecklist'));
 const NotFoundPage = lazy(() => import('./components/NotFoundPage'));
 
+const BASE_URL = 'https://quant-web-theta.vercel.app';
+
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  useEffect(() => {
+    let link = document.querySelector("link[rel='canonical']");
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'canonical';
+      document.head.appendChild(link);
+    }
+    link.href = BASE_URL + pathname;
+  }, [pathname]);
   return null;
 }
 
@@ -64,6 +75,13 @@ function HomePage() {
     setAdminOpen(false);
   }, []);
 
+  const closeLogin = useCallback(() => setLoginOpen(false), []);
+
+  const handleSplashComplete = useCallback(() => {
+    sessionStorage.setItem('hasSeenSplashScreen', 'true');
+    setShowSplash(false);
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50/50">
       <Navbar onOpenChat={openChat} />
@@ -88,9 +106,9 @@ function HomePage() {
 
       <Footer onOpenChat={openChat} onOpenAdmin={openAdmin} />
       <AIConsultant isOpen={chatOpen} onClose={closeChat} />
-      <LoginModal isOpen={loginOpen} onClose={() => setLoginOpen(false)} onSuccess={handleLoginSuccess} />
+      <LoginModal isOpen={loginOpen} onClose={closeLogin} onSuccess={handleLoginSuccess} />
       <AdminDashboard isOpen={adminOpen} onClose={closeAdmin} onLogout={handleLogout} authToken={authToken} />
-      {showSplash && <SplashScreen onComplete={() => { sessionStorage.setItem('hasSeenSplashScreen', 'true'); setShowSplash(false); }} />}
+      {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
     </div>
   );
 }

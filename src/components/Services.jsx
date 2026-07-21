@@ -2,48 +2,49 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { HeartPulse, Landmark, ShoppingBag, ChevronRight } from 'lucide-react';
 
+const offerings = [
+  {
+    icon: <ShoppingBag className="w-7 h-7" style={{ color: '#3b82f6' }} />,
+    title: 'Go-To-Market',
+    desc: 'Launch and scale your technology through localization, enablement, and outreach.',
+    points: ['Market localization strategies', 'Channel partner enablement'],
+    link: '/salesforce-checklist',
+    screenBg: 'linear-gradient(180deg, #eef4ff 0%, #e0ecff 100%)',
+    iconBg: 'rgba(59,130,246,0.12)',
+    buttonBg: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+    headingColor: '#3b82f6',
+    phoneBgImage: '/phone-bg/gtm.jpg',
+    liquid: { body: 'rgba(59,130,246,0.18)', wave1: '#3b82f6', wave2: '#60a5fa', glow: '#3b82f6', particle: '#93c5fd' },
+  },
+  {
+    icon: <HeartPulse className="w-7 h-7" style={{ color: '#06b6d4' }} />,
+    title: 'Healthcare AI',
+    desc: 'AI-powered clinical diagnostics and HIPAA-compliant patient workflow automations.',
+    points: ['Diagnostics support systems', 'Multi-modal EHR processing'],
+    link: '/healthcare-ai',
+    screenBg: 'linear-gradient(180deg, #ecfeff 0%, #e0f7fa 100%)',
+    iconBg: 'rgba(6,182,212,0.12)',
+    buttonBg: 'linear-gradient(135deg, #06b6d4, #0891b2)',
+    headingColor: '#06b6d4',
+    phoneBgImage: '/phone-bg/healthcare.jpg',
+    liquid: { body: 'rgba(6,182,212,0.18)', wave1: '#06b6d4', wave2: '#22d3ee', glow: '#06b6d4', particle: '#67e8f9' },
+  },
+  {
+    icon: <Landmark className="w-7 h-7" style={{ color: '#6366f1' }} />,
+    title: 'Smart City Solutions',
+    desc: 'AI frameworks to optimize urban infrastructure, traffic, energy, and public safety.',
+    points: ['Intelligent traffic routing', 'Smart grid energy optimization'],
+    link: '/smart-city',
+    screenBg: 'linear-gradient(180deg, #eef2ff 0%, #e0e7ff 100%)',
+    iconBg: 'rgba(99,102,241,0.12)',
+    buttonBg: 'linear-gradient(135deg, #6366f1, #4f46e5)',
+    headingColor: '#6366f1',
+    phoneBgImage: '/phone-bg/smartcity.jpg',
+    liquid: { body: 'rgba(99,102,241,0.18)', wave1: '#6366f1', wave2: '#818cf8', glow: '#6366f1', particle: '#a5b4fc' },
+  }
+];
+
 export default function Services() {
-  const offerings = [
-    {
-      icon: <ShoppingBag className="w-7 h-7" style={{ color: '#3b82f6' }} />,
-      title: 'Go-To-Market',
-      desc: 'Launch and scale your technology through localization, enablement, and outreach.',
-      points: ['Market localization strategies', 'Channel partner enablement'],
-      link: '/salesforce-checklist',
-      screenBg: 'linear-gradient(180deg, #eef4ff 0%, #e0ecff 100%)',
-      iconBg: 'rgba(59,130,246,0.12)',
-      buttonBg: 'linear-gradient(135deg, #3b82f6, #2563eb)',
-      headingColor: '#3b82f6',
-      phoneBgImage: '/phone-bg/gtm.jpg',
-      liquid: { body: 'rgba(59,130,246,0.18)', wave1: '#3b82f6', wave2: '#60a5fa', glow: '#3b82f6', particle: '#93c5fd' },
-    },
-    {
-      icon: <HeartPulse className="w-7 h-7" style={{ color: '#06b6d4' }} />,
-      title: 'Healthcare AI',
-      desc: 'AI-powered clinical diagnostics and HIPAA-compliant patient workflow automations.',
-      points: ['Diagnostics support systems', 'Multi-modal EHR processing'],
-      link: '/healthcare-ai',
-      screenBg: 'linear-gradient(180deg, #ecfeff 0%, #e0f7fa 100%)',
-      iconBg: 'rgba(6,182,212,0.12)',
-      buttonBg: 'linear-gradient(135deg, #06b6d4, #0891b2)',
-      headingColor: '#06b6d4',
-      phoneBgImage: '/phone-bg/healthcare.jpg',
-      liquid: { body: 'rgba(6,182,212,0.18)', wave1: '#06b6d4', wave2: '#22d3ee', glow: '#06b6d4', particle: '#67e8f9' },
-    },
-    {
-      icon: <Landmark className="w-7 h-7" style={{ color: '#6366f1' }} />,
-      title: 'Smart City Solutions',
-      desc: 'AI frameworks to optimize urban infrastructure, traffic, energy, and public safety.',
-      points: ['Intelligent traffic routing', 'Smart grid energy optimization'],
-      link: '/smart-city',
-      screenBg: 'linear-gradient(180deg, #eef2ff 0%, #e0e7ff 100%)',
-      iconBg: 'rgba(99,102,241,0.12)',
-      buttonBg: 'linear-gradient(135deg, #6366f1, #4f46e5)',
-      headingColor: '#6366f1',
-      phoneBgImage: '/phone-bg/smartcity.jpg',
-      liquid: { body: 'rgba(99,102,241,0.18)', wave1: '#6366f1', wave2: '#818cf8', glow: '#6366f1', particle: '#a5b4fc' },
-    }
-  ];
 
   const renderPhone = (service, index) => {
     const isCenter = index === 1;

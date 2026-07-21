@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useCallback, memo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useInView } from 'framer-motion';
 import {
@@ -140,7 +140,7 @@ const steps = [
 ];
 
 /* ── Step Card ── */
-function StepCard({ step, index, isLeft }) {
+const StepCard = memo(function StepCard({ step, index, isLeft }) {
   const ref = useRef(null);
   const cardRef = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-60px' });
@@ -148,14 +148,14 @@ function StepCard({ step, index, isLeft }) {
   const [mouse, setMouse] = useState({ x: 0.5, y: 0.5 });
   const [hovered, setHovered] = useState(false);
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = useCallback((e) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     setMouse({
       x: (e.clientX - rect.left) / rect.width,
       y: (e.clientY - rect.top) / rect.height,
     });
-  };
+  }, []);
 
   return (
     <motion.div
@@ -300,7 +300,7 @@ function StepCard({ step, index, isLeft }) {
       </div>
     </motion.div>
   );
-}
+});
 
 /* ── S-Curve SVG ── */
 function SCurveSVG() {
@@ -446,7 +446,7 @@ function StepsZigzag() {
 /* ── Main Page ── */
 export default function SalesforceChecklist() {
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50/50">
+    <main className="min-h-screen flex flex-col bg-slate-50/50">
       {/* ── Hero ── */}
       <section className="relative overflow-hidden min-h-[520px] md:min-h-[600px]">
         {/* Spline 3D background */}
@@ -554,6 +554,7 @@ export default function SalesforceChecklist() {
           <img
             src="https://www.winklix.com/blog/wp-content/uploads/2025/11/Salesforce-Consulting-Services-01-1024x1024-1.png"
             alt=""
+            width="1024" height="1024" loading="lazy" decoding="async"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(160deg, rgba(250,251,252,0.92) 0%, rgba(240,253,244,0.88) 40%, rgba(245,243,255,0.90) 70%, rgba(250,251,252,0.92) 100%)' }} />
@@ -603,6 +604,6 @@ export default function SalesforceChecklist() {
       </section>
 
       <Footer />
-    </div>
+    </main>
   );
 }

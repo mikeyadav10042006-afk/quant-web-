@@ -1,8 +1,34 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback, memo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { ArrowLeft, Cpu, Zap, Shield, Trash2, Lightbulb, Activity, AlertTriangle, Camera, ChevronRight, MapPin, Wifi, Eye, BarChart3, Layers, Globe, Users } from 'lucide-react';
 import Footer from './Footer';
+
+const pageBackground = { background: 'linear-gradient(160deg, #ecfdf5 0%, #f8fafb 15%, #f0fdf4 30%, #f5f3ff 50%, #f0fdf4 70%, #f8fafb 85%, #ecfdf5 100%)' };
+
+const baseGradientMesh = {
+  background: 'radial-gradient(ellipse 80% 60% at 15% 20%, rgba(5,150,105,0.08) 0%, transparent 60%), radial-gradient(ellipse 70% 50% at 85% 35%, rgba(139,92,246,0.06) 0%, transparent 55%), radial-gradient(ellipse 60% 40% at 50% 80%, rgba(59,130,246,0.05) 0%, transparent 50%), radial-gradient(ellipse 50% 50% at 30% 60%, rgba(245,158,11,0.04) 0%, transparent 45%)',
+};
+
+const orb1Style = { top: '8%', left: '-5%', background: 'radial-gradient(circle, rgba(5,150,105,0.10) 0%, rgba(5,150,105,0.03) 50%, transparent 70%)', filter: 'blur(40px)' };
+const orb2Style = { top: '25%', right: '-8%', background: 'radial-gradient(circle, rgba(139,92,246,0.08) 0%, rgba(139,92,246,0.02) 50%, transparent 70%)', filter: 'blur(40px)' };
+const orb3Style = { bottom: '15%', left: '30%', background: 'radial-gradient(circle, rgba(59,130,246,0.07) 0%, rgba(59,130,246,0.02) 50%, transparent 70%)', filter: 'blur(35px)' };
+const orb4Style = { top: '55%', left: '5%', background: 'radial-gradient(circle, rgba(245,158,11,0.06) 0%, rgba(245,158,11,0.015) 50%, transparent 70%)', filter: 'blur(35px)' };
+const orb5Style = { top: '70%', right: '10%', background: 'radial-gradient(circle, rgba(16,185,129,0.06) 0%, transparent 60%)', filter: 'blur(30px)' };
+
+const wave1Style = { top: '20%', background: 'linear-gradient(90deg, transparent, rgba(5,150,105,0.08), transparent)', rotate: '-3deg' };
+const wave2Style = { top: '50%', background: 'linear-gradient(90deg, transparent, rgba(139,92,246,0.06), transparent)', rotate: '2deg' };
+const wave3Style = { top: '75%', background: 'linear-gradient(90deg, transparent, rgba(59,130,246,0.05), transparent)', rotate: '-1deg' };
+
+const dotGridStyle = {
+  backgroundImage: 'radial-gradient(circle, rgba(5,150,105,0.4) 0.7px, transparent 0.7px)',
+  backgroundSize: '30px 30px',
+};
+
+const noiseStyle = {
+  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
+  backgroundSize: '180px 180px',
+};
 
 const features = [
   {
@@ -84,7 +110,7 @@ const features = [
 ];
 
 /* ── Feature Row (Side Image + Rectangular Card) ── */
-function FeatureRow({ feature, index }) {
+const FeatureRow = memo(function FeatureRow({ feature, index }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-60px' });
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -122,6 +148,7 @@ function FeatureRow({ feature, index }) {
         <img
           src={feature.bgImage}
           alt={feature.title}
+          width="260" height="347" loading="lazy" decoding="async"
           className="w-full h-full object-cover transition-transform duration-700 group-hover/img:scale-110"
         />
         <div
@@ -273,46 +300,7 @@ function FeatureRow({ feature, index }) {
       </motion.div>
     </div>
   );
-}
-
-/* ── CTA Mouse Glow ── */
-function CTAMouseGlow() {
-  const ref = useRef(null);
-  const glowRef = useRef(null);
-
-  const handleMove = useCallback((e) => {
-    if (!ref.current || !glowRef.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    glowRef.current.style.background = `radial-gradient(600px circle at ${x}% ${y}%, rgba(16,185,129,0.12) 0%, rgba(16,185,129,0.04) 30%, transparent 65%)`;
-  }, []);
-
-  const handleEnter = useCallback(() => {
-    if (glowRef.current) glowRef.current.style.opacity = '1';
-  }, []);
-
-  const handleLeave = useCallback(() => {
-    if (glowRef.current) glowRef.current.style.opacity = '0';
-  }, []);
-
-  return (
-    <div
-      ref={ref}
-      onMouseMove={handleMove}
-      onMouseEnter={handleEnter}
-      onMouseLeave={handleLeave}
-      className="absolute inset-0 z-0 pointer-events-auto"
-    >
-      <div
-        ref={glowRef}
-        className="absolute inset-0 transition-opacity duration-500"
-        style={{ opacity: 0 }}
-      />
-    </div>
-  );
-}
-
+});
 export default function SmartCity() {
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -325,62 +313,54 @@ export default function SmartCity() {
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
   return (
-    <div className="min-h-screen flex flex-col relative overflow-hidden" style={{ background: 'linear-gradient(160deg, #ecfdf5 0%, #f8fafb 15%, #f0fdf4 30%, #f5f3ff 50%, #f0fdf4 70%, #f8fafb 85%, #ecfdf5 100%)' }}>
+    <main className="min-h-screen flex flex-col relative overflow-hidden" style={pageBackground}>
       <div className="fixed inset-0 pointer-events-none z-0">
         {/* Base gradient mesh */}
-        <div className="absolute inset-0" style={{
-          background: 'radial-gradient(ellipse 80% 60% at 15% 20%, rgba(5,150,105,0.08) 0%, transparent 60%), radial-gradient(ellipse 70% 50% at 85% 35%, rgba(139,92,246,0.06) 0%, transparent 55%), radial-gradient(ellipse 60% 40% at 50% 80%, rgba(59,130,246,0.05) 0%, transparent 50%), radial-gradient(ellipse 50% 50% at 30% 60%, rgba(245,158,11,0.04) 0%, transparent 45%)',
-        }} />
+        <div className="absolute inset-0" style={baseGradientMesh} />
 
         {/* Animated gradient orbs — compositor-thread CSS */}
         <div
           className="absolute w-[500px] h-[500px] rounded-full animate-orb-1"
-          style={{ top: '8%', left: '-5%', background: 'radial-gradient(circle, rgba(5,150,105,0.10) 0%, rgba(5,150,105,0.03) 50%, transparent 70%)', filter: 'blur(40px)' }}
+          style={orb1Style}
         />
         <div
           className="absolute w-[450px] h-[450px] rounded-full animate-orb-2"
-          style={{ top: '25%', right: '-8%', background: 'radial-gradient(circle, rgba(139,92,246,0.08) 0%, rgba(139,92,246,0.02) 50%, transparent 70%)', filter: 'blur(40px)' }}
+          style={orb2Style}
         />
         <div
           className="absolute w-[400px] h-[400px] rounded-full animate-orb-3"
-          style={{ bottom: '15%', left: '30%', background: 'radial-gradient(circle, rgba(59,130,246,0.07) 0%, rgba(59,130,246,0.02) 50%, transparent 70%)', filter: 'blur(35px)' }}
+          style={orb3Style}
         />
         <div
           className="absolute w-[350px] h-[350px] rounded-full animate-orb-4"
-          style={{ top: '55%', left: '5%', background: 'radial-gradient(circle, rgba(245,158,11,0.06) 0%, rgba(245,158,11,0.015) 50%, transparent 70%)', filter: 'blur(35px)' }}
+          style={orb4Style}
         />
         <div
           className="absolute w-[300px] h-[300px] rounded-full animate-orb-5"
-          style={{ top: '70%', right: '10%', background: 'radial-gradient(circle, rgba(16,185,129,0.06) 0%, transparent 60%)', filter: 'blur(30px)' }}
+          style={orb5Style}
         />
 
         {/* Animated gradient waves — compositor-thread CSS */}
         <div className="absolute inset-0 overflow-hidden">
           <div
             className="absolute w-[200%] h-[1px] left-[-50%] animate-wave-1"
-            style={{ top: '20%', background: 'linear-gradient(90deg, transparent, rgba(5,150,105,0.08), transparent)', rotate: '-3deg' }}
+            style={wave1Style}
           />
           <div
             className="absolute w-[200%] h-[1px] left-[-50%] animate-wave-2"
-            style={{ top: '50%', background: 'linear-gradient(90deg, transparent, rgba(139,92,246,0.06), transparent)', rotate: '2deg' }}
+            style={wave2Style}
           />
           <div
             className="absolute w-[200%] h-[1px] left-[-50%] animate-wave-3"
-            style={{ top: '75%', background: 'linear-gradient(90deg, transparent, rgba(59,130,246,0.05), transparent)', rotate: '-1deg' }}
+            style={wave3Style}
           />
         </div>
 
         {/* Dot grid — premium texture */}
-        <div className="absolute inset-0 opacity-[0.45]" style={{
-          backgroundImage: 'radial-gradient(circle, rgba(5,150,105,0.4) 0.7px, transparent 0.7px)',
-          backgroundSize: '30px 30px',
-        }} />
+        <div className="absolute inset-0 opacity-[0.45]" style={dotGridStyle} />
 
         {/* Subtle noise texture */}
-        <div className="absolute inset-0 opacity-[0.02]" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
-          backgroundSize: '180px 180px',
-        }} />
+        <div className="absolute inset-0 opacity-[0.02]" style={noiseStyle} />
       </div>
 
       {/* ── Top Bar ── */}
@@ -393,9 +373,19 @@ export default function SmartCity() {
             Back to Home
           </Link>
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#059669] to-[#009966] flex items-center justify-center shadow-lg shadow-[#059669]/20">
-              <Cpu className="w-4 h-4 text-white" />
-            </div>
+            <svg width="28" height="28" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+              <circle cx="18" cy="18" r="4" fill="url(#scLogoGrad)" />
+              <ellipse cx="18" cy="18" rx="15" ry="6" stroke="url(#scLogoGrad)" strokeWidth="1.5" fill="none" opacity="0.6" />
+              <ellipse cx="18" cy="18" rx="15" ry="6" stroke="url(#scLogoGrad)" strokeWidth="1.5" fill="none" opacity="0.6" transform="rotate(60 18 18)" />
+              <ellipse cx="18" cy="18" rx="15" ry="6" stroke="url(#scLogoGrad)" strokeWidth="1.5" fill="none" opacity="0.6" transform="rotate(120 18 18)" />
+              <circle cx="18" cy="18" r="1.5" fill="#059669" />
+              <defs>
+                <linearGradient id="scLogoGrad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#059669" />
+                  <stop offset="1" stopColor="#06b6d4" />
+                </linearGradient>
+              </defs>
+            </svg>
             <span className="text-sm font-bold text-slate-900 tracking-tight">Quantionic</span>
           </div>
         </div>
@@ -408,6 +398,7 @@ export default function SmartCity() {
           <img
             src="https://miro.medium.com/1*2gIp3sQew_-a6_sfeXQxxg.gif"
             alt=""
+            width="1920" height="1080" loading="lazy" decoding="async"
             className="absolute inset-0 w-full h-full object-cover"
             style={{ filter: 'brightness(0.35) saturate(1.2)' }}
           />
@@ -530,6 +521,7 @@ export default function SmartCity() {
           <img
             src="https://imgproxy.divecdn.com/-HOolDjEzq6izKeQa-6j-ujTCC4o75VT2UmVZxlwoCM/g:nowe:0:210/c:4494:2539/rs:fill:1200:900:1/Z3M6Ly9kaXZlc2l0ZS1zdG9yYWdlL2RpdmVpbWFnZS9BZG9iZVN0b2NrXzg3NDk3NTcyLmpwZWc=.webp"
             alt=""
+            width="1200" height="900" loading="lazy" decoding="async"
             className="w-full h-full object-cover"
           />
           {/* Gradient overlays for readability */}
@@ -657,7 +649,7 @@ export default function SmartCity() {
       </section>
 
       <Footer />
-    </div>
+    </main>
   );
 }
 

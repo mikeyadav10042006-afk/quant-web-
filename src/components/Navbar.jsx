@@ -3,6 +3,18 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Bot, ArrowRight } from 'lucide-react';
 
+function scrollTo(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+const navLinks = [
+  { name: 'Home', href: '/', isRoute: true },
+  { name: 'Services', href: '#services', scrollTo: 'services' },
+  { name: 'Contact', href: '/contact', isRoute: true },
+  { name: 'Team', href: '#team', scrollTo: 'team' },
+];
+
 export default function Navbar({ onOpenChat }) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -24,18 +36,6 @@ export default function Navbar({ onOpenChat }) {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const scrollTo = (id) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
-  const navLinks = [
-    { name: 'Home', href: '/', isRoute: true },
-    { name: 'Services', href: '#services', scrollTo: 'services' },
-    { name: 'Contact', href: '/contact', isRoute: true },
-    { name: 'Team', href: '#team', scrollTo: 'team' },
-  ];
 
   return (
     <>
@@ -121,6 +121,7 @@ export default function Navbar({ onOpenChat }) {
             </button>
             <button
               onClick={() => setIsOpen(!isOpen)}
+              aria-label={isOpen ? 'Close menu' : 'Open menu'}
               className="p-2 text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

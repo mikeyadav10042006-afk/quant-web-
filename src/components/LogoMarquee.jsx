@@ -28,6 +28,7 @@ function LogoCard({ brand }) {
       <img
         src={brand.src}
         alt={brand.name}
+        width="100" height="32" decoding="async"
         className="h-8 w-auto max-w-[100px] object-contain transition-all duration-500 group-hover:scale-125 drop-shadow-[0_2px_8px_rgba(0,0,0,0.08)]"
         loading="lazy"
       />
@@ -60,141 +61,9 @@ function Star() {
   );
 }
 
-/* ── Premium Track Spotlight (Focus 35W Style) - Angled to Center ── */
-function TrackSpotlight({ side }) {
-  const isLeft = side === 'left';
-  return (
-    <div className="absolute top-0 pointer-events-none z-10 overflow-hidden"
-      style={{ [isLeft ? 'left' : 'right']: '5%', width: '100%', height: '100%' }}
-    >
-      {/* Track rail */}
-      <div className="absolute -top-1" style={{
-          [isLeft ? 'left' : 'right']: '-2px', width: '6px', height: '10px',
-          background: 'linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)',
-          borderRadius: '3px',
-          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 2px 6px rgba(0,0,0,0.3)'
-        }}
-      />
-      {/* Track connector */}
-      <div className="absolute top-8" style={{
-          [isLeft ? 'left' : 'right']: '0', width: '12px', height: '5px',
-          background: 'linear-gradient(180deg, #333 0%, #444 50%, #333 100%)',
-          borderRadius: '2.5px',
-          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 2px 4px rgba(0,0,0,0.25)'
-        }}
-      />
-
-      {/* Fixture - premium cylindrical */}
-      <div className="absolute top-12" style={{ [isLeft ? 'left' : 'right']: '-4px' }}>
-        <div className="relative w-[28px] h-[50px]" style={{
-          background: 'linear-gradient(90deg, #0a0a0a 0%, #151515 20%, #222 40%, #2a2a2a 55%, #222 70%, #151515 85%, #0a0a0a 100%)',
-          borderRadius: '4px',
-          boxShadow: `
-            inset 0 1px 0 rgba(255,255,255,0.1),
-            inset 0 -1px 0 rgba(0,0,0,0.4),
-            inset 2px 0 0 rgba(255,255,255,0.06),
-            inset -2px 0 0 rgba(0,0,0,0.3),
-            0 4px 16px rgba(0,0,0,0.5),
-            0 0 0 1px rgba(255,255,255,0.03)
-          `.replace(/\s+/g, ' '),
-        }}>
-          {/* Cooling vents - refined */}
-          <div className="absolute top-2" style={{
-              [isLeft ? 'left' : 'right']: '4px', width: '18px', height: '2px',
-              background: 'repeating-linear-gradient(90deg, transparent 0, transparent 1.5px, #050505 1.5px, #050505 3px)', borderRadius: '1px', opacity: 0.6
-            }} />
-          <div className="absolute top-1/2" style={{
-              [isLeft ? 'left' : 'right']: '4px', width: '18px', height: '2px', transform: 'translateY(-50%)',
-              background: 'repeating-linear-gradient(90deg, transparent 0, transparent 1.5px, #050505 1.5px, #050505 3px)', borderRadius: '1px', opacity: 0.6
-            }} />
-          <div className="absolute bottom-2" style={{
-              [isLeft ? 'left' : 'right']: '4px', width: '18px', height: '2px',
-              background: 'repeating-linear-gradient(90deg, transparent 0, transparent 1.5px, #050505 1.5px, #050505 3px)', borderRadius: '1px', opacity: 0.6
-            }} />
-          
-          {/* Zoom ring - premium knurled */}
-          <div className="absolute top-[22px]" style={{
-              [isLeft ? 'left' : 'right']: '-1px', width: '30px', height: '10px',
-              background: 'linear-gradient(180deg, #151515 0%, #222 30%, #333 50%, #222 70%, #151515 100%)',
-              borderRadius: '3px',
-              border: '1px solid #2a2a2a',
-              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.02)'
-            }}
-          >
-            <div className="absolute inset-1 flex items-center justify-center gap-0.5 pointer-events-none">
-              {[1,2,3,4].map(i => (
-                <div key={i} style={{ width: '1.5px', height: '6px', background: 'linear-gradient(180deg, transparent, #444, transparent)', borderRadius: '0.75px', opacity: 0.6 }} />
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Lens Assembly - premium */}
-      <div className="absolute top-[14px]" style={{ [isLeft ? 'left' : 'right']: '0', width: '36px', height: '36px', zIndex: 10 }}>
-        <div className="absolute inset-0 rounded-full" style={{
-          background: 'radial-gradient(ellipse at center, #060606 0%, #0d0d0d 35%, #121212 60%, #050505 100%)',
-          border: '1.5px solid #1e1e1e',
-          boxShadow: `
-            inset 0 1.5px 3px rgba(255,255,255,0.08),
-            inset 0 -1.5px 3px rgba(0,0,0,0.6),
-            0 0 0 1px rgba(255,255,255,0.04),
-            0 0 20px rgba(251,191,36,0.18)
-          `.replace(/\s+/g, ' '),
-        }}>
-          <div className="absolute inset-3 rounded-full" style={{
-            background: 'radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.22) 0%, rgba(255,245,220,0.08) 30%, rgba(18,18,18,0.9) 60%, #050505 100%)',
-            border: '1px solid rgba(255,255,255,0.04)',
-            boxShadow: 'inset 0 1px 2px rgba(255,255,255,0.1), 0 0 14px rgba(251,191,36,0.2)',
-          }}>
-            {/* LED COB source */}
-            <div className="absolute inset-6 rounded-full" style={{
-              background: 'radial-gradient(circle at center, rgba(255,252,245,0.95) 0%, rgba(255,240,210,0.6) 20%, rgba(251,191,36,0.35) 45%, rgba(251,191,36,0.1) 70%, transparent 85%)',
-              filter: 'blur(1.5px)',
-              animation: 'pulseGlow 3s ease-in-out infinite',
-            }} />
-          </div>
-        </div>
-        {/* Lens front coating reflection */}
-        <div className="absolute inset-0 rounded-full" style={{
-          background: 'radial-gradient(ellipse at 25% 25%, rgba(255,255,255,0.12) 0%, transparent 50%)',
-          pointerEvents: 'none',
-        }} />
-      </div>
-
-      {/* Beam - TILTED TOWARD CENTER ── */}
-      <div className="absolute top-[48px]" style={{ [isLeft ? 'left' : 'right']: '5%', transform: isLeft ? 'skewY(8deg)' : 'skewY(-8deg)', transformOrigin: 'top center' }}>
-        {/* Primary focused beam - toward center */}
-        <div className="w-[260px] md:w-[320px] h-[360px]" style={{
-          clipPath: isLeft ? 'polygon(35% 0%, 65% 0%, 85% 100%, 55% 100%)' : 'polygon(35% 0%, 65% 0%, 45% 100%, 15% 100%)',
-        }}>
-          <div className="w-full h-full" style={{
-            background: 'linear-gradient(180deg, rgba(255,248,235,0.10) 0%, rgba(255,240,215,0.05) 25%, rgba(255,230,185,0.02) 55%, transparent 100%)',
-            filter: 'blur(0.5px)',
-          }} />
-        </div>
-        {/* Secondary purple-pink ambient beam */}
-        <div className="absolute top-0 w-[220px] md:w-[280px] h-[380px]" style={{
-          clipPath: isLeft ? 'polygon(30% 0%, 70% 0%, 88% 100%, 48% 100%)' : 'polygon(30% 0%, 70% 0%, 52% 100%, 12% 100%)',
-        }}>
-          <div className="w-full h-full" style={{
-            background: 'linear-gradient(180deg, rgba(168,85,247,0.03) 0%, rgba(244,114,182,0.018) 35%, transparent 75%)',
-            filter: 'blur(3px)',
-          }} />
-        </div>
-        {/* Center convergence glow */}
-        <div className="absolute top-[40%] left-1/2 -translate-x-1/2 w-[180px] h-[180px] rounded-full" style={{
-          background: 'radial-gradient(ellipse at center, rgba(168,85,247,0.05) 0%, rgba(244,114,182,0.025) 40%, transparent 70%)',
-          filter: 'blur(10px)',
-        }} />
-      </div>
-    </div>
-  );
-}
+const duplicated = [...brands, ...brands];
 
 export default function LogoMarquee() {
-  const duplicated = [...brands, ...brands];
-
   return (
     <section className="relative overflow-hidden py-10 md:py-14" style={{ background: '#f8f5fc' }}>
 
