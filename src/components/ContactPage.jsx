@@ -105,7 +105,7 @@ export default function ContactPage() {
     }
   };
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f0fdf8] via-white to-[#f8fdf9]">
+    <main className="min-h-screen bg-gradient-to-b from-[#f0fdf8] via-white to-[#f8fdf9]">
       {/* ── Sticky Navbar ──────────────────────────────────────────────── */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-xl border-b border-slate-200/60">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -142,7 +142,7 @@ export default function ContactPage() {
       <section className="pt-28 pb-20 md:pt-32 md:pb-28 relative overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 z-0" style={{
-          backgroundImage: 'url(/contact-hero-bg.jpg)',
+          backgroundImage: 'url(/contact-hero-bg.webp)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -573,6 +573,6 @@ export default function ContactPage() {
           <p className="text-xs text-slate-400">&copy; {CURRENT_YEAR} Quantionic. All rights reserved.</p>
         </div>
       </footer>
-    </div>
+    </main>
   );
 }

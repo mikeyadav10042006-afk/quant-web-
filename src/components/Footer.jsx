@@ -110,7 +110,7 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
             </p>
 
             <div className="bg-slate-900/60 p-6 rounded-2xl border border-slate-800 space-y-4">
-              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest">Consulting Options</h4>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Consulting Options</p>
               <div className="flex items-start space-x-3 text-sm">
                 <Calendar className="w-5 h-5 text-teal-400 mt-0.5 shrink-0" />
                 <div>
@@ -206,7 +206,7 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
                 <button
                   type="submit"
                   disabled={bookingLoading}
-                  className="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-4 rounded-xl transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg shadow-teal-600/10 hover:shadow-teal-600/20 disabled:opacity-50"
+                  className="w-full bg-teal-700 hover:bg-teal-800 text-white font-semibold py-4 rounded-xl transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg shadow-teal-600/10 hover:shadow-teal-600/20 disabled:opacity-50"
                 >
                   {bookingLoading ? (
                     <>
@@ -251,7 +251,7 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
                   type="submit"
                   disabled={newsLoading}
                   aria-label="Subscribe to newsletter"
-                  className="bg-teal-600 hover:bg-teal-700 text-white px-5 py-3 rounded-xl transition-colors text-xs font-bold flex items-center space-x-1 shrink-0"
+                  className="bg-teal-700 hover:bg-teal-800 text-white px-5 py-3 rounded-xl transition-colors text-xs font-bold flex items-center space-x-1 shrink-0"
                 >
                   {newsLoading ? (
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />

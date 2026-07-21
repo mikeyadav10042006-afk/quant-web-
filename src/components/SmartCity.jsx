@@ -393,15 +393,21 @@ export default function SmartCity() {
 
       {/* ── Hero Section ── */}
       <section ref={heroRef} className="relative pt-28 pb-20 md:pt-36 md:pb-32 px-6 overflow-hidden">
-        {/* GIF Background */}
+        {/* Video Background (GIF → WebM/MP4 optimized) */}
         <div className="absolute inset-0 overflow-hidden">
-          <img
-            src="https://miro.medium.com/1*2gIp3sQew_-a6_sfeXQxxg.gif"
-            alt=""
-            width="1920" height="1080" loading="lazy" decoding="async"
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            width="1920" height="1080"
+            preload="none"
             className="absolute inset-0 w-full h-full object-cover"
             style={{ filter: 'brightness(0.35) saturate(1.2)' }}
-          />
+          >
+            <source src="/smart-city-hero.webm" type="video/webm" />
+            <source src="/smart-city-hero.mp4" type="video/mp4" />
+          </video>
           {/* Gradient overlays for text readability */}
           <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white/70" />
           <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-transparent to-white/20" />
@@ -519,7 +525,7 @@ export default function SmartCity() {
         {/* Background image */}
         <div className="absolute inset-0">
           <img
-            src="https://imgproxy.divecdn.com/-HOolDjEzq6izKeQa-6j-ujTCC4o75VT2UmVZxlwoCM/g:nowe:0:210/c:4494:2539/rs:fill:1200:900:1/Z3M6Ly9kaXZlc2l0ZS1zdG9yYWdlL2RpdmVpbWFnZS9BZG9iZVN0b2NrXzg3NDk3NTcyLmpwZWc=.webp"
+            src="/smartcity-features-bg.webp"
             alt=""
             width="1200" height="900" loading="lazy" decoding="async"
             className="w-full h-full object-cover"

@@ -2,18 +2,20 @@ import { useState, useCallback, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import Stats from './components/Stats';
-import Features from './components/Features';
-import Services from './components/Services';
-import Values from './components/Values';
-import Projects from './components/Projects';
-import Team from './components/Team';
 import Footer from './components/Footer';
-import AIConsultant from './components/AIConsultant';
-import AdminDashboard from './components/AdminDashboard';
-import LoginModal from './components/LoginModal';
-import LogoMarquee from './components/LogoMarquee';
 import SplashScreen from './components/SplashScreen';
+import LazySection from './components/LazySection';
+
+const LogoMarquee = lazy(() => import('./components/LogoMarquee'));
+const Stats = lazy(() => import('./components/Stats'));
+const Services = lazy(() => import('./components/Services'));
+const Features = lazy(() => import('./components/Features'));
+const Values = lazy(() => import('./components/Values'));
+const Projects = lazy(() => import('./components/Projects'));
+const Team = lazy(() => import('./components/Team'));
+const AIConsultant = lazy(() => import('./components/AIConsultant'));
+const LoginModal = lazy(() => import('./components/LoginModal'));
+const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
 const HealthcareAI = lazy(() => import('./components/HealthcareAI'));
 const ContactPage = lazy(() => import('./components/ContactPage'));
 const SmartCity = lazy(() => import('./components/SmartCity'));
@@ -88,26 +90,46 @@ function HomePage() {
 
       <main className="flex-grow">
         <Hero />
-        <LogoMarquee />
-        <Stats />
-        <Services />
+        <LazySection>
+          <Suspense fallback={null}><LogoMarquee /></Suspense>
+        </LazySection>
+        <LazySection>
+          <Suspense fallback={null}><Stats /></Suspense>
+        </LazySection>
+        <LazySection>
+          <Suspense fallback={null}><Services /></Suspense>
+        </LazySection>
         <div className="relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-slate-50 via-white to-slate-50" />
           <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle, #64748b 1.2px, transparent 1.2px)', backgroundSize: '28px 28px', opacity: 0.25 }} />
           <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-teal-200/15 rounded-full blur-[120px] pointer-events-none" />
           <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-emerald-200/10 rounded-full blur-[100px] pointer-events-none" />
           <div className="absolute bottom-0 left-1/3 w-[550px] h-[550px] bg-blue-200/8 rounded-full blur-[110px] pointer-events-none" />
-          <Features />
-          <Values />
-          <Projects />
+          <LazySection>
+            <Suspense fallback={null}><Features /></Suspense>
+          </LazySection>
+          <LazySection>
+            <Suspense fallback={null}><Values /></Suspense>
+          </LazySection>
+          <LazySection>
+            <Suspense fallback={null}><Projects /></Suspense>
+          </LazySection>
         </div>
-        <Team />
+        <LazySection>
+          <Suspense fallback={null}><Team /></Suspense>
+        </LazySection>
       </main>
 
       <Footer onOpenChat={openChat} onOpenAdmin={openAdmin} />
-      <AIConsultant isOpen={chatOpen} onClose={closeChat} />
-      <LoginModal isOpen={loginOpen} onClose={closeLogin} onSuccess={handleLoginSuccess} />
-      <AdminDashboard isOpen={adminOpen} onClose={closeAdmin} onLogout={handleLogout} authToken={authToken} />
+      <Suspense fallback={null}>
+        <AIConsultant isOpen={chatOpen} onClose={closeChat} />
+      </Suspense>
+      <Suspense fallback={null}>
+        <LoginModal isOpen={loginOpen} onClose={closeLogin} onSuccess={handleLoginSuccess} />
+      </Suspense>
+      <Suspense fallback={null}>
+        <AdminDashboard isOpen={adminOpen} onClose={closeAdmin} onLogout={handleLogout} authToken={authToken} />
+      </Suspense>
       {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
     </div>
   );

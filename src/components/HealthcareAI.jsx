@@ -9,7 +9,7 @@ import {
 import Footer from './Footer';
 
 const clinicalBgImage = {
-  backgroundImage: 'url(https://thumbs.dreamstime.com/b/futuristic-hospital-corridor-advanced-medical-technology-futuristic-hospital-corridor-advanced-medical-technology-376080883.jpg)',
+  backgroundImage: 'url(/healthcare/hero-bg.webp)',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
@@ -139,12 +139,12 @@ export default function HealthcareAI() {
               </defs>
             </svg>
             <span className="text-lg font-extrabold tracking-tight text-[#0a1e4d]">
-              QUANT<span className="text-[#009966]">IONIC</span>
+              QUANT<span className="text-[#007050]">IONIC</span>
             </span>
           </Link>
           <Link
             to="/"
-            className="flex items-center gap-2 text-sm font-semibold text-slate-400 hover:text-[#009966] transition-all duration-300 group"
+            className="flex items-center gap-2 text-sm font-semibold text-slate-400 hover:text-[#007050] transition-all duration-300 group"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
             <span>Back to Home</span>
@@ -157,9 +157,9 @@ export default function HealthcareAI() {
         {/* Background image */}
         <div className="absolute inset-0">
           <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6DVsgaIGHK7F2alVyWdZeu0_Kn6i_gSZ-F7YMEkAOUWYaCnqT6KfAZbWI&s=10"
+            src="/healthcare/hero-bg.webp"
             alt=""
-            width="1920" height="1080" loading="lazy" decoding="async"
+            width="1200" height="675" loading="lazy" decoding="async"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-white/60 via-white/85 to-white/95" />
@@ -183,7 +183,7 @@ export default function HealthcareAI() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#009966] opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-[#009966]" />
               </span>
-              <span className="text-xs font-bold uppercase tracking-widest text-[#009966]">AI-Powered Healthcare Platform</span>
+              <span className="text-xs font-bold uppercase tracking-widest text-[#007050]">AI-Powered Healthcare Platform</span>
             </div>
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[4.2rem] font-extrabold text-[#0a1e4d] tracking-tight leading-[1.06]">
               The Future of{' '}
@@ -209,7 +209,7 @@ export default function HealthcareAI() {
             </div>
             <div className="flex items-center gap-6 pt-6">
               {['HIPAA Compliant', '24/7 Monitoring', 'SOC 2 Certified'].map((item) => (
-                <div key={item} className="flex items-center gap-2 text-sm text-slate-400 font-medium hover:text-[#009966] transition-colors duration-300 cursor-default">
+                <div key={item} className="flex items-center gap-2 text-sm text-slate-400 font-medium hover:text-[#007050] transition-colors duration-300 cursor-default">
                   <div className="w-1.5 h-1.5 rounded-full bg-[#009966] shadow-sm shadow-[#009966]/30" />
                   {item}
                 </div>
@@ -231,7 +231,7 @@ export default function HealthcareAI() {
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-3 bg-slate-700 rounded-b-xl" />
                 <div className="rounded-xl overflow-hidden aspect-[16/10] bg-slate-950 relative group">
                   <img
-                    src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80"
+                    src="/healthcare/laptop-screen.webp"
                     alt="Medical AI Analytics Dashboard"
                     width="800" height="500" loading="lazy" decoding="async"
                     className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-500"
@@ -275,7 +275,7 @@ export default function HealthcareAI() {
             {stats.map((stat) => (
               <div key={stat.label} className="flex items-center gap-3 group cursor-default">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#009966]/10 to-emerald-500/10 flex items-center justify-center group-hover:from-[#009966]/20 group-hover:to-emerald-500/20 transition-all duration-400">
-                  <stat.icon className="w-4 h-4 text-[#009966]" />
+                  <stat.icon className="w-4 h-4 text-[#007050]" />
                 </div>
                 <div>
                   <p className="text-xl font-extrabold text-[#0a1e4d] leading-none">{stat.value}</p>
@@ -291,9 +291,9 @@ export default function HealthcareAI() {
       <section id="security-section" className="relative py-32 px-6 overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="https://guardianit.com/wp-content/uploads/how-to-ensure-compliance-with-data-protection-regulations.jpg"
+            src="/healthcare/security-bg.webp"
             alt=""
-            width="1920" height="1080" loading="lazy" decoding="async"
+            width="1400" height="788" loading="lazy" decoding="async"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-white/65" />
@@ -303,8 +303,8 @@ export default function HealthcareAI() {
         <div className="relative max-w-7xl mx-auto space-y-16">
           <div className="max-w-2xl space-y-4">
             <div className="inline-flex items-center gap-2 bg-[#009966]/[0.07] border border-[#009966]/10 px-4 py-1.5 rounded-full">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#009966]" />
-              <span className="text-xs font-bold uppercase tracking-widest text-[#009966]">Enterprise Security</span>
+              <ShieldCheck className="w-3.5 h-3.5 text-[#007050]" />
+              <span className="text-xs font-bold uppercase tracking-widest text-[#007050]">Enterprise Security</span>
             </div>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#0a1e4d] tracking-tight leading-tight">
               Data Security &{' '}
@@ -327,7 +327,7 @@ export default function HealthcareAI() {
               {/* Top Image Strip */}
               <div className="relative w-full h-28 overflow-hidden">
                 <img
-                  src="https://cdn.prod.website-files.com/621f84dc15b5ed16dc85a18a/66ec801a406c6310591e94aa_download%20(5).webp"
+                  src="/healthcare/card-hipaa.webp"
                   alt="HIPAA Compliance"
                   width="800" height="112" loading="lazy" decoding="async"
                   className="absolute inset-0 w-full h-full object-cover scale-110 group-hover:scale-115 transition-transform duration-700"
@@ -353,9 +353,9 @@ export default function HealthcareAI() {
               {/* Top Image Strip */}
               <div className="relative w-full h-28 overflow-hidden">
                 <img
-                  src="https://www.atpinc.com/upload/images/2019/06-26/634eabed3ee943089138763bf24b7f03.jpg"
+                  src="/healthcare/card-aes.webp"
                   alt="AES-256 Encryption"
-                  width="400" height="112" loading="lazy" decoding="async"
+                  width="600" height="112" loading="lazy" decoding="async"
                   className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
@@ -379,9 +379,9 @@ export default function HealthcareAI() {
               {/* Top Image Strip */}
               <div className="relative w-full h-28 overflow-hidden">
                 <img
-                  src="https://bettercloud.b-cdn.net/wp-content/uploads/2021/07/RoleBasedAccessControl_FeatureImage.jpg"
+                  src="/healthcare/card-rbac.webp"
                   alt="Role-Based Access Control"
-                  width="400" height="112" loading="lazy" decoding="async"
+                  width="600" height="112" loading="lazy" decoding="async"
                   className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
@@ -405,7 +405,7 @@ export default function HealthcareAI() {
               {/* Top Image Strip */}
               <div className="relative w-full h-28 overflow-hidden">
                 <img
-                  src="https://fidelissecurity.com/wp-content/uploads/2025/01/Anomaly-Detection-Algorithms.webp"
+                  src="/healthcare/card-anomaly.webp"
                   alt="Continuous Audit & Anomaly Detection"
                   width="800" height="112" loading="lazy" decoding="async"
                   className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
@@ -439,7 +439,7 @@ export default function HealthcareAI() {
             <div className="absolute -inset-8 bg-gradient-to-tr from-[#009966]/[0.06] via-transparent to-teal-50/40 rounded-[3rem] pointer-events-none group-hover:from-[#009966]/[0.1] transition-all duration-700" />
             <div className="relative rounded-3xl overflow-hidden transition-all duration-700 rotate-[-5deg] group-hover:rotate-0 shadow-[0_20px_60px_-12px_rgba(0,0,0,0.18),0_0_0_1px_rgba(0,0,0,0.04)] group-hover:shadow-[0_25px_80px_-12px_rgba(0,153,102,0.22),0_0_0_1px_rgba(0,153,102,0.1)]">
               <img
-                src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=800&q=80"
+                src="/healthcare/hims.webp"
                 alt="HIMS Database Software"
                 width="800" height="440" loading="lazy" decoding="async"
                 className="w-full h-80 lg:h-[440px] object-cover transition-transform duration-700 group-hover:scale-[1.03]"
@@ -452,7 +452,7 @@ export default function HealthcareAI() {
                   <p className="text-lg font-extrabold text-[#0a1e4d]">99.8%</p>
                 </div>
                 <div className="w-10 h-10 rounded-xl bg-[#009966]/10 flex items-center justify-center">
-                  <Database className="w-4 h-4 text-[#009966]" />
+                  <Database className="w-4 h-4 text-[#007050]" />
                 </div>
               </div>
             </div>
@@ -462,8 +462,8 @@ export default function HealthcareAI() {
           <div className="lg:col-span-7 order-1 lg:order-2 space-y-8">
             <div className="space-y-4">
               <div className="inline-flex items-center gap-2 bg-[#009966]/[0.07] border border-[#009966]/10 px-4 py-1.5 rounded-full">
-                <Cpu className="w-3.5 h-3.5 text-[#009966]" />
-                <span className="text-xs font-bold uppercase tracking-widest text-[#009966]">Core Platform</span>
+                <Cpu className="w-3.5 h-3.5 text-[#007050]" />
+                <span className="text-xs font-bold uppercase tracking-widest text-[#007050]">Core Platform</span>
               </div>
               <h2 className="text-3xl md:text-4xl lg:text-[2.75rem] font-extrabold text-[#0a1e4d] tracking-tight leading-tight">
                 Hospital Information Management System
@@ -481,7 +481,7 @@ export default function HealthcareAI() {
               ].map((item, i) => (
                 <div key={i} className="group/item flex items-start gap-3 p-4 rounded-2xl bg-white border border-slate-100/60 hover:border-[#009966]/20 hover:shadow-lg hover:shadow-[#009966]/[0.05] hover:-translate-y-0.5 transition-all duration-400 cursor-default">
                   <div className="w-8 h-8 rounded-xl bg-[#009966]/[0.08] flex items-center justify-center shrink-0 mt-0.5 group-hover/item:bg-[#009966]/[0.15] transition-colors duration-400">
-                    <item.icon className="w-4 h-4 text-[#009966]" />
+                    <item.icon className="w-4 h-4 text-[#007050]" />
                   </div>
                   <span className="text-sm font-semibold text-[#0a1e4d] leading-relaxed">{item.text}</span>
                 </div>
@@ -515,8 +515,8 @@ export default function HealthcareAI() {
           <div className="lg:col-span-6 space-y-8">
             <div className="space-y-4">
               <div className="inline-flex items-center gap-2 bg-white/[0.07] border border-white/[0.1] px-4 py-1.5 rounded-full">
-                <Heart className="w-3.5 h-3.5 text-[#009966]" />
-                <span className="text-xs font-bold uppercase tracking-widest text-[#009966]">Clinical Intelligence</span>
+                <Heart className="w-3.5 h-3.5 text-[#007050]" />
+                <span className="text-xs font-bold uppercase tracking-widest text-[#007050]">Clinical Intelligence</span>
               </div>
               <h2 className="text-3xl md:text-4xl lg:text-[2.75rem] font-extrabold text-white tracking-tight leading-tight">
                 AI-Powered Emergency & Clinical Decision Support
@@ -533,7 +533,7 @@ export default function HealthcareAI() {
               ].map((item, i) => (
                 <div key={i} className="group/item flex items-start gap-4 p-5 rounded-2xl bg-white/[0.05] border border-white/[0.06] hover:bg-white/[0.08] hover:border-[#009966]/20 transition-all duration-400 cursor-default">
                   <div className="w-10 h-10 rounded-xl bg-[#009966]/[0.15] flex items-center justify-center shrink-0 group-hover/item:bg-[#009966]/[0.25] transition-colors duration-400">
-                    <item.icon className="w-4 h-4 text-[#009966]" />
+                    <item.icon className="w-4 h-4 text-[#007050]" />
                   </div>
                   <p className="text-sm font-semibold text-white/80 leading-relaxed pt-2">{item.text}</p>
                 </div>
@@ -654,7 +654,7 @@ export default function HealthcareAI() {
               <div className="absolute -inset-8 bg-gradient-to-br from-sky-300/[0.15] via-transparent to-blue-200/[0.1] rounded-[3rem] pointer-events-none group-hover:from-sky-300/[0.25] group-hover:to-blue-300/[0.15] transition-all duration-700" />
               <div className="relative rounded-3xl overflow-hidden bg-white/70 backdrop-blur-xl border border-sky-200/60 shadow-2xl shadow-sky-200/40 group-hover:shadow-[0_30px_80px_-10px_rgba(14,116,144,0.12)] transition-all duration-700">
                 <img
-                  src="https://www.dermengine.com/hs-fs/hubfs/Visual%20Search%20on%20DermEngine%20with%20cross-platform%20compatibility%20on%20iMac.png?width=600&name=Visual%20Search%20on%20DermEngine%20with%20cross-platform%20compatibility%20on%20iMac.png"
+                  src="/healthcare/cancer.webp"
                   alt="DermEngine AI Visual Search analyzing skin lesions for cancer diagnosis"
                   width="600" height="384" loading="lazy" decoding="async"
                   className="w-full h-80 lg:h-96 object-cover object-top transition-transform duration-700 group-hover:scale-[1.02]"
@@ -785,9 +785,9 @@ export default function HealthcareAI() {
               <div className="absolute -inset-8 bg-gradient-to-bl from-blue-300/[0.12] via-transparent to-indigo-200/[0.08] rounded-[3rem] pointer-events-none group-hover:from-blue-300/[0.2] transition-all duration-700" />
               <div className="relative rounded-3xl overflow-hidden bg-white/70 backdrop-blur-xl border border-blue-200/60 shadow-2xl shadow-blue-200/40 group-hover:shadow-[0_30px_80px_-10px_rgba(59,130,246,0.12)] transition-all duration-700">
                 <img
-                  src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1000&q=80"
+                  src="/healthcare/chiropractic.webp"
                   alt="Chiropractic Recovery AI Platform Dashboard"
-                  width="1000" height="384" loading="lazy" decoding="async"
+                  width="800" height="384" loading="lazy" decoding="async"
                   className="w-full h-80 lg:h-96 object-cover transition-transform duration-700 group-hover:scale-[1.02]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-sky-900/20 via-transparent to-transparent" />
@@ -852,12 +852,12 @@ export default function HealthcareAI() {
             <div className="relative z-10 px-8 py-14 md:px-14 md:py-16 text-center space-y-5">
               <div className="inline-flex items-center gap-2 bg-[#009966]/10 border border-[#009966]/15 px-4 py-1.5 rounded-full">
                 <div className="w-1.5 h-1.5 rounded-full bg-[#009966]" />
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#009966]">Salesforce Healthcare</span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#007050]">Salesforce Healthcare</span>
               </div>
               <p className="text-xl md:text-2xl font-bold text-white/90 leading-relaxed max-w-2xl mx-auto">
                 When rightly implemented, Salesforce can boost your clinical operations revenue by more than{' '}
                 <span className="relative inline-block">
-                  <span className="text-[#009966] font-extrabold text-3xl md:text-4xl">20%</span>
+                  <span className="text-[#007050] font-extrabold text-3xl md:text-4xl">20%</span>
                   <span className="absolute -bottom-1 left-0 right-0 h-[2px] bg-gradient-to-r from-[#009966] to-emerald-400 rounded-full" />
                 </span>.
               </p>

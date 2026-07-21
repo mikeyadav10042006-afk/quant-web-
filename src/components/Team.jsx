@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useMemo, memo } from 'react';
+import { useState, useMemo, memo } from 'react';
 import { motion } from 'framer-motion';
 
 const cardVariants = {
@@ -351,7 +351,7 @@ const TeamCard = memo(function TeamCard({ member, index }) {
         <div className="space-y-2 mt-4">
           <h4 className="font-bold text-[15px] text-[#0A1E4D] leading-snug">{member.name}</h4>
           <p className="text-[11px] font-semibold text-slate-500 tracking-wider uppercase">{member.title}</p>
-          <span className="inline-flex items-center px-3 py-1 text-[10px] font-semibold rounded-full bg-gradient-to-r from-[#009966]/10 to-emerald-50 text-[#009966] border border-[#009966]/15 shadow-sm">
+          <span className="inline-flex items-center px-3 py-1 text-[10px] font-semibold rounded-full bg-gradient-to-r from-[#009966]/10 to-emerald-50 text-[#007050] border border-[#009966]/15 shadow-sm">
             {member.badge}
           </span>
         </div>
@@ -436,21 +436,6 @@ const leftVariants = {
 };
 
 export default function Team() {
-  const splineWrapRef = useRef(null);
-  const [splineSrc, setSplineSrc] = useState('');
-
-  useEffect(() => {
-    const el = splineWrapRef.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) {
-        setSplineSrc('https://prod.spline.design/O1k9pmjMQ1xsm2TZ/scene.splinecode');
-        obs.disconnect();
-      }
-    }, { rootMargin: '400px' });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
 
   return (
     <section id="team" className="relative py-14 md:py-24 overflow-hidden" style={{ backgroundColor: '#f1f5f9', backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'40\' height=\'40\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 0h40v40H0z\' fill=\'none\'/%3E%3Cpath d=\'M0 20L20 0M20 40L40 20\' stroke=\'%23cbd5e1\' stroke-width=\'1\' fill=\'none\'/%3E%3C/svg%3E")' }}>
@@ -468,7 +453,7 @@ export default function Team() {
           {/* Left – Heading, paragraph & feature rows */}
           <motion.div className="space-y-8" variants={leftVariants}>
             <div className="space-y-4">
-              <span className="text-xs font-semibold uppercase tracking-widest text-[#009966] bg-[#009966]/10 px-3 py-1 rounded-full w-fit inline-block">
+              <span className="text-xs font-semibold uppercase tracking-widest text-[#007050] bg-[#009966]/10 px-3 py-1 rounded-full w-fit inline-block">
                 MEET OUR EXPERTS
               </span>
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-[#0A1E4D] font-sans">
@@ -490,7 +475,7 @@ export default function Team() {
                     {f.icon}
                   </span>
                   <div>
-                    <h3 className="font-bold text-[#0A1E4D] text-base transition-colors duration-300 group-hover:text-[#009966]">{f.title}</h3>
+                    <h3 className="font-bold text-[#0A1E4D] text-base transition-colors duration-300 group-hover:text-[#007050]">{f.title}</h3>
                     <p className="text-sm text-[#4B5563] font-normal mt-0.5 transition-colors duration-300 group-hover:text-slate-800">{f.description}</p>
                   </div>
                 </div>
@@ -498,16 +483,16 @@ export default function Team() {
             </div>
           </motion.div>
 
-          {/* Right – Spline 3D Model */}
+          {/* Right – Hero Image */}
           <motion.div variants={cardVariants}>
-            <div ref={splineWrapRef} className="w-full rounded-2xl overflow-hidden shadow-lg shadow-slate-200/50" style={{ contain: 'layout style paint' }}>
-              {splineSrc && (
-                <spline-viewer
-                  url={splineSrc}
-                  loading-anim-type="spinner-big-dark"
-                  style={{ width: '100%', height: 'clamp(250px, 50vw, 400px)', background: 'transparent' }}
-                />
-              )}
+            <div className="w-full rounded-2xl overflow-hidden shadow-lg shadow-slate-200/50" style={{ contain: 'layout style paint' }}>
+              <img
+                src="/team-hero.webp"
+                alt="Quantionic AI Technology"
+                width="800" height="434" decoding="async"
+                className="w-full h-auto object-cover"
+                style={{ minHeight: 'clamp(250px, 50vw, 400px)' }}
+              />
             </div>
           </motion.div>
         </motion.div>

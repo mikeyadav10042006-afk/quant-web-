@@ -22,16 +22,58 @@ export const sendAdminEmail = (params) =>
 export const sendUserEmail = (params) =>
   emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_USER_TEMPLATE, params);
 
-export const getRecaptchaToken = (action) => {
+let recaptchaLoading = false;
+let recaptchaLoaded = false;
+
+function loadRecaptchaScript() {
   return new Promise((resolve) => {
-    if (!window.grecaptcha) {
-      resolve(null);
+    if (recaptchaLoaded || window.grecaptcha) {
+      recaptchaLoaded = true;
+      resolve(true);
       return;
     }
-    window.grecaptcha.ready(() => {
-      window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action }).then(resolve).catch(() => resolve(null));
-    });
+    if (recaptchaLoading) {
+      const check = setInterval(() => {
+        if (recaptchaLoaded || window.grecaptcha) {
+          clearInterval(check);
+          recaptchaLoaded = true;
+          resolve(true);
+        }
+      }, 100);
+      setTimeout(() => { clearInterval(check); resolve(false); }, 8000);
+      return;
+    }
+    recaptchaLoading = true;
+    const script = document.createElement('script');
+    script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
+    script.async = true;
+    script.onload = () => {
+      if (window.grecaptcha) {
+        window.grecaptcha.ready(() => {
+          recaptchaLoaded = true;
+          resolve(true);
+        });
+      } else {
+        resolve(false);
+      }
+    };
+    script.onerror = () => resolve(false);
+    document.head.appendChild(script);
+    setTimeout(() => { if (!recaptchaLoaded) resolve(false); }, 8000);
   });
+}
+
+export const getRecaptchaToken = async (action) => {
+  try {
+    if (window.grecaptcha && recaptchaLoaded) {
+      return await window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action });
+    }
+    const loaded = await loadRecaptchaScript();
+    if (!loaded || !window.grecaptcha) return null;
+    return await window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action });
+  } catch {
+    return null;
+  }
 };
 
 export default api;

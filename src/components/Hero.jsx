@@ -7,6 +7,8 @@ export default function Hero() {
   const iframeWrapRef = useRef(null);
   const [iframeSrc, setIframeSrc] = useState('');
 
+  const [iframeLoaded, setIframeLoaded] = useState(false);
+
   useEffect(() => {
     const el = iframeWrapRef.current;
     if (!el) return;
@@ -15,7 +17,7 @@ export default function Hero() {
         setIframeSrc('https://my.spline.design/r4xbot-ul91Se2jXuN6d0TaFATE2D9x/');
         obs.disconnect();
       }
-    }, { rootMargin: '400px' });
+    }, { rootMargin: '100px' });
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
@@ -60,7 +62,7 @@ export default function Hero() {
             className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-[#0A1E4D] font-sans leading-[1.15]"
           >
             Building <br />
-            <span className="text-[#009966]">Intelligent Solutions</span> <br />
+            <span className="text-[#007050]">Intelligent Solutions</span> <br />
             for a Smarter Future
           </motion.h1>
 
@@ -82,7 +84,7 @@ export default function Hero() {
           >
             <Link
               to="/contact"
-              className="flex items-center justify-center space-x-2 bg-teal-600 hover:bg-teal-700 text-white font-medium px-8 py-4 rounded-xl transition-all duration-200 shadow-md hover:shadow-xl hover:shadow-teal-500/10 hover:-translate-y-0.5 text-base text-center"
+              className="flex items-center justify-center space-x-2 bg-teal-700 hover:bg-teal-800 text-white font-medium px-8 py-4 rounded-xl transition-all duration-200 shadow-md hover:shadow-xl hover:shadow-teal-500/10 hover:-translate-y-0.5 text-base text-center"
             >
               <span>Get Started</span>
               <ArrowRight className="w-5 h-5" />
@@ -107,21 +109,46 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* Right – Hero Visual (Spline 3D) */}
+        {/* Right – Hero Visual */}
         <motion.div
           initial={{ opacity: 0, scale: 0.85 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, ease: 'easeOut' }}
           className="lg:col-span-5 w-full h-[300px] sm:h-[400px] lg:h-[700px] relative"
         >
-          <div ref={iframeWrapRef} className="spline-hero-wrapper w-full h-full rounded-[2rem] overflow-hidden bg-transparent border border-teal-100 shadow-2xl shadow-teal-500/10">
+          {/* Mobile: static image */}
+          <div className="block lg:hidden w-full h-full rounded-[2rem] overflow-hidden border border-teal-100 shadow-2xl shadow-teal-500/10">
+            <img
+              src="/hero-fallback/hero-mobile-fallback.webp"
+              alt="AI Intelligent Solutions"
+              width="800"
+              height="600"
+              loading="eager"
+              fetchpriority="high"
+              className="w-full h-full object-cover"
+            />
+          </div>
+
+          {/* Desktop: Spline 3D */}
+          <div ref={iframeWrapRef} className="hidden lg:block spline-hero-wrapper w-full h-full rounded-[2rem] overflow-hidden bg-transparent border border-teal-100 shadow-2xl shadow-teal-500/10">
+            {!iframeSrc && (
+              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-teal-50/80 to-slate-50/60 animate-pulse">
+                <div className="text-center space-y-3">
+                  <div className="w-12 h-12 mx-auto rounded-full border-2 border-teal-300/50 border-t-teal-500 animate-spin" />
+                  <p className="text-xs text-teal-600/60 font-medium">Loading 3D Experience...</p>
+                </div>
+              </div>
+            )}
             {iframeSrc && (
               <iframe
                 src={iframeSrc}
-                width="100%"
-                height="100%"
+                width="1920"
+                height="1080"
+                loading="lazy"
+                importance="low"
                 allow="autoplay"
                 title="R4X Bot 3D"
+                onLoad={() => setIframeLoaded(true)}
                 style={{
                   width: '100%',
                   height: '100%',
@@ -139,7 +166,7 @@ export default function Hero() {
             transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
             className="absolute -top-4 right-2 sm:-right-4 glass p-3 rounded-xl shadow-lg flex items-center space-x-2 z-20"
           >
-            <div className="w-8 h-8 rounded-lg bg-teal-100 flex items-center justify-center text-teal-600 font-bold">AI</div>
+            <div className="w-8 h-8 rounded-lg bg-teal-100 flex items-center justify-center text-teal-800 font-bold">AI</div>
             <div>
               <p className="text-[10px] text-slate-400 font-semibold uppercase">Consultant</p>
               <p className="text-xs font-bold text-slate-800">Online & Ready</p>
@@ -151,7 +178,7 @@ export default function Hero() {
             transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut', delay: 1 }}
             className="absolute -bottom-2 left-2 sm:-left-8 glass p-3 rounded-xl shadow-lg flex items-center space-x-2 z-20"
           >
-            <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-600 font-bold">99%</div>
+            <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-800 font-bold">99%</div>
             <div>
               <p className="text-[10px] text-slate-400 font-semibold uppercase">Performance</p>
               <p className="text-xs font-bold text-slate-800">Optimized Ops</p>

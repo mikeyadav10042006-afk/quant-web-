@@ -26,3 +26,6 @@ dist-ssr
 .vercel
 .env*
 server/test-email.js
+server/data/
+.lh-temp/
+lh-audit.mjs

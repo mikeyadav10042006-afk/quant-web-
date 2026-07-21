@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
@@ -26,9 +27,23 @@ const sanitize = (str) => {
 const sanitizeInput = (obj) => {
   const clean = {};
   for (const [key, val] of Object.entries(obj)) {
-    clean[key] = typeof val === 'string' ? sanitize(val) : val;
+    if (typeof val === 'string') {
+      clean[key] = sanitize(val);
+    } else if (typeof val === 'number' || typeof val === 'boolean') {
+      clean[key] = val;
+    }
   }
   return clean;
+};
+
+const MAX_LENGTHS = { name: 100, email: 254, enterprise: 200, requirements: 5000, password: 128, message: 2000 };
+const checkMaxLength = (fields) => {
+  for (const [key, max] of Object.entries(MAX_LENGTHS)) {
+    if (fields[key] && typeof fields[key] === 'string' && fields[key].length > max) {
+      return `${key} must be ${max} characters or less`;
+    }
+  }
+  return null;
 };
 
 const __filename = fileURLToPath(import.meta.url);
@@ -59,7 +74,8 @@ app.use(cors({
   },
   credentials: true,
 }));
-app.use(express.json());
+app.use(helmet());
+app.use(express.json({ limit: '100kb' }));
 
 // --- Rate Limiter (in-memory) ---
 const rateLimitStore = new Map();
@@ -241,6 +257,13 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
+const adminOnly = (req, res, next) => {
+  if (!req.user || req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Admin access required' });
+  }
+  next();
+};
+
 // --- Seed Default Admin Account ---
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
@@ -331,6 +354,8 @@ app.post('/api/auth/login', rateLimit({ windowMs: 60000, max: 5 }), async (req, 
   if (!email || !password) {
     return res.status(400).json({ error: 'Email and password are required' });
   }
+  const lengthErr = checkMaxLength({ email, password });
+  if (lengthErr) return res.status(400).json({ error: lengthErr });
 
   const cleanEmail = sanitize(email.toLowerCase());
   let user = null;
@@ -367,11 +392,13 @@ app.post('/api/auth/login', rateLimit({ windowMs: 60000, max: 5 }), async (req, 
 });
 
 // Auth: Register new admin (protected — requires existing admin token)
-app.post('/api/auth/register', authMiddleware, async (req, res) => {
+app.post('/api/auth/register', authMiddleware, adminOnly, async (req, res) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
     return res.status(400).json({ error: 'Name, email, and password are required' });
   }
+  const lengthErr = checkMaxLength({ name, email, password });
+  if (lengthErr) return res.status(400).json({ error: lengthErr });
   if (password.length < 8) {
     return res.status(400).json({ error: 'Password must be at least 8 characters' });
   }
@@ -416,6 +443,8 @@ app.post('/api/consultations', rateLimit({ windowMs: 60000, max: 5 }), async (re
   if (!name || !email || !requirements) {
     return res.status(400).json({ error: 'Name, email, and requirements are required' });
   }
+  const lengthErr = checkMaxLength({ name, email, enterprise, requirements });
+  if (lengthErr) return res.status(400).json({ error: lengthErr });
 
   const human = await verifyRecaptcha(recaptchaToken);
   if (!human) {
@@ -453,6 +482,8 @@ app.post('/api/newsletter', rateLimit({ windowMs: 60000, max: 3 }), async (req, 
   if (!email) {
     return res.status(400).json({ error: 'Email is required' });
   }
+  const lengthErr = checkMaxLength({ email });
+  if (lengthErr) return res.status(400).json({ error: lengthErr });
 
   const human = await verifyRecaptcha(recaptchaToken);
   if (!human) {
@@ -514,6 +545,8 @@ app.post('/api/chat', async (req, res) => {
   if (!message) {
     return res.status(400).json({ error: 'Message content is required' });
   }
+  const lengthErr = checkMaxLength({ message });
+  if (lengthErr) return res.status(400).json({ error: lengthErr });
 
   if (isGenAIConfigured) {
     try {

@@ -14,6 +14,9 @@
     <!-- Preconnect for Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Preconnect for Spline 3D -->
+    <link rel="preconnect" href="https://my.spline.design" />
+    <link rel="preconnect" href="https://cdn.spline.rocks" />
 
     <!-- Preload LCP images -->
     <link rel="preload" as="image" href="/hero-bg.jpg" fetchpriority="high" />
@@ -30,20 +33,32 @@
     <meta name="twitter:title" content="Quantionic | AI & Full-Stack Software Engineering Consultancy" />
     <meta name="twitter:description" content="Custom AI pipelines, cloud IoT systems, enterprise integrations, and modern frontend design." />
 
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LFXW93B8GW"></script>
+    <!-- Google Analytics — deferred to after first user interaction or 5s idle -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-LFXW93B8GW');
+      (function(){
+        var loaded=false;
+        function loadGA(){
+          if(loaded) return; loaded=true;
+          var s=document.createElement('script');
+          s.src='https://www.googletagmanager.com/gtag/js?id=G-LFXW93B8GW';
+          s.async=true;
+          document.head.appendChild(s);
+        }
+        ['mousedown','keydown','touchstart','scroll'].forEach(function(e){
+          document.addEventListener(e,loadGA,{once:true,passive:true});
+        });
+        setTimeout(loadGA,5000);
+      })();
     </script>
 
     <!-- Fonts (non-render-blocking with display=swap) -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&family=Great+Vibes&display=swap" />
 
-    <!-- reCAPTCHA -->
-    <script src="https://www.google.com/recaptcha/api.js?render=6LfcclUtAAAAAM9ISGQsZpRIqYxHxph3_6jEHAcu" defer></script>
+    <!-- reCAPTCHA — loaded dynamically on first form submit via api.js -->
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">

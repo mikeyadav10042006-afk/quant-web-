@@ -138,30 +138,9 @@ p {
 
 .spline-hero-wrapper {
   contain: layout style paint;
-  will-change: transform;
   min-height: 550px;
   position: relative;
   isolation: isolate;
-}
-
-.spline-hero-wrapper spline-viewer {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: transparent;
-  contain: layout style paint;
-  will-change: transform;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-spline-viewer::part(loading-spinner) {
-  display: none;
-}
-
-spline-viewer::part(canvas) {
-  background: transparent !important;
 }
 
 /* Card shimmer animation */

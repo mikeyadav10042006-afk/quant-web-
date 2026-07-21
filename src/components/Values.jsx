@@ -33,7 +33,7 @@ export default function Values() {
           {/* Left Text & Live Rotating 2D canvas Model */}
           <div className="lg:col-span-5 text-left space-y-6 flex flex-col justify-between h-full">
             <div className="space-y-6">
-              <span className="text-xs font-semibold uppercase tracking-widest text-[#009966] bg-[#009966]/10 px-3 py-1 rounded-full w-fit">
+              <span className="text-xs font-semibold uppercase tracking-widest text-[#007050] bg-[#009966]/10 px-3 py-1 rounded-full w-fit">
                 Core Principles
               </span>
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 font-sans">
