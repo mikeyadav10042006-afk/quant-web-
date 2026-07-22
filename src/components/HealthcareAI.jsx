@@ -270,7 +270,7 @@ export default function HealthcareAI() {
         </div>
 
         {/* Stats bar — blend between hero & security */}
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-b from-white/80 via-white/40 to-white/10 backdrop-blur-2xl border-t border-white/50">
+        <div className="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-slate-200/60">
           <div className="max-w-7xl mx-auto px-6 py-5 grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats.map((stat) => (
               <div key={stat.label} className="flex items-center gap-3 group cursor-default">
