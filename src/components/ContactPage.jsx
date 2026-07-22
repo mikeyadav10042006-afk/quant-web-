@@ -153,7 +153,7 @@ export default function ContactPage() {
         }} />
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 z-0" style={{
-          background: 'linear-gradient(135deg, rgba(15,41,66,0.88) 0%, rgba(5,150,105,0.75) 50%, rgba(4,120,87,0.85) 100%)',
+          background: 'linear-gradient(135deg, rgba(10,20,40,0.92) 0%, rgba(10,30,50,0.85) 50%, rgba(15,25,45,0.90) 100%)',
         }} />
         {/* Subtle pattern */}
         <div className="absolute inset-0 z-0 opacity-[0.04] pointer-events-none" style={{
