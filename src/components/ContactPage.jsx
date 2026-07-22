@@ -146,7 +146,7 @@ export default function ContactPage() {
       <section className="pt-28 pb-20 md:pt-32 md:pb-28 relative overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 z-0" style={{
-          backgroundImage: 'url(/contact-hero-bg.webp)',
+          backgroundImage: 'url(/contact-hero-bg.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
