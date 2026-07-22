@@ -452,6 +452,7 @@ export default function SalesforceChecklist() {
         {/* Spline 3D background */}
         <div className="absolute inset-0">
           <iframe
+            title="Spline 3D Diagram"
             src="https://my.spline.design/webdiagram-W20iwxjTl0tosfMl8ppwXo76/"
             className="w-full h-full"
             style={{ border: 'none' }}

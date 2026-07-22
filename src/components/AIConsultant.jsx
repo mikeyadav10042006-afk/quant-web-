@@ -55,11 +55,46 @@ export default function AIConsultant({ isOpen, onClose }) {
   const [loading, setLoading] = useState(false);
   const chatEndRef = useRef(null);
   const fallbackTimerRef = useRef(null);
+  const modalRef = useRef(null);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     return () => {
       if (fallbackTimerRef.current) clearTimeout(fallbackTimerRef.current);
     };
+  }, []);
+
+  // Escape key handler
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [isOpen, onClose]);
+
+  // Auto-focus input on open
+  useEffect(() => {
+    if (isOpen) {
+      const timer = setTimeout(() => inputRef.current?.focus(), 100);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
+  // Focus trap
+  const handleKeyDown = useCallback((e) => {
+    if (e.key !== 'Tab' || !modalRef.current) return;
+    const focusable = modalRef.current.querySelectorAll(
+      'button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last?.focus(); }
+    } else {
+      if (document.activeElement === last) { e.preventDefault(); first?.focus(); }
+    }
   }, []);
 
   // Debounced scroll to bottom — avoids lag during rapid renders
@@ -115,7 +150,14 @@ export default function AIConsultant({ isOpen, onClose }) {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-end md:p-6 bg-slate-900/40 backdrop-blur-sm pointer-events-auto">
+        <div
+          ref={modalRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label="AI Consultant chat"
+          onKeyDown={handleKeyDown}
+          className="fixed inset-0 z-50 flex items-center justify-end md:p-6 bg-slate-900/40 backdrop-blur-sm pointer-events-auto"
+        >
           {/* Overlay to close */}
           <div className="absolute inset-0 cursor-pointer" onClick={onClose} />
 
@@ -150,7 +192,7 @@ export default function AIConsultant({ isOpen, onClose }) {
             </div>
 
             {/* Messages Body */}
-            <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-slate-50/50 no-scrollbar">
+            <div aria-live="polite" className="flex-1 overflow-y-auto p-5 space-y-4 bg-slate-50/50 no-scrollbar">
               <MemoizedMessages messages={messages} />
 
               {loading && (
@@ -193,7 +235,10 @@ export default function AIConsultant({ isOpen, onClose }) {
               }}
               className="p-4 bg-white border-t border-slate-100 flex items-center space-x-2"
             >
+              <label htmlFor="chat-input" className="sr-only">Type your message</label>
               <input
+                id="chat-input"
+                ref={inputRef}
                 type="text"
                 placeholder="Ask about technologies, services or booking..."
                 value={input}

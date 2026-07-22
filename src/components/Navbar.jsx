@@ -45,9 +45,13 @@ export default function Navbar({ onOpenChat }) {
         transition={{ duration: 0.5 }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 backdrop-blur-sm bg-white/30 border-b border-green-500/20 ${scrolled ? 'shadow-md py-3' : 'py-5'}`}        
       >
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-2.5 cursor-pointer group" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <button
+            className="flex items-center gap-2.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded-lg"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            aria-label="Scroll to top"
+          >
             {/* Atom Icon */}
             <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0 group-hover:scale-110 transition-transform duration-300">
               <circle cx="18" cy="18" r="4" fill="url(#logoGrad)" />
@@ -67,7 +71,7 @@ export default function Navbar({ onOpenChat }) {
               <span className="text-[22px] font-extrabold tracking-tight text-[#111827]">QUAN</span>
               <span className="text-[22px] font-extrabold tracking-tight bg-gradient-to-r from-[#00A878] to-cyan-500 bg-clip-text text-transparent">TIONIC</span>
             </div>
-          </div>
+          </button>
 
           {/* Desktop Nav Links */}
           <div className="hidden md:flex items-center space-x-8">
@@ -114,7 +118,8 @@ export default function Navbar({ onOpenChat }) {
           <div className="md:hidden flex items-center space-x-2">
             <button
               onClick={onOpenChat}
-              className="p-2 text-teal-600 hover:bg-teal-50 rounded-lg"
+              className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center text-teal-600 hover:bg-teal-50 rounded-lg"
+              aria-label="Open AI Consultant"
               title="AI Consultant"
             >
               <Bot className="w-5 h-5" />
@@ -122,7 +127,9 @@ export default function Navbar({ onOpenChat }) {
             <button
               onClick={() => setIsOpen(!isOpen)}
               aria-label={isOpen ? 'Close menu' : 'Open menu'}
-              className="p-2 text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
+              aria-expanded={isOpen}
+              aria-controls="mobile-nav"
+              className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -139,6 +146,9 @@ export default function Navbar({ onOpenChat }) {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
             className="fixed top-[70px] left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-xl px-6 py-8 flex flex-col md:hidden space-y-6"
+            id="mobile-nav"
+            role="region"
+            aria-label="Mobile navigation"
           >
             <div className="flex flex-col space-y-4">
               {navLinks.map((link) =>

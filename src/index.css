@@ -110,6 +110,9 @@ p {
 .group:hover .flip-card-inner {
   transform: rotateY(180deg);
 }
+.group.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
 
 /* Interactive feature rows on Left Side (Team) */
 .interactive-feature-row {

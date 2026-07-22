@@ -402,6 +402,7 @@ export default function SmartCity() {
             playsInline
             width="1920" height="1080"
             preload="none"
+            aria-label="Smart city visualization background"
             className="absolute inset-0 w-full h-full object-cover"
             style={{ filter: 'brightness(0.35) saturate(1.2)' }}
           >

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 
 // ─── Project data ─────────────────────────────────────────────────────────────
@@ -91,6 +92,7 @@ const cardVariants = {
 
 // ─── COMPONENT ────────────────────────────────────────────────────────────────
 export default function Projects() {
+  const [flippedId, setFlippedId] = useState(null);
   return (
     <section id="projects" className="relative py-14 md:py-24">
       <div className="relative z-10 max-w-7xl mx-auto px-6">
@@ -121,7 +123,8 @@ export default function Projects() {
               key={project.id}
               variants={cardVariants}
               /* ── Perspective wrapper ─────────────────────────────────────── */
-              className="perspective-[1200px] group w-full h-[350px] sm:h-[320px]"
+              className={`perspective-[1200px] group w-full h-[350px] sm:h-[320px] cursor-pointer ${flippedId === project.id ? 'flipped' : ''}`}
+              onClick={() => setFlippedId(flippedId === project.id ? null : project.id)}
             >
               {/* ── Flip inner — rotates on group hover ───────────────────── */}
               <div className="flip-card-inner relative w-full h-full">

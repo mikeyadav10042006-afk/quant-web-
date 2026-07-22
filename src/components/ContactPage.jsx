@@ -16,7 +16,7 @@ const contactInfo = [
   {
     icon: <Phone className="w-5 h-5" />,
     label: 'Emergency Support? Call Us',
-    value: '+91 98765 43210',
+    value: '+91 124 4077 001',
   },
   {
     icon: <Mail className="w-5 h-5" />,
@@ -47,10 +47,12 @@ export default function ContactPage() {
   const [newsError, setNewsError] = useState('');
   const newsResetTimer = useRef(null);
   const formResetTimer = useRef(null);
+  const errorResetTimer = useRef(null);
 
   useEffect(() => () => {
     if (newsResetTimer.current) clearTimeout(newsResetTimer.current);
     if (formResetTimer.current) clearTimeout(formResetTimer.current);
+    if (errorResetTimer.current) clearTimeout(errorResetTimer.current);
   }, []);
 
   const handleFormSubmit = async (e) => {
@@ -74,7 +76,8 @@ export default function ContactPage() {
       formResetTimer.current = setTimeout(() => { setFormSubmitted(false); setFormData({ name: '', email: '', company: '', subject: '', message: '' }); }, 4000);
     } catch (err) {
       setFormError('Something went wrong. Please try again.');
-      setTimeout(() => setFormError(''), 3000);
+      if (errorResetTimer.current) clearTimeout(errorResetTimer.current);
+      errorResetTimer.current = setTimeout(() => setFormError(''), 3000);
     } finally {
       setFormLoading(false);
     }
@@ -99,7 +102,8 @@ export default function ContactPage() {
       } else {
         setNewsError('Something went wrong. Please try again.');
       }
-      setTimeout(() => setNewsError(''), 3000);
+      if (errorResetTimer.current) clearTimeout(errorResetTimer.current);
+      errorResetTimer.current = setTimeout(() => setNewsError(''), 3000);
     } finally {
       setNewsLoading(false);
     }
@@ -219,7 +223,7 @@ export default function ContactPage() {
       </section>
 
       {/* ── Two Column: Info + Form ─────────────────────────────────────── */}
-      <section className="py-16 md:py-24 relative">
+      <section className="py-16 md:py-24 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-[#059669]/[0.02] rounded-full blur-3xl" />
         </div>
@@ -261,7 +265,7 @@ export default function ContactPage() {
                         <div className="absolute -inset-1 rounded-2xl bg-[#059669]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
                       </div>
                       <div className="min-w-0">
-                        <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">{item.label}</p>
+                        <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">{item.label}</p>
                         {item.isAddress ? (
                           <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-[#0f2942] leading-relaxed hover:text-[#059669] transition-colors duration-300 underline underline-offset-2 decoration-[#059669]/30 hover:decoration-[#059669]">{item.value}</a>
                         ) : (
@@ -274,9 +278,9 @@ export default function ContactPage() {
               </div>
 
               {/* Trust badges */}
-              <div className="flex items-center gap-3 pt-2">
+              <div className="flex flex-wrap items-center gap-3 pt-2">
                 {['SOC 2 Compliant', 'HIPAA Certified', 'ISO 27001'].map((badge) => (
-                  <span key={badge} className="text-[10px] font-bold text-[#059669] bg-[#059669]/8 border border-[#059669]/10 px-3 py-1.5 rounded-full">
+                  <span key={badge} className="text-xs font-bold text-[#059669] bg-[#059669]/8 border border-[#059669]/10 px-3 py-1.5 rounded-full">
                     {badge}
                   </span>
                 ))}
@@ -315,7 +319,7 @@ export default function ContactPage() {
                         { id: 'email', label: 'Email', icon: <Mail className="w-4 h-4" />, placeholder: 'john@company.com', type: 'email' },
                       ].map((field) => (
                         <div key={field.id}>
-                          <label htmlFor={field.id} className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">{field.label}</label>
+                          <label htmlFor={field.id} className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">{field.label}</label>
                           <div className="relative group">
                             <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-[#059669] transition-colors">{field.icon}</span>
                             <input
@@ -338,7 +342,7 @@ export default function ContactPage() {
                         { id: 'subject', label: 'Subject', icon: <HelpCircle className="w-4 h-4" />, placeholder: 'How can we help?', type: 'text' },
                       ].map((field) => (
                         <div key={field.id}>
-                          <label htmlFor={field.id} className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">{field.label}</label>
+                          <label htmlFor={field.id} className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">{field.label}</label>
                           <div className="relative group">
                             <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-[#059669] transition-colors">{field.icon}</span>
                             <input
@@ -356,7 +360,7 @@ export default function ContactPage() {
 
                     {/* Message */}
                     <div>
-                      <label htmlFor="message" className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Message</label>
+                      <label htmlFor="message" className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Message</label>
                       <textarea
                         id="message"
                         rows={4}
@@ -374,6 +378,7 @@ export default function ContactPage() {
                       {formSubmitted ? (
                         <motion.div
                           key="success"
+                          aria-live="polite"
                           initial={{ opacity: 0, scale: 0.9 }}
                           animate={{ opacity: 1, scale: 1 }}
                           exit={{ opacity: 0, scale: 0.9 }}
@@ -402,7 +407,7 @@ export default function ContactPage() {
                       )}
                     </AnimatePresence>
                     {formError && (
-                      <p className="text-sm font-semibold text-red-500 text-center mt-2">{formError}</p>
+                      <p aria-live="assertive" className="text-sm font-semibold text-red-500 text-center mt-2">{formError}</p>
                     )}
                   </form>
                 </div>
@@ -472,7 +477,9 @@ export default function ContactPage() {
               <div className="relative flex flex-col sm:flex-row gap-3">
                 <div className="relative flex-1">
                   <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300" />
+                  <label htmlFor="contact-newsletter-email" className="sr-only">Newsletter email address</label>
                   <input
+                    id="contact-newsletter-email"
                     type="email"
                     placeholder="Email Address"
                     value={newsEmail}
@@ -499,6 +506,7 @@ export default function ContactPage() {
             <AnimatePresence>
               {newsSubmitted && (
                 <motion.div
+                  aria-live="polite"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
@@ -510,6 +518,7 @@ export default function ContactPage() {
               )}
               {newsError && (
                 <motion.p
+                  aria-live="assertive"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}

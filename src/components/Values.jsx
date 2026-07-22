@@ -53,6 +53,7 @@ export default function Values() {
                   loop
                   muted
                   playsInline
+                  aria-hidden="true"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -74,7 +75,7 @@ export default function Values() {
                   {v.icon}
                 </div>
                 <div>
-                  <h4 className="font-bold text-[#0F172A] text-base">{v.title}</h4>
+                  <h3 className="font-bold text-[#0F172A] text-base">{v.title}</h3>
                   <p className="text-xs text-[#334155] font-medium leading-relaxed mt-2">{v.desc}</p>
                 </div>
               </motion.div>

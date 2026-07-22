@@ -72,7 +72,7 @@ export default function Hero() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg md:text-xl text-[#4B5563] max-w-xl font-normal leading-[1.7] tracking-[0.01em]"
           >
-            We help businesses and organizations accelerate digital transformation through AI, cloud technologies, intelligent automation, and enterprise software solutions designed for scalability, security, and long-term growth.
+            We help businesses save time and cut costs by building AI-powered tools, cloud systems, and custom software — built to scale with your growth.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -164,11 +164,11 @@ export default function Hero() {
           <motion.div
             animate={{ y: [0, -10, 0] }}
             transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-            className="absolute -top-4 right-2 sm:-right-4 glass p-3 rounded-xl shadow-lg flex items-center space-x-2 z-20"
+            className="absolute top-2 right-2 sm:-top-4 sm:-right-4 glass p-3 rounded-xl shadow-lg flex items-center space-x-2 z-20"
           >
             <div className="w-8 h-8 rounded-lg bg-teal-100 flex items-center justify-center text-teal-800 font-bold">AI</div>
             <div>
-              <p className="text-[10px] text-slate-400 font-semibold uppercase">Consultant</p>
+              <p className="text-[11px] sm:text-[10px] text-slate-400 font-semibold uppercase">Consultant</p>
               <p className="text-xs font-bold text-slate-800">Online & Ready</p>
             </div>
           </motion.div>
@@ -176,11 +176,11 @@ export default function Hero() {
           <motion.div
             animate={{ y: [0, 10, 0] }}
             transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut', delay: 1 }}
-            className="absolute -bottom-2 left-2 sm:-left-8 glass p-3 rounded-xl shadow-lg flex items-center space-x-2 z-20"
+            className="absolute bottom-2 left-2 sm:-bottom-2 sm:-left-8 glass p-3 rounded-xl shadow-lg flex items-center space-x-2 z-20"
           >
-            <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-800 font-bold">99%</div>
+            <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-800 font-bold">96%</div>
             <div>
-              <p className="text-[10px] text-slate-400 font-semibold uppercase">Performance</p>
+              <p className="text-[11px] sm:text-[10px] text-slate-400 font-semibold uppercase">Performance</p>
               <p className="text-xs font-bold text-slate-800">Optimized Ops</p>
             </div>
           </motion.div>

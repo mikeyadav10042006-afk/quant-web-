@@ -86,9 +86,15 @@ function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50/50">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-teal-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:font-semibold focus:outline-none"
+      >
+        Skip to main content
+      </a>
       <Navbar onOpenChat={openChat} />
 
-      <main className="flex-grow">
+      <main id="main-content" className="flex-grow">
         <Hero />
         <LazySection>
           <Suspense fallback={null}><LogoMarquee /></Suspense>
@@ -102,9 +108,9 @@ function HomePage() {
         <div className="relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-slate-50 via-white to-slate-50" />
           <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle, #64748b 1.2px, transparent 1.2px)', backgroundSize: '28px 28px', opacity: 0.25 }} />
-          <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-teal-200/15 rounded-full blur-[120px] pointer-events-none" />
-          <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-emerald-200/10 rounded-full blur-[100px] pointer-events-none" />
-          <div className="absolute bottom-0 left-1/3 w-[550px] h-[550px] bg-blue-200/8 rounded-full blur-[110px] pointer-events-none" />
+          <div className="absolute top-0 left-1/4 w-[300px] sm:w-[500px] lg:w-[600px] h-[300px] sm:h-[500px] lg:h-[600px] bg-teal-200/15 rounded-full blur-[120px] pointer-events-none" />
+          <div className="absolute top-1/3 right-1/4 w-[250px] sm:w-[400px] lg:w-[500px] h-[250px] sm:h-[400px] lg:h-[500px] bg-emerald-200/10 rounded-full blur-[100px] pointer-events-none" />
+          <div className="absolute bottom-0 left-1/3 w-[275px] sm:w-[450px] lg:w-[550px] h-[275px] sm:h-[450px] lg:h-[550px] bg-blue-200/8 rounded-full blur-[110px] pointer-events-none" />
           <LazySection>
             <Suspense fallback={null}><Features /></Suspense>
           </LazySection>

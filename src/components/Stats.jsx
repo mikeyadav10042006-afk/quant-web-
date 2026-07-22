@@ -26,7 +26,7 @@ function AnimatedCounter({ target, suffix = '', trigger }) {
   }, [trigger, target]);
 
   return (
-    <span>
+    <span aria-live="polite" aria-atomic="true">
       {trigger ? count : 0}
       {suffix}
     </span>
@@ -34,8 +34,8 @@ function AnimatedCounter({ target, suffix = '', trigger }) {
 }
 
 const stats = [
-  { value: 99, suffix: '%+', label: 'Satisfaction Rate', desc: 'Across enterprise solutions', animate: true },
-  { value: 180, suffix: '+', label: 'Projects Completed', desc: 'Delivered with precision', animate: true },
+  { value: 96, suffix: '%', label: 'Client Retention', desc: 'Across enterprise solutions', animate: true },
+  { value: 30, suffix: '+', label: 'Projects Delivered', desc: 'For global businesses', animate: true },
   { value: 24, suffix: '/7', label: 'AI Monitoring', desc: 'Secure agent operations', animate: false },
 ];
 
@@ -99,7 +99,7 @@ export default function Stats() {
 
         {/* Right Side: Customer Testimonial Card */}
         <div className="lg:col-span-6 flex justify-center w-full">
-          <div className="perspective-[1000px] group w-full max-w-lg h-[420px] sm:h-[340px]">
+          <div className="perspective-[1000px] group w-full max-w-lg h-[340px]">
             <div className="relative w-full h-full transition-transform duration-700 transform-style-3d group-hover:rotate-y-180">
               
               {/* FRONT SIDE */}

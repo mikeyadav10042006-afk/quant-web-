@@ -48,10 +48,15 @@ export default function Features() {
         </div>
 
         {/* Tab Selector */}
-        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-8 md:mb-12">
+        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-8 md:mb-12" role="tablist" aria-label="Feature categories">
           {benefits.map(b => (
             <button
               key={b.id}
+              role="tab"
+              id={`tab-${b.id}`}
+              aria-selected={activeTab === b.id}
+              aria-controls={`panel-${b.id}`}
+              tabIndex={activeTab === b.id ? 0 : -1}
               onClick={() => setActiveTab(b.id)}
               className={`px-6 py-2.5 rounded-xl font-semibold transition-all duration-200 text-sm ${
                 activeTab === b.id
@@ -64,7 +69,7 @@ export default function Features() {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center" role="tabpanel" id={`panel-${activeTab}`} aria-labelledby={`tab-${activeTab}`}>
           {/* Left: Detail Bullet Points */}
           <div className="lg:col-span-6 text-left space-y-6">
             <div>
