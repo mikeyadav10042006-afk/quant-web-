@@ -69,7 +69,7 @@ describe('Footer Integration', () => {
       }, { timeout: 10000 });
     });
 
-    it('shows success even when API fails (localStorage fallback)', async () => {
+    it('shows error when API fails', async () => {
       mocks.mockPost.mockRejectedValueOnce(new Error('Server down'));
 
       render(<Footer {...defaultProps} />);
@@ -81,12 +81,8 @@ describe('Footer Integration', () => {
       fireEvent.click(screen.getByRole('button', { name: /register consultation/i }));
 
       await waitFor(() => {
-        expect(screen.getByText(/booked|submitted|success/i)).toBeInTheDocument();
+        expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
       }, { timeout: 10000 });
-
-      const bookings = JSON.parse(localStorage.getItem('quant_bookings') || '[]');
-      expect(bookings.length).toBe(1);
-      expect(bookings[0].name).toBe('Rahul');
     });
   });
 
@@ -119,7 +115,7 @@ describe('Footer Integration', () => {
       }, { timeout: 10000 });
     });
 
-    it('shows success even when newsletter API fails (localStorage fallback)', async () => {
+    it('shows error when newsletter API fails', async () => {
       mocks.mockPost.mockRejectedValueOnce(new Error('Server down'));
 
       render(<Footer {...defaultProps} />);
@@ -130,12 +126,8 @@ describe('Footer Integration', () => {
       fireEvent.click(screen.getByRole('button', { name: /subscribe to newsletter/i }));
 
       await waitFor(() => {
-        expect(screen.getByText(/subscribed|success|thank you/i)).toBeInTheDocument();
+        expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
       }, { timeout: 10000 });
-
-      const subscribers = JSON.parse(localStorage.getItem('quant_subscribers') || '[]');
-      expect(subscribers.length).toBe(1);
-      expect(subscribers[0].email).toBe('sub@test.com');
     });
   });
 });

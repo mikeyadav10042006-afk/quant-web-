@@ -13,19 +13,25 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
   }, []);
   const [bookingLoading, setBookingLoading] = useState(false);
   const [bookingSuccess, setBookingSuccess] = useState(false);
+  const [bookingError, setBookingError] = useState('');
 
   // Newsletter State
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsLoading, setNewsLoading] = useState(false);
   const [newsSuccess, setNewsSuccess] = useState(false);
+  const [newsError, setNewsError] = useState('');
 
   const bookingTimerRef = useRef(null);
   const newsTimerRef = useRef(null);
+  const bookingErrorTimerRef = useRef(null);
+  const newsErrorTimerRef = useRef(null);
 
   useEffect(() => {
     return () => {
       if (bookingTimerRef.current) clearTimeout(bookingTimerRef.current);
       if (newsTimerRef.current) clearTimeout(newsTimerRef.current);
+      if (bookingErrorTimerRef.current) clearTimeout(bookingErrorTimerRef.current);
+      if (newsErrorTimerRef.current) clearTimeout(newsErrorTimerRef.current);
     };
   }, []);
 
@@ -42,16 +48,9 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
       sendUserEmail({ from_name: bookingData.name, from_email: bookingData.email, message: bookingData.requirements }).catch((e) => console.error('EmailJS user email failed:', e));
       setBookingData({ name: '', email: '', enterprise: '', requirements: '' });
     } catch (err) {
-      const current = JSON.parse(localStorage.getItem('quant_bookings') || '[]');
-      const newBooking = {
-        _id: 'local-' + Date.now(),
-        ...bookingData,
-        createdAt: new Date().toISOString()
-      };
-      localStorage.setItem('quant_bookings', JSON.stringify([newBooking, ...current]));
-      
-      setBookingSuccess(true);
-      setBookingData({ name: '', email: '', enterprise: '', requirements: '' });
+      setBookingError('Something went wrong. Please try again.');
+      if (bookingErrorTimerRef.current) clearTimeout(bookingErrorTimerRef.current);
+      bookingErrorTimerRef.current = setTimeout(() => setBookingError(''), 3000);
     } finally {
       setBookingLoading(false);
       bookingTimerRef.current = setTimeout(() => setBookingSuccess(false), 5000);
@@ -71,16 +70,13 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
       sendUserEmail({ from_name: 'Valued Subscriber', from_email: newsletterEmail, message: 'Thank you for subscribing to Quantionic newsletter!' }).catch((e) => console.error('EmailJS user email failed:', e));
       setNewsletterEmail('');
     } catch (err) {
-      const current = JSON.parse(localStorage.getItem('quant_subscribers') || '[]');
-      const newSub = {
-        _id: 'local-sub-' + Date.now(),
-        email: newsletterEmail,
-        createdAt: new Date().toISOString()
-      };
-      localStorage.setItem('quant_subscribers', JSON.stringify([newSub, ...current]));
-
-      setNewsSuccess(true);
-      setNewsletterEmail('');
+      if (err.response?.status === 409) {
+        setNewsError('Email already subscribed.');
+      } else {
+        setNewsError('Something went wrong. Please try again.');
+      }
+      if (newsErrorTimerRef.current) clearTimeout(newsErrorTimerRef.current);
+      newsErrorTimerRef.current = setTimeout(() => setNewsError(''), 3000);
     } finally {
       setNewsLoading(false);
       newsTimerRef.current = setTimeout(() => setNewsSuccess(false), 5000);
@@ -222,6 +218,9 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
                     <span>Register Consultation</span>
                   )}
                 </button>
+                {bookingError && (
+                  <p aria-live="assertive" className="text-sm font-semibold text-red-400 text-center mt-2">{bookingError}</p>
+                )}
               </form>
             )}
           </div>
@@ -272,9 +271,10 @@ export default function Footer({ onOpenChat, onOpenAdmin }) {
               </form>
             )}
           </div>
+          {newsError && (
+            <p aria-live="assertive" className="text-sm font-semibold text-red-400 text-center mt-2 w-full max-w-md">{newsError}</p>
+          )}
         </div>
-
-        {/* LOWER PART: Footer Info & Links */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center space-x-2">
             <svg width="28" height="28" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
