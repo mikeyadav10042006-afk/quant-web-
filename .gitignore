@@ -29,3 +29,7 @@ server/test-email.js
 server/data/
 .lh-temp/
 lh-audit.mjs
+
+# Playwright
+test-results/
+playwright-report/
