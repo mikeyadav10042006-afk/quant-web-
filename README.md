@@ -1,8 +1,15 @@
-# Quantionic — Full-Stack Web Platform for AI Consultancy
+# Quantionic
 
-A production-grade website built for **Quantionic** (quantionics.com) — a technology consultancy specializing in Agentic AI, Node.js engineering, and Salesforce/CRM integrations.
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)
+![Express](https://img.shields.io/badge/Express-4-000000?logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white)
+![Playwright](https://img.shields.io/badge/Playwright-E2E-2EAD33?logo=playwright&logoColor=white)
+![Vitest](https://img.shields.io/badge/Vitest-72-729B1B?logo=vitest&logoColor=white)
 
-This isn't a template or a weekend project. It's a full-stack application with a React frontend, Express + MongoDB backend, real-time AI chat, authentication, form submissions with reCAPTCHA, email notifications, and a complete test suite. Everything was built to be handed over as a working deliverable.
+A production-ready AI consultancy website built using React, Express, and MongoDB.
+
+**Repository:** [github.com/mikeyadav10042006-afk/quant-web-](https://github.com/mikeyadav10042006-afk/quant-web-)
 
 ---
 
@@ -47,7 +54,8 @@ The website serves as Quantionic's digital presence — showcasing services, cap
 ### Testing
 - **Vitest** + Testing Library for unit and integration tests
 - **Playwright** for end-to-end browser tests
-- **72 passing tests** across unit and integration suites
+- **72 passing tests** (47 unit + 25 integration)
+- **30 E2E tests** written with Playwright
 
 ### Deployment
 - **Frontend:** Vercel (with SPA rewrite rules)
@@ -59,7 +67,7 @@ The website serves as Quantionic's digital presence — showcasing services, cap
 ## Features
 
 ### AI Consultant Chat
-An AI-powered chatbot that answers questions about Quantionic's services, technologies, and booking process. It connects to the Express backend which can route queries through Gemini for intelligent responses — with a smart fallback system when the server is offline.
+An AI-powered chatbot that answers questions about Quantionic's services, technologies, and booking process. It connects to the Express backend and supports Gemini integration for intelligent responses — with a smart fallback system when the server is offline.
 
 ### Consultation Booking
 A multi-field booking form in the footer that captures name, email, enterprise domain, and technical requirements. Submissions go to MongoDB, trigger reCAPTCHA validation, and send confirmation emails through EmailJS.
@@ -71,7 +79,7 @@ Email capture with duplicate detection (returns a clean 409 if already subscribe
 JWT-protected admin panel for viewing booked consultations and newsletter subscribers. Accessible through a login modal with proper authentication flow.
 
 ### Responsive Design
-Fully responsive across all breakpoints — tested at 320px, 375px, 768px, 1024px, 1280px, and 1536px. Mobile navigation uses a slide-out drawer with touch-friendly targets (44px minimum).
+Fully responsive across desktop and mobile viewports. Mobile navigation uses a slide-out drawer with touch-friendly targets (44px minimum).
 
 ### Accessibility
 Built to WCAG 2.1 AA standards:
@@ -96,8 +104,8 @@ Built to WCAG 2.1 AA standards:
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/quant-web.git
-cd quant-web
+git clone https://github.com/mikeyadav10042006-afk/quant-web-.git
+cd quant-web-
 
 # Install frontend dependencies
 npm install
@@ -254,19 +262,19 @@ Uses MongoDB Atlas. The backend falls back to local JSON files in `server/data/`
 - **No TypeScript** — JavaScript was chosen intentionally for faster iteration during the internship
 - **Lazy loading:** All route components and heavy sections use `React.lazy()` with `Suspense`
 - **Bundle splitting:** Manual chunks separate React vendor, Framer Motion, and GSAP
-- **Performance audit:** Full audit available in `AUDIT.md` (720 lines of analysis)
+- **Performance audit:** Detailed analysis available in `AUDIT.md`
 
 ---
 
 ## License
 
-This project was built as part of an internship at Quantionic. The codebase is available for reference and educational purposes.
+This repository contains work completed during an internship at Quantionic.
 
 ---
 
 ## Acknowledgments
 
-Built with care by the Quantionic engineering team. Special thanks to:
+Developed as part of an internship at Quantionic. Special thanks to:
 
 - [React](https://react.dev) — UI library
 - [Vite](https://vitejs.dev) — Build tool
