@@ -221,7 +221,7 @@ export default function HealthcareAI() {
           <div className="lg:col-span-6 flex justify-center lg:justify-end relative">
             <div
               ref={laptopRef}
-              className="relative w-full max-w-[560px] overflow-hidden transition-transform duration-100 ease-out"
+              className="relative w-full max-w-[560px] py-8 px-6 transition-transform duration-100 ease-out"
             >
               {/* Dynamic glow behind laptop */}
               <div className="absolute -inset-12 bg-gradient-to-br from-[#009966]/12 via-teal-400/5 to-emerald-400/8 rounded-[3rem] blur-3xl pointer-events-none transition-all duration-700" />
