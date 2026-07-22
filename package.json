@@ -8,6 +8,10 @@
     "client": "vite",
     "server": "npm run dev --prefix server",
     "build": "vite build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "npx playwright test",
+    "test:e2e:ui": "npx playwright test --ui",
     "lint": "oxlint",
     "preview": "vite preview"
   },
@@ -24,9 +28,15 @@
     "tailwindcss": "^4.3.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "@testing-library/jest-dom": "^7.0.0",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@vitejs/plugin-react": "^6.0.3",
     "concurrently": "^10.0.3",
+    "jsdom": "^29.1.1",
     "oxlint": "^1.71.0",
-    "vite": "^8.1.1"
+    "vite": "^8.1.1",
+    "vitest": "^4.1.10"
   }
 }
