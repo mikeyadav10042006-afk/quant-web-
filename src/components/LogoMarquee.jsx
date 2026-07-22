@@ -32,12 +32,6 @@ function LogoCard({ brand }) {
         className="h-8 w-auto max-w-[100px] object-contain transition-all duration-500 group-hover:scale-125 drop-shadow-[0_2px_8px_rgba(0,0,0,0.08)]"
         loading="lazy"
       />
-      {/* Hover glow ring - green brand color */}
-      <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none"
-        style={{
-          boxShadow: '0 0 0 3px rgba(0,153,102,0.4), 0 0 24px rgba(0,153,102,0.25), 0 0 48px rgba(168,85,247,0.15)'
-        }}
-      />
       {/* Subtle hover lift background */}
       <div className="absolute inset-0 rounded-full bg-gradient-to-br from-transparent via-emerald-500/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
       {/* Hover scale wrapper */}
