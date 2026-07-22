@@ -9,10 +9,10 @@ const api = axios.create({
   timeout: 15000,
 });
 
-export const EMAILJS_PUBLIC_KEY = 'Wmyt35neu9ZwMjtQK';
-export const EMAILJS_SERVICE_ID = 'service_08i5lsh';
-export const EMAILJS_ADMIN_TEMPLATE = 'template_0nu1ofs';
-export const EMAILJS_USER_TEMPLATE = 'template_gwwejsd';
+export const EMAILJS_PUBLIC_KEY = 'OnP9osnFNnNkKukYP';
+export const EMAILJS_SERVICE_ID = 'service_2n15dgo';
+export const EMAILJS_ADMIN_TEMPLATE = 'template_rmgvulk';
+export const EMAILJS_USER_TEMPLATE = 'template_nxgj9xr';
 
 emailjs.init(EMAILJS_PUBLIC_KEY);
 
